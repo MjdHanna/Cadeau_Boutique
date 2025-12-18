@@ -1,15 +1,55 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
+import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
+import AuthButton from "../AuthButton/AuthButton";
+import { useVerifyCodeMutation } from "../../redux/features/apiSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Verification = () => {
-  const [code, setCode] = useState("");
+  const [verifyCode] = useVerifyCodeMutation();
+  const navigate = useNavigate();
+  const userId = sessionStorage.getItem("resetUserId"); // خزننا userId هنا
   const lang = useSelector(selectTranslate);
   const { t } = useTranslation();
   const isRTL = lang === "ar";
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loader.isLoading);
 
-  const handleSubmit = (e) => e.preventDefault();
+  useEffect(() => {
+    if (!userId) navigate("/forgot-password");
+  }, [userId, navigate]);
+
+  const initialValues = { otp: "" };
+
+  const validationSchema = Yup.object({
+    otp: Yup.string()
+      .matches(/^[0-9]+$/, t("Numbers only"))
+      .required(t("Code is required")),
+  });
+
+  const onSubmit = async (values) => {
+    try {
+      dispatch(showLoader());
+
+      await verifyCode({
+        userId: parseInt(userId),
+        otp: values.otp,
+      }).unwrap();
+
+      toast.success(t("Code verified successfully"));
+      navigate("/reset-password");
+    } catch (error) {
+      toast.error(error?.data?.message || t("Invalid or expired code"));
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
   return (
     <div
@@ -17,44 +57,30 @@ const Verification = () => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2
-          className={`text-2xl font-bold text-gray-800 mb-1 ${
-            isRTL ? "text-right" : "text-left"
-          }`}
-        >
+        <h2 className="text-2xl font-bold text-gray-800 mb-1">
           {t("Verification")}
         </h2>
-        <p
-          className={`text-gray-500 mb-6 ${isRTL ? "text-right" : "text-left"}`}
-        >
-          {t("Please enter verification code")}
+        <p className="text-gray-500 mb-6">
+          {t("Please enter the verification code")}
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              className={`block text-gray-700 mb-1 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("Verification Code")}
-            </label>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="4 4 4 4 9"
-              className="w-full rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          <Form className="space-y-4">
+            <MuiTextField
+              name="code"
+              label={t("Verification Code")}
+              maxLength={5}
+              onInput={(e) =>
+                (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
+              }
             />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-3 rounded-lg transition"
-          >
-            {t("Verify Code")}
-          </button>
-        </form>
+            <AuthButton label={t("Verify Code")} loading={loading} />
+          </Form>
+        </Formik>
       </div>
     </div>
   );

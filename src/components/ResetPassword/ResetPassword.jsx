@@ -1,20 +1,69 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
+import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
+import AuthButton from "../AuthButton/AuthButton";
+import { useResetPasswordMutation } from "../../redux/features/apiSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-  const [data, setData] = useState({ password: "", confirmPassword: "" });
+  const [resetPassword] = useResetPasswordMutation();
+  const navigate = useNavigate();
+  const email = sessionStorage.getItem("resetEmail");
+
   const lang = useSelector(selectTranslate);
   const { t } = useTranslation();
   const isRTL = lang === "ar";
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loader.isLoading);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+  useEffect(() => {
+    if (!email) navigate("/forgot-password");
+  }, [email, navigate]);
+
+  const initialValues = {
+    password: "",
+    confirmPassword: "",
   };
 
-  const handleSubmit = (e) => e.preventDefault();
+  const validationSchema = Yup.object({
+    password: Yup.string()
+      .min(8, t("Password must be at least 8 characters"))
+      .required(t("Password is required")),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], t("Passwords do not match"))
+      .required(t("Confirm password is required")),
+  });
+
+  const onSubmit = async (values) => {
+    const userId = sessionStorage.getItem("resetUserId");
+    const otp = sessionStorage.getItem("resetOtp"); // احفظه بعد التحقق
+    try {
+      dispatch(showLoader());
+
+      await resetPassword({
+        userId: parseInt(userId),
+        otp,
+        password: values.password,
+        password_confirmation: values.confirmPassword,
+      }).unwrap();
+
+      toast.success(t("Password reset successfully"));
+
+      sessionStorage.removeItem("resetUserId");
+      sessionStorage.removeItem("resetOtp");
+      navigate("/login");
+    } catch (error) {
+      toast.error(error?.data?.message || t("Failed to reset password"));
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
   return (
     <div
@@ -22,63 +71,32 @@ const ResetPassword = () => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2
-          className={`text-2xl font-bold text-gray-800 mb-1 ${
-            isRTL ? "text-right" : "text-left"
-          }`}
-        >
+        <h2 className="text-2xl font-bold text-gray-800 mb-1">
           {t("Set New Password")}
         </h2>
-        <p
-          className={`text-gray-500 mb-6 ${isRTL ? "text-right" : "text-left"}`}
-        >
+        <p className="text-gray-500 mb-6">
           {t("Please enter your new password")}
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              className={`block text-gray-700 mb-1 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("Password")}
-            </label>
-            <input
-              type="password"
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          <Form className="space-y-4">
+            <MuiTextField
               name="password"
-              value={data.password}
-              onChange={handleChange}
-              placeholder="*****"
-              className="w-full rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            />
-          </div>
-
-          <div>
-            <label
-              className={`block text-gray-700 mb-1 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("Confirm Password")}
-            </label>
-            <input
               type="password"
-              name="confirmPassword"
-              value={data.confirmPassword}
-              onChange={handleChange}
-              placeholder="*****"
-              className="w-full rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              label={t("Password")}
             />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-3 rounded-lg transition"
-          >
-            {t("Set New Password")}
-          </button>
-        </form>
+            <MuiTextField
+              name="confirmPassword"
+              type="password"
+              label={t("Confirm Password")}
+            />
+            <AuthButton label={t("Set New Password")} loading={loading} />
+          </Form>
+        </Formik>
       </div>
     </div>
   );

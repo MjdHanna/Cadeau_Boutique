@@ -1,15 +1,51 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
+import { useForgotPasswordMutation } from "../../redux/features/apiSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
+import AuthButton from "../AuthButton/AuthButton";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const [forgotPassword] = useForgotPasswordMutation();
+  const navigate = useNavigate();
   const lang = useSelector(selectTranslate);
   const { t } = useTranslation();
   const isRTL = lang === "ar";
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loader.isLoading);
 
-  const handleSubmit = (e) => e.preventDefault();
+  const initialValues = { email: "" };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email(t("Enter a valid email"))
+      .required(t("Email is required")),
+  });
+
+  const onSubmit = async (values) => {
+    try {
+      dispatch(showLoader());
+
+      await forgotPassword(values.email.trim()).unwrap();
+
+      toast.success(t("Verification code sent to your email"));
+      sessionStorage.setItem("resetEmail", values.email.trim());
+      navigate("/VerifyCode");
+    } catch (error) {
+      toast.error(
+        error?.data?.message || t("Failed to send verification code")
+      );
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
   return (
     <div
@@ -17,44 +53,37 @@ const ForgotPassword = () => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2
-          className={`text-2xl font-bold text-gray-800 mb-1 ${
-            isRTL ? "text-right" : "text-left"
-          }`}
-        >
+        <h2 className="text-2xl font-bold text-gray-800 mb-1">
           {t("Reset With Email")}
         </h2>
-        <p
-          className={`text-gray-500 mb-6 ${isRTL ? "text-right" : "text-left"}`}
-        >
+        <p className="text-gray-500 mb-6">
           {t("Please enter your email address to get a verification code.")}
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              className={`block text-gray-700 mb-1 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("Email Address")}
-            </label>
-            <input
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          <Form className="space-y-4">
+            <MuiTextField
+              name="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email@gmail.com"
-              className="w-full rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              label={t("Email Address")}
             />
-          </div>
+            <div className="text-sm text-gray-500 text-right">
+              {t("Remember your password?")}{" "}
+              <span
+                onClick={() => navigate("/login")}
+                className="text-primary hover:underline cursor-pointer"
+              >
+                {t("Login")}
+              </span>
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-3 rounded-lg transition"
-          >
-            {t("Send Reset Link")}
-          </button>
-        </form>
+            <AuthButton label={t("Send Code")} loading={loading} />
+          </Form>
+        </Formik>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import React from "react";
-import Banner from "../../components/Banner/Banner";
-import Slider from "../../components/Slider/Slider";
-import LatestProducts from "../../components/LatestProducts/LatestProducts";
-import Brands from "../../components/Brands/Brands";
+import Banner from "../../views/Banner/Banner";
+import Slider from "../../views/Slider/Slider";
+import LatestProducts from "../../views/LatestProducts/LatestProducts";
+import Brands from "../../views/Brands/Brands";
 
 const Home = () => {
   return (

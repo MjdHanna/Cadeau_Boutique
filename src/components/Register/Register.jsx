@@ -1,167 +1,221 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectTranslate } from "../../redux/features/translateSlice";
+import React, { Suspense, lazy, memo } from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
+import { selectTranslate } from "../../redux/features/translateSlice";
+import { Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { useRegisterMutation } from "../../redux/features/apiSlice";
 import p1 from "../../assets/images/authentication/p1.png";
+import { setCredentials } from "../../redux/features/authSlice";
+import { useNavigate } from "react-router-dom";
+
+const MuiTextField = lazy(() =>
+  import("../../components/form/MuiTextField/MuiTextField")
+);
+const MuiPhoneField = lazy(() =>
+  import("../../components/form/MuiPhoneField/MuiPhoneField")
+);
+const AuthButton = lazy(() => import("../AuthButton/AuthButton"));
+
+const RegisterLeft = memo(({ t, p1 }) => (
+  <div className="w-full md:w-1/2 bg-gray-50 flex flex-col items-center md:items-start justify-center p-6 sm:p-10 text-center md:text-left">
+    <img src={p1} alt="logo" loading="lazy" className="h-20 sm:h-24 mb-4" />
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+      {t("Sign Up")}
+    </h2>
+    <p className="text-primary text-sm sm:text-base">
+      {t("Welcome back to our store")}
+    </p>
+  </div>
+));
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    gender: "",
-    phoneNumber: "",
-    password: "",
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const lang = useSelector(selectTranslate);
+  const isRTL = lang === "ar";
+  const loading = useSelector((state) => state.loader.isLoading);
+  const navigate = useNavigate();
+
+  const [registerUser] = useRegisterMutation();
+
+  const schema = Yup.object({
+    fullName: Yup.string().required(t("Full name is required")),
+    email: Yup.string()
+      .email(t("Invalid email"))
+      .required(t("Email is required")),
+    gender: Yup.string().required(t("Gender is required")),
+    phoneNumber: Yup.string()
+      .matches(/^[+]?[0-9\s()-]+$/, t("Phone must contain only numbers"))
+      .min(9, t("Phone must be at least 9 digits"))
+      .required(t("Phone number is required")),
+    password: Yup.string()
+      .min(8, t("Password must be at least 6 characters"))
+      .required(t("Password is required")),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], t("Passwords must match"))
+      .required(t("Confirm password is required")),
   });
 
-  const lang = useSelector(selectTranslate);
-  const { t } = useTranslation();
-  const isRTL = lang === "ar";
+  const onSubmit = async (values, { resetForm }) => {
+    dispatch(showLoader());
+    try {
+      const payload = {
+        name: values.fullName,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        password: values.password,
+        password_confirmation: values.confirmPassword,
+      };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+      console.log("REGISTER PAYLOAD ", payload);
+
+      const response = await registerUser(payload).unwrap();
+
+      const token = response?.data?.accessToken;
+
+      if (!token) {
+        throw new Error("Token missing from response");
+      }
+
+      const user = {
+        id: response.data.userId,
+        name: response.data.userName,
+        role: response.data.userAbility,
+        vendorId: response.data.vendorId,
+      };
+
+      dispatch(setCredentials({ token, user }));
+
+      toast.success(t("Registration successful!"), {
+        position: "top-center",
+        autoClose: 3000,
+      });
+
+      resetForm();
+      navigate("/");
+    } catch (error) {
+      console.error("REGISTER ERROR ", error?.data);
+
+      toast.error(
+        error?.data?.message || t("Registration failed, please try again."),
+        { position: "top-center" }
+      );
+    } finally {
+      dispatch(hideLoader());
+    }
   };
-
-  const handleSubmit = (e) => e.preventDefault();
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center mt-10 px-4 py-8"
+      className="min-h-screen flex items-center justify-center px-4 py-25 bg-gray-50 relative"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-xl p-8">
+      <Toaster />
+      <div className="w-full max-w-4xl bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
         <div
-          className={`flex flex-col md:flex-row items-start gap-10 ${
+          className={`flex flex-col md:flex-row ${
             isRTL ? "md:flex-row-reverse" : ""
           }`}
         >
-          <div className="flex flex-col items-start space-y-3 w-full md:w-1/2">
-            <img src={p1} alt="Logo" className="h-16 object-contain" />
-            <h2
-              className={`text-3xl font-bold text-gray-900 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
+          <RegisterLeft t={t} p1={p1} />
+          <Suspense
+            fallback={<div className="p-8 text-center">Loading...</div>}
+          >
+            <Formik
+              initialValues={{
+                fullName: "",
+                email: "",
+                gender: "",
+                phoneNumber: "",
+                password: "",
+                confirmPassword: "",
+              }}
+              validationSchema={schema}
+              onSubmit={onSubmit}
             >
-              {t("Sign Up")}
-            </h2>
-            <h3
-              className={`${isRTL ? "text-right" : "text-left"} text-primary`}
-            >
-              {t("Welcome back to our store")}
-            </h3>
-          </div>
+              {() => (
+                <Form className="w-full md:w-1/2 p-6 sm:p-10 space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Full Name")}
+                    </label>
+                    <MuiTextField
+                      name="fullName"
+                      placeholder={t("Enter your full name")}
+                    />
+                  </div>
 
-          <form onSubmit={handleSubmit} className="w-full md:w-1/2 space-y-4">
-            <div>
-              <label
-                className={`block text-gray-700 mb-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("Full Name")}
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder={t("Enter full name")}
-                className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Email Address")}
+                    </label>
+                    <MuiTextField
+                      name="email"
+                      placeholder={t("Enter your email")}
+                    />
+                  </div>
 
-            <div>
-              <label
-                className={`block text-gray-700 mb-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("Email Address")}
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="email@gmail.com"
-                className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label
-                className={`block text-gray-700 mb-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("Gender")}
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">{t("Select gender")}</option>
-                <option value="male">{t("Male")}</option>
-                <option value="female">{t("Female")}</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                className={`block text-gray-700 mb-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("Phone Number")}
-              </label>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                placeholder="+963"
-                className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label
-                className={`block text-gray-700 mb-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("Password")}
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="********"
-                className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full p-3 bg-primary text-white font-bold rounded-lg hover:bg-primary transition"
-            >
-              {t("Sign Up")}
-            </button>
-
-            <p className={`text-gray-600 text-center`}>
-              {t("Already have an account?")}{" "}
-              <a href="/login" className="text-primary font-semibold">
-                {t("Click here to login")}
-              </a>
-            </p>
-          </form>
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Gender")}
+                    </label>
+                    <Field
+                      as="select"
+                      name="gender"
+                      className="w-full p-3 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-secondary"
+                    >
+                      <option value="">{t("Select gender")}</option>
+                      <option value="male">{t("Male")}</option>
+                      <option value="female">{t("Female")}</option>
+                    </Field>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Phone Number")}
+                    </label>
+                    <MuiPhoneField name="phoneNumber" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Password")}
+                    </label>
+                    <MuiTextField
+                      name="password"
+                      type="password"
+                      placeholder={t("Enter your password")}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-gray-700 font-medium">
+                      {t("Confirm Password")}
+                    </label>
+                    <MuiTextField
+                      name="confirmPassword"
+                      type="password"
+                      placeholder={t("Re-enter your password")}
+                    />
+                  </div>
+                  <AuthButton label={t("Sign Up")} loading={loading} />
+                  <p className="text-center text-sm mt-4">
+                    {t("Do you have an account?")}{" "}
+                    <Link
+                      to="/login"
+                      className="text-primary hover:underline font-semibold"
+                    >
+                      {t("Login")}
+                    </Link>
+                  </p>
+                </Form>
+              )}
+            </Formik>
+          </Suspense>
         </div>
       </div>
     </div>
   );
 };
-
-export default Register;
+export default memo(Register);
