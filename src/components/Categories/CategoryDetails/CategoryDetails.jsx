@@ -1,16 +1,26 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useGetCategoryByIdQuery } from "../../../redux/features/apiSlice";
+import { selectToken } from "../../../redux/features/authSlice";
+import {
+  useGetCategoryByIdQuery,
+  useGetWishlistQuery,
+} from "../../../redux/features/apiSlice";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import CategoryCard from "../../../components/Categories/CategoryCard/CategoryCard";
 import ItemCard from "../../../components/brands/ItemCard";
+import { useSelector } from "react-redux";
 
 const CategoryDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const token = useSelector(selectToken);
   const isRTL = i18n.language === "ar";
+  const { data: wishlistData } = useGetWishlistQuery(undefined, {
+    skip: !token,
+  });
 
+  const wishlistItems = wishlistData?.data?.wishlistItems || [];
   const { data, isLoading, error } = useGetCategoryByIdQuery(id);
   const payload = data?.data;
   const category = useMemo(() => {
@@ -92,6 +102,7 @@ const CategoryDetails = () => {
                   description={p.productDescription}
                   price={p.productPrice}
                   product={p}
+                  wishlistItems={wishlistItems}
                   onClick={() => navigate(`/products/${p.productId}`)}
                 />
               ))}

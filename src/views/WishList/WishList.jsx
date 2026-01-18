@@ -12,9 +12,9 @@ import ItemCard from "../../components/brands/ItemCard";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { lazy, Suspense, useMemo } from "react";
-
-const LoginRequired = lazy(() =>
-  import("../../components/LoginRequired/LoginRequired")
+import { Trash2 } from "lucide-react";
+const LoginRequired = lazy(
+  () => import("../../components/LoginRequired/LoginRequired"),
 );
 
 const WishList = () => {
@@ -119,9 +119,11 @@ const WishList = () => {
     flex items-center justify-center
     transition
     shadow
-        "
+    disabled:opacity-50 disabled:cursor-not-allowed
+  "
+              title={t("Remove from cart")}
             >
-              {t("Remove from favorites")}
+              <Trash2 size={18} />
             </button>
           </div>
         );

@@ -12,11 +12,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import p1 from "../../assets/images/authentication/p1.png";
 import FcGoogle from "../../assets/images/authentication/Google__G__logo.svg.png";
 import FaFacebookF from "../../assets/images/authentication/png-transparent-fb-facebook-facebook-logo-social-media-icon-removebg-preview.png";
-const MuiTextField = lazy(() =>
-  import("../../components/form/MuiTextField/MuiTextField")
+const MuiTextField = lazy(
+  () => import("../../components/form/MuiTextField/MuiTextField"),
 );
-const SocialButtons = lazy(() =>
-  import("../../components/form/SocialButtons/SocialButtons")
+const SocialButtons = lazy(
+  () => import("../../components/form/SocialButtons/SocialButtons"),
 );
 const AuthButton = lazy(() => import("../AuthButton/AuthButton"));
 
@@ -89,7 +89,7 @@ const Login = () => {
         error?.data?.message ||
           error?.error ||
           t("Login failed, please try again."),
-        { position: "top-center", duration: 2500 }
+        { position: "top-center", duration: 2500 },
       );
     } finally {
       dispatch(hideLoader());
@@ -142,9 +142,6 @@ const Login = () => {
                     type="password"
                     placeholder={t("Enter your password")}
                   />
-                  <ErrorMessage name="password">
-                    {(msg) => <p className="text-red-500 text-sm">{msg}</p>}
-                  </ErrorMessage>
                 </div>
 
                 <div className="flex justify-end">

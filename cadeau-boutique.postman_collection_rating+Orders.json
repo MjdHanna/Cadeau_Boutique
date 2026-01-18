@@ -562,7 +562,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|losaKM9UigzzRtGks5HsvsZexHgZwJD15cwoGnxbd96b44f2",
+                  "value": "1|4ZomLFpnbdtQhKAqgHeiYxmM70N4T9y7cFunrlTi4a9d15f1",
                   "type": "string"
                 }
               ]
@@ -600,21 +600,18 @@
         },
         {
           "name": "AddToWishlist",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|losaKM9UigzzRtGks5HsvsZexHgZwJD15cwoGnxbd96b44f2",
+                  "value": "1|4ZomLFpnbdtQhKAqgHeiYxmM70N4T9y7cFunrlTi4a9d15f1",
                   "type": "string"
                 }
               ]
             },
-            "method": "GET",
+            "method": "POST",
             "header": [
               {
                 "key": "Accept",
@@ -629,7 +626,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "",
+              "raw": "{\r\n    \"productId\": 4\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -637,7 +634,7 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/4",
+              "raw": "http://127.0.0.1:8000/api/wishlist/add",
               "protocol": "http",
               "host": [
                 "127",
@@ -648,8 +645,8 @@
               "port": "8000",
               "path": [
                 "api",
-                "products",
-                "4"
+                "wishlist",
+                "add"
               ]
             }
           },
@@ -663,7 +660,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|QIQFqtlI6sZZuZkbhUYYzBkUfZ2b5nDpsExQR04ge6128073",
+                  "value": "1|4ZomLFpnbdtQhKAqgHeiYxmM70N4T9y7cFunrlTi4a9d15f1",
                   "type": "string"
                 }
               ]
@@ -752,7 +749,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|WaxFFpp0LbYhUnuRgr4XpmsR8GwGQ8QzF1CIfyf3776cc8a0",
+                  "value": "1|4fuUS59SzMkLAVgfOtUdQS6xXgLpoO1YsnT1jCdd09ce4dca",
                   "type": "string"
                 }
               ]
@@ -772,7 +769,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 4\r\n}"
+              "raw": "{\r\n    \"productId\": 2,\r\n    \"rating\": 4.5,\r\n    \"review\": \"testttt\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/rating",
@@ -809,7 +806,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/filter?categoryId=11&brandId=10",
+              "raw": "http://127.0.0.1:8000/api/products/filter?categoryId=11&brandId=10&occasionId=2&minPrice=10&maxPrice=40&color=Blue&storage=&name=cake&size=M",
               "protocol": "http",
               "host": [
                 "127",
@@ -825,19 +822,40 @@
               ],
               "query": [
                 {
-                  "key": "name",
-                  "value": "",
-                  "disabled": true
-                },
-                {
                   "key": "categoryId",
-                  "value": "11",
-                  "type": "text"
+                  "value": "11"
                 },
                 {
                   "key": "brandId",
-                  "value": "10",
-                  "type": "text"
+                  "value": "10"
+                },
+                {
+                  "key": "occasionId",
+                  "value": "2"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "10"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "40"
+                },
+                {
+                  "key": "color",
+                  "value": "Blue"
+                },
+                {
+                  "key": "storage",
+                  "value": ""
+                },
+                {
+                  "key": "name",
+                  "value": "cake"
+                },
+                {
+                  "key": "size",
+                  "value": "M"
                 }
               ]
             }
@@ -857,7 +875,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|kn1cmn9vyLgpAx4hKd5JHNh4V7zFNT8cBVbIvhtn2a630f1f",
+                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
                   "type": "string"
                 }
               ]
@@ -901,7 +919,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|kn1cmn9vyLgpAx4hKd5JHNh4V7zFNT8cBVbIvhtn2a630f1f",
+                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
                   "type": "string"
                 }
               ]
@@ -916,7 +934,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 2,\r\n    \"quantity\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -950,7 +968,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|kn1cmn9vyLgpAx4hKd5JHNh4V7zFNT8cBVbIvhtn2a630f1f",
+                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
                   "type": "string"
                 }
               ]
@@ -968,6 +986,15 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"productId\":1,\r\n    \"variantId\": 2,\r\n    \"quantity\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "http://127.0.0.1:8000/api/cart/remove",
               "protocol": "http",
@@ -1013,6 +1040,15 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{localhost}}/contact-us",
               "host": [
@@ -1028,9 +1064,111 @@
       ]
     },
     {
+      "name": "orders",
+      "item": [
+        {
+          "name": "trackOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "checkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"paymentMethod\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/checkout",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "test",
       "request": {
-        "method": "GET",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "12|fcKxL26G3D1VAb7dFIt1pan9kSBvrYCdhaaoTHfW9ceb5a95",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
         "header": [
           {
             "key": "Accept",
@@ -1038,8 +1176,17 @@
             "type": "text"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/products",
+          "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1048,7 +1195,8 @@
           ],
           "path": [
             "api",
-            "products"
+            "cart",
+            "add"
           ]
         }
       },
