@@ -128,5 +128,14 @@
   "noImage": "No image",
   "Login to access your account": "Login to access your account",
   "Failed to load brands": "Failed to load brands",
-  "Please login to view your wishlist": "Please login to view your wishlist"
+  "Please login to view your wishlist": "Please login to view your wishlist",
+  "Show more": "Show more",
+  "Show less": "Show less",
+  "Email Verification": "Email Verification",
+  "Verify": "Verify",
+  "Sending...": "Sending...",
+  "Resend Code": "Resend Code",
+  "Code is required": "Code is required",
+  "Categories": "Categories",
+  "Occasions": "Occasions"
 }

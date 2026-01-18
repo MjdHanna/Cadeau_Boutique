@@ -6,18 +6,12 @@ import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
 import { toast } from "react-hot-toast";
-
-import {
-  useLoginMutation,
-} from "../../redux/features/apiSlice";
-
+import { useLoginMutation } from "../../redux/features/apiSlice";
 import { setCredentials } from "../../redux/features/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import p1 from "../../assets/images/authentication/p1.png";
 import FcGoogle from "../../assets/images/authentication/Google__G__logo.svg.png";
 import FaFacebookF from "../../assets/images/authentication/png-transparent-fb-facebook-facebook-logo-social-media-icon-removebg-preview.png";
-
 const MuiTextField = lazy(() =>
   import("../../components/form/MuiTextField/MuiTextField")
 );
@@ -44,31 +38,6 @@ const Login = () => {
   const loading = useSelector((state) => state.loader.isLoading);
   const handledGoogle = useRef(false);
   const [login] = useLoginMutation();
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("token");
-    const userStr = params.get("user");
-
-    if (!token || !userStr || handledGoogle.current) return;
-
-    try {
-      const user = JSON.parse(decodeURIComponent(userStr));
-
-      dispatch(setCredentials({ token, user }));
-
-      toast.success(t("Login successful with Google!"), {
-        position: "top-center",
-        duration: 2500,
-      });
-
-      handledGoogle.current = true;
-
-      window.history.replaceState({}, "", "/login");
-      navigate("/", { replace: true });
-    } catch (error) {
-      toast.error(t("Failed to complete Google login"));
-    }
-  }, [location.search]);
 
   const initialValues = {
     email: "",
@@ -129,7 +98,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     window.location.href =
-      "https://cadeau-boutique-production.up.railway.app/api/auth/google/redirect";
+      "https://cdb-back.bw-businessworld.net/api/auth/google/redirect";
   };
 
   return (

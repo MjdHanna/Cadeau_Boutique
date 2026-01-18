@@ -31,7 +31,7 @@ const CategoriesList = () => {
   if (error) {
     return (
       <div className="text-center py-20 text-red-500">
-        {t("categories.loadError")}
+        {t("Failed to load categories")}
       </div>
     );
   }

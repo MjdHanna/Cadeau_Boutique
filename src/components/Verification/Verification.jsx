@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectTranslate } from "../../redux/features/translateSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -10,42 +9,43 @@ import AuthButton from "../AuthButton/AuthButton";
 import { useVerifyCodeMutation } from "../../redux/features/apiSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { selectTranslate } from "../../redux/features/translateSlice";
 
-const Verification = () => {
+const VerifyResetCode = () => {
   const [verifyCode] = useVerifyCodeMutation();
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("resetUserId"); // خزننا userId هنا
-  const lang = useSelector(selectTranslate);
-  const { t } = useTranslation();
-  const isRTL = lang === "ar";
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const lang = useSelector(selectTranslate);
+  const isRTL = lang === "ar";
   const loading = useSelector((state) => state.loader.isLoading);
+
+  const userId = sessionStorage.getItem("resetUserId");
 
   useEffect(() => {
     if (!userId) navigate("/forgot-password");
   }, [userId, navigate]);
 
-  const initialValues = { otp: "" };
-
-  const validationSchema = Yup.object({
+  const schema = Yup.object({
     otp: Yup.string()
-      .matches(/^[0-9]+$/, t("Numbers only"))
+      .matches(/^[0-9]{6}$/, t("Code must be 6 digits"))
       .required(t("Code is required")),
   });
 
   const onSubmit = async (values) => {
+    dispatch(showLoader());
     try {
-      dispatch(showLoader());
-
       await verifyCode({
-        userId: parseInt(userId),
+        userId: Number(userId),
         otp: values.otp,
       }).unwrap();
+
+      sessionStorage.setItem("resetOtp", values.otp);
 
       toast.success(t("Code verified successfully"));
       navigate("/reset-password");
     } catch (error) {
-      toast.error(error?.data?.message || t("Invalid or expired code"));
+      toast.error(error?.data?.message || t("Invalid code"));
     } finally {
       dispatch(hideLoader());
     }
@@ -53,32 +53,27 @@ const Verification = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
+      className="min-h-screen flex items-center justify-center"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">
-          {t("Verification")}
-        </h2>
-        <p className="text-gray-500 mb-6">
-          {t("Please enter the verification code")}
-        </p>
+        <h2 className="text-2xl font-bold mb-4">{t("Email Verification")}</h2>
 
         <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
+          initialValues={{ otp: "" }}
+          validationSchema={schema}
           onSubmit={onSubmit}
         >
           <Form className="space-y-4">
             <MuiTextField
-              name="code"
-              label={t("Verification Code")}
-              maxLength={5}
+              name="otp"
+              placeholder={t("Verification Code")}
+              inputProps={{ maxLength: 6 }}
               onInput={(e) =>
                 (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
               }
             />
-            <AuthButton label={t("Verify Code")} loading={loading} />
+            <AuthButton label={t("Verify")} loading={loading} />
           </Form>
         </Formik>
       </div>
@@ -86,4 +81,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default VerifyResetCode;

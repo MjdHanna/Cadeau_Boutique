@@ -4,12 +4,14 @@ import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetWishlistQuery,
   useRemoveFromWishlistMutation,
+  useGetProductsQuery,
 } from "../../redux/features/apiSlice";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import emptyImg from "../../assets/images/Cart/Frame.png";
+import ItemCard from "../../components/brands/ItemCard";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 
 const LoginRequired = lazy(() =>
   import("../../components/LoginRequired/LoginRequired")
@@ -19,12 +21,21 @@ const WishList = () => {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const navigate = useNavigate();
-  const { data, isLoading } = useGetWishlistQuery(undefined, {
+
+  const { data: wishlistData, isLoading } = useGetWishlistQuery(undefined, {
     skip: !token,
   });
-
+  const { data: productsData } = useGetProductsQuery();
   const [removeFromWishlist, { isLoading: removing }] =
     useRemoveFromWishlistMutation();
+  const productsImageMap = useMemo(() => {
+    const map = {};
+    productsData?.data?.forEach((product) => {
+      map[product.id] = product.image;
+    });
+    return map;
+  }, [productsData]);
+
   if (!token) {
     return (
       <Suspense
@@ -47,59 +58,76 @@ const WishList = () => {
     return <div className="text-center py-20">Loading...</div>;
   }
 
-  const items = data?.data?.wishlistItems || [];
+  const items = wishlistData?.data?.wishlistItems || [];
+
   if (items.length === 0) {
     return <EmptyState imageSrc={emptyImg} titleKey="Your Wishlist Is Empty" />;
   }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-6 py-25">
-      {items.map((item) => (
-        <div
-          key={item.id}
-          className="
-            bg-white dark:bg-gray-900
-            rounded-xl shadow-md hover:shadow-xl
-            transition p-4
-            border border-gray-100 dark:border-gray-700
-          "
-        >
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-56 object-cover rounded-lg"
-          />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 py-24">
+      {items.map((item) => {
+        const normalizedProduct = {
+          productId: Number(item.id),
+          productNameEnglish: item.name_en,
+          productNameArabic: item.name_ar,
 
-          <h3 className="mt-4 font-semibold text-lg text-center">
-            {item.name}
-          </h3>
+          productDescriptionEnglish: item.description_en || "",
+          productDescriptionArabic: item.description_ar || "",
 
-          <p className="text-primary text-xl text-center mt-1">{item.price}</p>
+          productPrice: Number(item.price),
+          productImage: productsImageMap[item.id] || null,
+          productFeaturesEnglish: item.features_en
+            ? JSON.parse(item.features_en)
+            : null,
 
-          <button
-            disabled={removing}
-            onClick={async () => {
-              try {
-                const res = await removeFromWishlist(item.id).unwrap();
-                toast.success(res.message || t("Removed from your wishlist"));
-              } catch (err) {
-                console.error(err);
-                toast.error(err.data?.message || t("Failed to remove item"));
+          productFeaturesArabic: item.features_ar
+            ? JSON.parse(item.features_ar)
+            : null,
+        };
+
+        return (
+          <div key={item.id} className="relative">
+            <ItemCard
+              product={normalizedProduct}
+              wishlistItems={items}
+              hoverScale={1.03}
+              onClick={() =>
+                navigate(`/products/${normalizedProduct.productId}`)
               }
-            }}
-            className="
-    mt-4 w-full py-2
-    bg-red-500 hover:bg-red-600
-    disabled:opacity-50
-    text-white
-    rounded-lg
+            />
+
+            <button
+              disabled={removing}
+              onClick={async (e) => {
+                e.stopPropagation();
+                try {
+                  const res = await removeFromWishlist({
+                    productId: normalizedProduct.productId,
+                  }).unwrap();
+                  toast.success(res.message || t("Removed from your wishlist"));
+                } catch (err) {
+                  toast.error(err.data?.message || t("Failed to remove item"));
+                }
+              }}
+              className="
+    absolute top-4 left-4
+    w-9 h-9
+    rounded-full
+    bg-red-100 hover:bg-red-200
+    text-red-600
+    flex items-center justify-center
     transition
-  "
-          >
-            {t("Remove from favorites")}
-          </button>
-        </div>
-      ))}
+    shadow
+        "
+            >
+              {t("Remove from favorites")}
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 };
+
 export default WishList;

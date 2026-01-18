@@ -7,13 +7,16 @@ import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
 import { useAddToWishlistMutation } from "../../redux/features/apiSlice";
 
-const WishlistButton = ({ product, wishlistItems }) => {
+const WishlistButton = ({ product, wishlistItems = [] }) => {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const [addToWishlist, { isLoading }] = useAddToWishlistMutation();
 
+  // Use actual product ID
+  const actualProductId = product?.id || product?.productId;
+
   const isInWishlist = wishlistItems.some(
-    (item) => Number(item.product_id) === Number(product.id)
+    (item) => Number(item.product_id) === Number(actualProductId)
   );
 
   const handleClick = async () => {
@@ -22,16 +25,25 @@ const WishlistButton = ({ product, wishlistItems }) => {
       return;
     }
 
+    if (!actualProductId) {
+      toast.error(t("Invalid product"));
+      console.error(
+        "WishlistButton: product.id/product.productId is null or undefined",
+        product
+      );
+      return;
+    }
+
     if (isInWishlist || isLoading) return;
 
     try {
-      await addToWishlist(product.id).unwrap();
+      await addToWishlist({ productId: Number(actualProductId) }).unwrap();
       toast.success(t("Added to wishlist"));
     } catch (err) {
-      console.error(err);
+      console.error("Add to wishlist error:", err);
 
       if (err?.status === 409) {
-        toast.error(err.data?.message);
+        toast.error(err.data?.message || t("Already in wishlist"));
         return;
       }
 

@@ -1,9 +1,16 @@
-import React, { memo, Suspense } from "react";
+import React, { memo, Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/features/authSlice";
 import OrderCard from "../../components/Orders/OrderCard";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import emptyImage from "../../assets/images/Cart/Frame.png";
+
+const LoginRequired = lazy(() =>
+  import("../../components/LoginRequired/LoginRequired")
+);
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -11,6 +18,26 @@ const fadeIn = {
 
 const OrderTracking = () => {
   const { t } = useTranslation();
+  const token = useSelector(selectToken);
+
+  if (!token) {
+    return (
+      <Suspense
+        fallback={
+          <div className="text-center py-28 text-lg font-medium opacity-60">
+            Loading...
+          </div>
+        }
+      >
+        <LoginRequired
+          message={t("Please login to track your orders")}
+          redirectTo="/login"
+          buttonText={t("Login")}
+        />
+      </Suspense>
+    );
+  }
+
   const orders = [
     {
       id: "A123",
@@ -25,7 +52,9 @@ const OrderTracking = () => {
       status: "Delivered",
     },
   ];
-  const hasOrders = orders && orders.length > 0;
+
+  const hasOrders = orders.length > 0;
+
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-25">
       <motion.h1
@@ -36,6 +65,7 @@ const OrderTracking = () => {
       >
         {t("Order Tracking")}
       </motion.h1>
+
       <Suspense
         fallback={
           <div className="flex justify-center items-center h-40">
@@ -60,4 +90,5 @@ const OrderTracking = () => {
     </div>
   );
 };
+
 export default memo(OrderTracking);

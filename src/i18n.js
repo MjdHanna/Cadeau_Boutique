@@ -9,9 +9,12 @@ i18n
     lng: "ar",
     fallbackLng: "en",
     backend: {
-      loadPath: "/locales/{{lng}}/translation.json",
+      loadPath: "/locales/{{lng}}/translation.json?v=1",
     },
     interpolation: { escapeValue: false },
+    react: {
+      useSuspense: false,
+    },
   });
 
 export default i18n;

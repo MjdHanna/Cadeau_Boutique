@@ -129,5 +129,14 @@
   "noImage": "بدون صورة",
   "Login to access your account": "تسجيل الدخول للوصول إلى حسابك",
   "Failed to load brands": "فشل تحميل العلامات التجارية",
-  "Please login to view your wishlist": "يرجى تسجيل الدخول لعرض قائمة رغباتك"
+  "Please login to view your wishlist": "يرجى تسجيل الدخول لعرض قائمة رغباتك",
+  "Show more": "عرض المزيد",
+  "Show less": "عرض أقل",
+  "Email Verification": "التحقق من البريد الإلكتروني",
+  "Verify": "تأكيد الكود",
+  "Sending...": "جاري الإرسال...",
+  "Resend Code": "إعادة إرسال الرمز",
+  "Code is required": "الكود مطلوب",
+  "Categories": "التصنيفات",
+  "Occasions": "المناسبات"
 }

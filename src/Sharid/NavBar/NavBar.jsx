@@ -20,6 +20,7 @@ import UAE from "../../assets/images/NavBar/UAE.png";
 import UK from "../../assets/images/NavBar/UK.png";
 import logo from "../../assets/images/authentication/p1.png";
 import { toast } from "react-hot-toast";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import { motion } from "framer-motion";
 const Navbar = () => {
@@ -30,9 +31,10 @@ const Navbar = () => {
   const token = useSelector(selectToken);
   const [logoutApi, { isLoading }] = useLogoutMutation();
 
-  const { data: wishlistItems = [] } = useGetWishlistQuery(undefined, {
-    skip: !token,
-  });
+ const { data: wishlistData } = useGetWishlistQuery(
+  token ? undefined : skipToken
+);
+
 
   const loading = useSelector((state) => state.loader.isLoading);
   const navigate = useNavigate();

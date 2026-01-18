@@ -1,59 +1,119 @@
-import { memo } from "react";
-import { motion } from "framer-motion";
+import { memo, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import WishlistButton from "../../components/WishlistButton/WishlistButton";
-
+import { useNavigate } from "react-router-dom";
+import AddToCartButton from "../AddToCartButton/AddToCartButton";
 const ItemCard = ({
-  image,
-  title,
-  description,
-  price,
+  product,
   onClick,
   hoverScale = 1.05,
-  product,
   wishlistItems = [],
 }) => {
-  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+  const [showFeatures, setShowFeatures] = useState(false);
+  const normalizedProduct = useMemo(() => {
+    if (!product) return null;
+
+    return {
+      id: product.productId,
+      title: isRTL ? product.productNameArabic : product.productNameEnglish,
+      description: isRTL
+        ? product.productDescriptionArabic
+        : product.productDescriptionEnglish,
+      price: product.productPrice,
+      image: product.productImage,
+      features: isRTL
+        ? product.productFeaturesArabic
+        : product.productFeaturesEnglish,
+    };
+  }, [product, isRTL]);
+
+  if (!normalizedProduct) return null;
 
   return (
     <motion.div
       whileHover={{ scale: hoverScale }}
       onClick={onClick}
-      className="
-        relative
-        bg-white rounded-xl shadow-md hover:shadow-xl
-        transition p-5 flex flex-col cursor-pointer
-      "
+      className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col cursor-pointer"
+      dir={isRTL ? "rtl" : "ltr"}
     >
-      {product && (
-        <div
-          className="absolute top-3 right-3 z-10"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <WishlistButton product={product} wishlistItems={wishlistItems} />
-        </div>
-      )}
-      <div className="h-40 w-full bg-gray-100 flex items-center justify-center rounded-xl overflow-hidden mb-3">
-        {image ? (
+      <div
+        className="absolute top-3 right-3 z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <WishlistButton
+          product={{ ...product, id: product.productId }}
+          wishlistItems={wishlistItems}
+        />
+      </div>
+
+      {/* Image */}
+      <div className="h-44 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden mb-4">
+        {normalizedProduct.image ? (
           <img
-            src={image}
-            alt={title}
+            src={normalizedProduct.image}
+            alt={normalizedProduct.title}
+            className="h-full w-full object-cover"
             loading="lazy"
-            className="h-full object-contain"
           />
         ) : (
           <span className="text-gray-400 text-sm">{t("No image")}</span>
         )}
       </div>
-      <h3 className="text-lg font-semibold text-center">{title}</h3>
-      <p className="text-gray-500 text-sm mt-1 text-center line-clamp-2">
-        {description || t("No description")}
+
+      {/* Title */}
+      <h3 className="text-lg font-bold text-center line-clamp-1">
+        {normalizedProduct.title}
+      </h3>
+      <p className="text-gray-500 text-sm text-center mt-1 line-clamp-2">
+        {normalizedProduct.description}
       </p>
-      {price !== undefined && (
-        <p className="mt-2 font-bold text-primary text-center">
-          {t("Price")}: ${price}
-        </p>
+      <p className="mt-3 text-center font-semibold text-primary">
+        {t("Price")}: ${normalizedProduct.price}
+      </p>
+
+      {normalizedProduct.features && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowFeatures((prev) => !prev);
+          }}
+          className="mt-3 text-sm font-medium text-primary hover:underline"
+        >
+          {showFeatures ? t("Show less") : t("Show more")}
+        </button>
       )}
+
+      {/* Features */}
+      <AnimatePresence>
+        {showFeatures && normalizedProduct.features && (
+          <motion.ul
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className="mt-3 text-sm text-gray-600 space-y-2"
+          >
+            {Object.entries(normalizedProduct.features).map(([key, value]) => (
+              <li
+                key={key}
+                className="flex justify-between bg-gray-50 rounded-lg px-3 py-1"
+              >
+                <span className="font-medium">{key}</span>
+                <span className="text-gray-700">{value}</span>
+              </li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+      <AddToCartButton
+        productId={product.productId}
+        variantId={product.variantId || 1}
+      />
     </motion.div>
   );
 };

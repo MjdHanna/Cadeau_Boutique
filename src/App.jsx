@@ -10,7 +10,7 @@ import WishList from "./views/WishList/WishList";
 import Cart from "./views/Cart/Cart";
 import Loader from "./views/Loader/Loader";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
-import Verification from "./components/Verification/Verification";
+// import Verification from "./components/Verification/Verification";
 import NotFoundPage from "./views/Error/Error";
 import SearchPage from "./views/SearchPage";
 import Contact from "./views/Contact/Contact";
@@ -26,9 +26,20 @@ import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { setCredentials } from "./redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
+import OccasionDetails from "./components/OccassionDetails/OccassionDetails";
+import VerifyResetCode from "./views/VerifyResetCode/VerifyResetCode";
+import GoogleCallback from "./pages/auth/GoogleCallback";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import i18n from "./i18n";
+import { selectTranslate } from "./redux/features/translateSlice";
+import Profile from "./pages/Profile/Profile";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
+
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const token = useSelector(selectToken);
+  const language = useSelector(selectTranslate);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -41,6 +52,11 @@ function App() {
       navigate("/");
     }
   }, []);
+  useEffect(() => {
+    i18n.changeLanguage(language);
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  }, [language]);
+
   return (
     <div>
       {isLoading && <Loader />}
@@ -53,17 +69,17 @@ function App() {
         {/* Auth */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<SignIn />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/VerifyCode" element={<Verification />} />
+        <Route path="/verify-reset-code" element={<VerifyResetCode />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
         {/* User And Protected Pages*/}
+        <Route path="/profile" element={<Profile />} />
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/cart" element={<Cart />} />
-        <Route
-          path="/trackorder"
-          element={token ? <OrderTracking /> : <Navigate to="/login" />}
-        />
+        <Route path="/trackorder" element={<OrderTracking />} />
         {/* End User And Protected Pages*/}
 
         <Route path="/search" element={<SearchPage />} />
@@ -78,7 +94,10 @@ function App() {
 
         {/* Brands */}
         <Route path="/brands/:id" element={<BrandDetails />} />
-
+        {/* Occasion */}
+        <Route path="/occasions/:id" element={<OccasionDetails />} />
+        {/* Products */}
+        <Route path="/products/:id" element={<ProductDetails/>} />
         {/* Not Found */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
@@ -89,6 +108,3 @@ function App() {
 }
 
 export default App;
-// تعديل صفحة WishLiist من اجل حماية الصفحة ان يتم عرض رسالة يجب تسجيل الدخول اولا مع زر يأخذني ال صفحة Login
-// اللوغو بالفوتر تكبي
-//

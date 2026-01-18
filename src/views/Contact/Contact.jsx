@@ -3,17 +3,20 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
 import Loader from "../Loader/Loader";
-import { debounce } from "lodash";
 import logo from "../../assets/images/authentication/p1.png";
-
-const MuiTextField = React.lazy(() =>
-  import("../../components/form/MuiTextField/MuiTextField")
+import toast from "react-hot-toast";
+import { selectToken, selectUser } from "../../redux/features/authSlice";
+import { useContactUsMutation } from "../../redux/features/apiSlice";
+import { selectTranslate } from "../../redux/features/translateSlice";
+const MuiTextField = React.lazy(
+  () => import("../../components/form/MuiTextField/MuiTextField"),
 );
-const MuiPhoneField = React.lazy(() =>
-  import("../../components/form/MuiPhoneField/MuiPhoneField")
+const MuiPhoneField = React.lazy(
+  () => import("../../components/form/MuiPhoneField/MuiPhoneField"),
 );
 
 const Contact = () => {
@@ -21,14 +24,50 @@ const Contact = () => {
   const isRTL = i18n.language === "ar";
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loader.isLoading);
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
+  const lang = useSelector(selectTranslate);
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang, i18n]);
 
-  const handleSubmit = debounce((values, { resetForm }) => {
+  const [contactUs, { isLoading }] = useContactUsMutation();
+
+  const handleSubmit = async (values, { resetForm }) => {
+    if (!token) {
+      toast.error(
+        lang === "ar"
+          ? "يجب عليك تسجيل الدخول لإرسال رسالة."
+          : "You must be logged in to send a message",
+      );
+      return;
+    }
+
     dispatch(showLoader());
-    setTimeout(() => {
-      dispatch(hideLoader());
+
+    try {
+      const payload = {
+        userName: values.fullName,
+        email: values.email,
+        phoneNumber: values.phone,
+        subject: values.subject,
+        message: values.message,
+      };
+
+      const res = await contactUs(payload).unwrap();
+
+      toast.success(res.message);
       resetForm();
-    }, 1500);
-  }, 1000);
+    } catch (error) {
+      toast.error(
+        error?.data?.message || lang === "er"
+          ? "حدث خطأ ما، يرجى المحاولة مرة أخرى"
+          : "Something went wrong, please try again",
+      );
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
   const initialValues = {
     fullName: "",
@@ -99,11 +138,11 @@ const Contact = () => {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isLoading}
               className={`w-full bg-primary text-white py-3 rounded-lg font-semibold transition
-      ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/90"}`}
+    ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/90"}`}
             >
-              {loading ? t("Sending...") : t("Send Message")}
+              {isLoading ? t("Sending...") : t("Send Message")}
             </button>
           </Form>
         </Formik>

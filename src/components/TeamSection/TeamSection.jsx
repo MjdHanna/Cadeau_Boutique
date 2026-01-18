@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import p from "../../assets/images/Team/photo_2025-11-25_01-40-06.png";
 import p1 from "../../assets/images/Team/0326__23-09-2025__Ghandi_Mallouhi_-_Copy-removebg-preview.jpg";
+import p2 from "../../assets/images/Team/photo_2026-01-14_01-44-48.png";
 const TeamSection = () => {
   const { t } = useTranslation();
 
@@ -16,9 +17,9 @@ const TeamSection = () => {
     {
       id: 2,
       name: "Joy Yousef",
-      role: t("Application Developer"),
+      role: t("Application Developer(Flutter)"),
 
-      img: "https://randomuser.me/api/portraits/women/45.jpg",
+      img: p2,
     },
     {
       id: 3,

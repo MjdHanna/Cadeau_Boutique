@@ -8,12 +8,12 @@ import {
   useGetWishlistQuery,
 } from "../../redux/features/apiSlice";
 import ItemCard from "../../components/brands/ItemCard";
-
+import { useNavigate } from "react-router-dom";
 const BrandDetails = () => {
   const { id } = useParams();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
-
+  const navigate = useNavigate();
   const { data, isLoading, error } = useGetBrandByIdQuery(id);
 
   const { data: wishlistData } = useGetWishlistQuery(undefined, {
@@ -22,9 +22,38 @@ const BrandDetails = () => {
 
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
 
-  const brand = data?.data?.brand;
-  const products = useMemo(() => data?.data?.products || [], [data]);
+  /* ================= Brand ================= */
+  const brand = useMemo(() => {
+    if (!data?.data?.brand) return null;
 
+    const b = data.data.brand;
+
+    return {
+      ...b,
+      brandName:
+        i18n.language === "ar" ? b.brandNameArabic : b.brandNameEnglish,
+      brandDescription:
+        i18n.language === "ar"
+          ? b.brandDescriptionArabic
+          : b.brandDescriptionEnglish,
+    };
+  }, [data, i18n.language]);
+
+  /* ================= Products ================= */
+  const products = useMemo(() => {
+    if (!data?.data?.products) return [];
+    return data.data.products.map((p) => ({
+      ...p,
+      productName:
+        i18n.language === "ar" ? p.productNameArabic : p.productNameEnglish,
+      productDescription:
+        i18n.language === "ar"
+          ? p.productDescriptionArabic
+          : p.productDescriptionEnglish,
+    }));
+  }, [data, i18n.language]);
+
+  /* ================= States ================= */
   if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-24">
@@ -40,27 +69,29 @@ const BrandDetails = () => {
       </p>
     );
   }
-
   return (
-    <div className="container mx-auto px-4 py-30">
-      <div className="mb-10 text-center">
-        <h2 className="text-4xl font-bold">{brand?.brandName}</h2>
-        <p className="text-gray-600 mt-2 text-lg">{brand?.brandDescription}</p>
+    <div className="max-w-7xl mx-auto px-4 py-24">
+      {/* Brand Info */}
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold">{brand?.brandName}</h2>
+        <p className="text-gray-600 mt-3 text-lg">{brand?.brandDescription}</p>
       </div>
 
+      {/* Products */}
       {products.length === 0 ? (
         <p className="text-gray-500 text-center">{t("No products found")}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
+          {products.map((product) => (
             <ItemCard
               key={product.productId}
-              image={product.productImage}
+              image={null}
               title={product.productName}
               description={product.productDescription}
               price={product.productPrice}
-              product={{ id: product.productId }}
+              product={product}
               wishlistItems={wishlistItems}
+              onClick={() => navigate(`/products/${product.productId}`)}
             />
           ))}
         </div>

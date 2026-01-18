@@ -1,8 +1,10 @@
+// src/pages/Brands/Brands.jsx
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGetBrandsQuery } from "../../redux/features/apiSlice";
 import ItemCard from "../../components/brands/ItemCard";
+import BrandCard from "../../components/brands/BrandCard";
 
 const Brands = () => {
   const { t, i18n } = useTranslation();
@@ -10,7 +12,20 @@ const Brands = () => {
   const isRTL = i18n.language === "ar";
 
   const { data, isLoading, error } = useGetBrandsQuery();
-  const brands = useMemo(() => data?.data || [], [data]);
+
+  const brands = useMemo(() => {
+    if (!data?.data) return [];
+
+    return data.data.map((brand) => ({
+      ...brand,
+      brandName:
+        i18n.language === "ar" ? brand.brandNameArabic : brand.brandNameEnglish,
+      brandDescription:
+        i18n.language === "ar"
+          ? brand.brandDescriptionArabic
+          : brand.brandDescriptionEnglish,
+    }));
+  }, [data, i18n.language]);
 
   if (isLoading) {
     return (
@@ -35,21 +50,18 @@ const Brands = () => {
     >
       <h2
         className={`text-2xl sm:text-3xl font-bold mb-10
-          ${isRTL ? "text-right" : "text-left"}
-          flex sm:block justify-center sm:justify-start`}
+        ${isRTL ? "text-right" : "text-left"}
+        flex sm:block justify-center sm:justify-start`}
       >
         {t("Brands")}
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {brands.map((brand) => (
-          <ItemCard
+          <BrandCard
             key={brand.brandId}
-            image={brand.brandLogo}
-            title={brand.brandName}
-            description={brand.brandDescription}
+            brand={brand}
             onClick={() => navigate(`/brands/${brand.brandId}`)}
-            hoverScale={1.05}
           />
         ))}
       </div>
