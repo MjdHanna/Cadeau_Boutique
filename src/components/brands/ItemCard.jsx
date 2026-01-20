@@ -24,7 +24,7 @@ const ItemCard = ({
       description: isRTL
         ? product.productDescriptionArabic
         : product.productDescriptionEnglish,
-      price: product.productPrice,
+      price: product.productPrice || product.productPriceFrom,
       image: product.productImage,
       features: isRTL
         ? product.productFeaturesArabic
@@ -112,7 +112,7 @@ const ItemCard = ({
       </AnimatePresence>
       <AddToCartButton
         productId={product.productId}
-        variantId={product.variantId || 1}
+        variantId={product.variantId}
       />
     </motion.div>
   );

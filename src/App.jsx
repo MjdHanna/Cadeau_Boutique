@@ -12,7 +12,7 @@ import Loader from "./views/Loader/Loader";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 // import Verification from "./components/Verification/Verification";
 import NotFoundPage from "./views/Error/Error";
-import SearchPage from "./views/SearchPage";
+import SearchPage from "./views/SearchPage/SearchPage";
 import Contact from "./views/Contact/Contact";
 import Footer from "./Sharid/Footer/Footer";
 import OrderTracking from "./pages/Orders/OrderTracking";
@@ -23,7 +23,7 @@ import CategoriesList from "./components/Categories/CategoriesList/CategoriesLis
 import CategoryDetails from "./components/Categories/CategoryDetails/CategoryDetails";
 import { selectToken } from "./redux/features/authSlice";
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setCredentials } from "./redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
 import OccasionDetails from "./components/OccassionDetails/OccassionDetails";
@@ -34,6 +34,7 @@ import i18n from "./i18n";
 import { selectTranslate } from "./redux/features/translateSlice";
 import Profile from "./pages/Profile/Profile";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import FilterSidebar from "./pages/FilterSidebar/FilterSidebar";
 
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
@@ -56,7 +57,16 @@ function App() {
     i18n.changeLanguage(language);
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language]);
-
+  const [filters, setFilters] = useState({
+    categoryId: "",
+    brandId: "",
+    occasionId: "",
+    minPrice: "",
+    maxPrice: "",
+    color: "",
+    size: "",
+    name: "",
+  });
   return (
     <div>
       {isLoading && <Loader />}
@@ -82,7 +92,15 @@ function App() {
         <Route path="/trackorder" element={<OrderTracking />} />
         {/* End User And Protected Pages*/}
 
-        <Route path="/search" element={<SearchPage />} />
+        <Route
+          path="/search"
+          element={
+            <>
+              <FilterSidebar filters={filters} setFilters={setFilters} />
+              <SearchPage/>
+            </>
+          }
+        />
 
         {/* Static Pages */}
         <Route path="/contact" element={<Contact />} />
@@ -97,7 +115,7 @@ function App() {
         {/* Occasion */}
         <Route path="/occasions/:id" element={<OccasionDetails />} />
         {/* Products */}
-        <Route path="/products/:id" element={<ProductDetails/>} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         {/* Not Found */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

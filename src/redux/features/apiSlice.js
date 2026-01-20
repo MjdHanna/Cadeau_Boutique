@@ -29,7 +29,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Wishlist"],
+  tagTypes: ["Auth", "Wishlist", "Cart"],
   endpoints: (builder) => ({
     // Auth
     register: builder.mutation({
@@ -108,6 +108,22 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    // Filteeeer
+    getFilteredProducts: builder.query({
+      query: (filters) => {
+        const params = new URLSearchParams();
+
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value !== "" && value !== null && value !== undefined) {
+            params.append(key, value);
+          }
+        });
+
+        return `products/filter?${params.toString()}`;
+      },
+      keepUnusedDataFor: 0,
+      refetchOnMountOrArgChange: true,
+    }),
 
     // Brands & Categories & Occasions
     getBrands: builder.query({ query: () => "brands" }),
@@ -121,12 +137,13 @@ export const apiSlice = createApi({
 
     // Rating
     addProductRating: builder.mutation({
-      query: ({ productId, rating }) => ({
+      query: ({ productId, rating, review }) => ({
         url: "rating",
         method: "POST",
         body: {
           productId: Number(productId),
           rating: Number(rating),
+          review: review || null,
         },
       }),
     }),
@@ -216,4 +233,5 @@ export const {
   useGetCartQuery,
   useAddToCartMutation,
   useRemoveFromCartMutation,
+  useGetFilteredProductsQuery,
 } = apiSlice;

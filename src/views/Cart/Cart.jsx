@@ -25,6 +25,8 @@ const Cart = () => {
     data: cartData,
     isLoading,
     isFetching,
+    isError,
+    error,
   } = useGetCartQuery(undefined, {
     skip: !token,
   });
@@ -59,8 +61,20 @@ const Cart = () => {
     );
   }
 
+  /* ❌ خطأ API */
+  if (isError) {
+    console.error("Cart API Error:", error);
+    return (
+      <div className="text-center py-28 text-red-500 font-medium">
+        {t("Failed to load cart")}
+      </div>
+    );
+  }
+
+  const items = Array.isArray(cartData?.items) ? cartData.items : [];
+
   /* 🛒 سلة فارغة */
-  if (!cartData || cartData.items?.length === 0) {
+  if (items.length === 0) {
     return (
       <EmptyState imageSrc={p} descriptionKey="Add items to start shopping" />
     );
@@ -76,7 +90,7 @@ const Cart = () => {
 
       {/* Cart Items */}
       <div className="space-y-4">
-        {cartData.items.map((item) => (
+        {items.map((item) => (
           <motion.div
             key={`${item.productId}-${item.variantId}`}
             initial={{ opacity: 0, y: 15 }}
@@ -124,7 +138,7 @@ const Cart = () => {
       </div>
 
       {/* Footer / Total */}
-      {cartData.total && (
+      {cartData?.total && (
         <div className="flex justify-end pt-6 border-t">
           <p className="text-xl font-bold">
             {t("Total")}: ${cartData.total}

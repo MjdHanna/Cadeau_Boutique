@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const isRTL = i18n.language === "ar";
   const { data, isLoading, error } = useGetProductByIdQuery(id);
   const [userRating, setUserRating] = useState(0);
+  const [review, setReview] = useState("");
 
   const token = useSelector(selectToken);
   const [addRating, { isLoading: ratingLoading }] =
@@ -53,15 +54,18 @@ const ProductDetails = () => {
       toast.error(t("Please login to rate this product"));
       return;
     }
+
     const finalRating = value === userRating ? null : value;
 
     try {
       await addRating({
         productId: id,
         rating: finalRating,
+        review,
       }).unwrap();
 
       setUserRating(finalRating || 0);
+      setReview("");
 
       toast.success(
         finalRating ? t("Thanks for your rating ❤️") : t("Rating removed"),
@@ -133,6 +137,21 @@ const ProductDetails = () => {
               disabled={ratingLoading}
               value={userRating}
             />
+            <div className="mt-4">
+              <textarea
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                rows={3}
+                placeholder={
+                  lang === "ar"
+                    ? "اكتب تعليقك هنا (اختياري)"
+                    : "Write your review here (optional)"
+                }
+                className="w-full rounded-xl border px-4 py-2 text-sm
+      focus:outline-none focus:ring-2 focus:ring-primary
+      dark:bg-gray-900 dark:border-gray-700"
+              />
+            </div>
           </div>
           {localized.variants.length > 0 && (
             <div className="mt-6">

@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}"
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n   \"password\": \"password123\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -308,6 +308,54 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "editProfile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|8gfMzDhMkg4NTvMYjyYj4GHgBPhyzqHRCa17x8s64d29254b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userName\": \"jana\",\r\n    \"email\": \"jana@example.com\",\r\n    \"phoneNumber\": \"000000000\",\r\n    \"gender\": \"female\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/account-edit",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "account-edit"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -385,6 +433,29 @@
               "path": [
                 "api",
                 "occasions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "specialOccasion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/special-occasion",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "special-occasion"
               ]
             }
           },
@@ -861,6 +932,35 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "latest-product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/latest-products",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "latest-products"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -875,7 +975,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
                   "type": "string"
                 }
               ]
@@ -919,7 +1019,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
                   "type": "string"
                 }
               ]
@@ -1074,7 +1174,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
                   "type": "string"
                 }
               ]
@@ -1113,7 +1213,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
                   "type": "string"
                 }
               ]
@@ -1163,7 +1263,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "12|fcKxL26G3D1VAb7dFIt1pan9kSBvrYCdhaaoTHfW9ceb5a95",
+              "value": "1|fEva56ycHZj84BffAlCJ2ArzUGCnTfkWqXgVLf2H34a0ab08",
               "type": "string"
             }
           ]
@@ -1178,7 +1278,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \r\n}",
+          "raw": "{\r\n    \"userName\": \"jana\",\r\n    \"email\": \"jana@example.com\",\r\n    \"phoneNumber\": \"000000000\",\r\n    \"gender\": \"female\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1186,7 +1286,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
+          "raw": "https://cdb-back.bw-businessworld.net/api/account-edit",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1195,8 +1295,20 @@
           ],
           "path": [
             "api",
-            "cart",
-            "add"
+            "account-edit"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "cake",
+              "disabled": true
+            },
+            {
+              "key": "color",
+              "value": "Blue",
+              "type": "text",
+              "disabled": true
+            }
           ]
         }
       },
