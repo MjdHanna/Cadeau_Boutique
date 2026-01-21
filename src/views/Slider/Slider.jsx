@@ -106,7 +106,7 @@ const Slider = () => {
                     : `Open ${cat.categoryName}`
                 }
               >
-                <div className="bg-white rounded-2xl shadow-lg cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary">
+                <div className="bg-white   cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary">
                   <CategoryCard category={cat} compact />
                 </div>
               </div>

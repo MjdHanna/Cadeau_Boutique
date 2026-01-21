@@ -31,7 +31,7 @@ const WishList = () => {
   const productsImageMap = useMemo(() => {
     const map = {};
     productsData?.data?.forEach((product) => {
-      map[product.id] = product.image;
+      map[product.id] = product.productImage;
     });
     return map;
   }, [productsData]);
@@ -65,69 +65,70 @@ const WishList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 py-24">
-      {items.map((item) => {
-        const normalizedProduct = {
-          productId: Number(item.id),
-          productNameEnglish: item.name_en,
-          productNameArabic: item.name_ar,
+    <div className="max-w-7xl mx-auto px-4 py-28">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold">{t("Your Wishlist")}</h1>
+        <div className="relative inline-flex items-center justify-center w-10 h-10 bg-red-100 text-red-700 font-semibold rounded-full shadow">
+          {items.length}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {items.map((item) => {
+          const normalizedProduct = {
+            productId: Number(item.id),
+            productNameEnglish: item.name_en,
+            productNameArabic: item.name_ar,
+            productDescriptionEnglish: item.description_en || "",
+            productDescriptionArabic: item.description_ar || "",
+            productPrice: Number(item.price),
+            productImage: item.productImage || null,
 
-          productDescriptionEnglish: item.description_en || "",
-          productDescriptionArabic: item.description_ar || "",
+            productFeaturesEnglish: item.features_en
+              ? JSON.parse(item.features_en)
+              : null,
+            productFeaturesArabic: item.features_ar
+              ? JSON.parse(item.features_ar)
+              : null,
+          };
 
-          productPrice: Number(item.price),
-          productImage: productsImageMap[item.id] || null,
-          productFeaturesEnglish: item.features_en
-            ? JSON.parse(item.features_en)
-            : null,
-
-          productFeaturesArabic: item.features_ar
-            ? JSON.parse(item.features_ar)
-            : null,
-        };
-
-        return (
-          <div key={item.id} className="relative">
-            <ItemCard
-              product={normalizedProduct}
-              wishlistItems={items}
-              hoverScale={1.03}
-              onClick={() =>
-                navigate(`/products/${normalizedProduct.productId}`)
-              }
-            />
-
-            <button
-              disabled={removing}
-              onClick={async (e) => {
-                e.stopPropagation();
-                try {
-                  const res = await removeFromWishlist({
-                    productId: normalizedProduct.productId,
-                  }).unwrap();
-                  toast.success(res.message || t("Removed from your wishlist"));
-                } catch (err) {
-                  toast.error(err.data?.message || t("Failed to remove item"));
+          return (
+            <div key={item.id} className="relative">
+              <ItemCard
+                product={normalizedProduct}
+                wishlistItems={items}
+                hoverScale={1.03}
+                onClick={() =>
+                  navigate(`/products/${normalizedProduct.productId}`)
                 }
-              }}
-              className="
-    absolute top-4 left-4
-    w-9 h-9
-    rounded-full
-    bg-red-100 hover:bg-red-200
-    text-red-600
-    flex items-center justify-center
-    transition
-    shadow
-    disabled:opacity-50 disabled:cursor-not-allowed
-  "
-              title={t("Remove from cart")}
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
-        );
-      })}
+              />
+
+              <button
+                disabled={removing}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    const res = await removeFromWishlist({
+                      productId: normalizedProduct.productId,
+                    }).unwrap();
+                    toast.success(
+                      res.message || t("Removed from your wishlist"),
+                    );
+                  } catch (err) {
+                    toast.error(
+                      err.data?.message || t("Failed to remove item"),
+                    );
+                  }
+                }}
+                className="absolute top-4 left-4 w-9 h-9 rounded-full
+              bg-red-100 hover:bg-red-200 text-red-600
+              flex items-center justify-center transition shadow"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -1,23 +1,36 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 
 import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetCartQuery,
   useRemoveFromCartMutation,
+  useCheckoutMutation,
 } from "../../redux/features/apiSlice";
 
 import EmptyState from "../../components/EmptyState/EmptyState";
+import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
+import MuiPhoneField from "../../components/form/MuiPhoneField/MuiPhoneField";
 import p from "../../assets/images/Cart/Frame.png";
 
 const LoginRequired = lazy(
   () => import("../../components/LoginRequired/LoginRequired"),
 );
+const CheckoutSchema = Yup.object({
+  shippingName: Yup.string().required("Full name is required"),
+  shippingPhone: Yup.string().required("Phone number is required"),
+  shippingAddress: Yup.string().required("Address is required"),
+  paymentMethod: Yup.string().required("Payment method is required"),
+});
 
 const Cart = () => {
   const token = useSelector(selectToken);
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
 
@@ -33,7 +46,13 @@ const Cart = () => {
 
   const [removeFromCart, { isLoading: removing }] = useRemoveFromCartMutation();
 
-  /* 🔒 غير مسجل دخول */
+  const [checkout, { isLoading: placingOrder }] = useCheckoutMutation();
+  const items = Array.isArray(cartData?.data?.cartItems)
+    ? cartData.data.cartItems
+    : [];
+  const total = useMemo(() => {
+    return items.reduce((sum, item) => sum + Number(item.totalPrice || 0), 0);
+  }, [items]);
   if (!token) {
     return (
       <Suspense
@@ -51,8 +70,6 @@ const Cart = () => {
       </Suspense>
     );
   }
-
-  /* ⏳ تحميل */
   if (isLoading || isFetching) {
     return (
       <div className="text-center py-28 text-lg font-medium opacity-60">
@@ -60,8 +77,6 @@ const Cart = () => {
       </div>
     );
   }
-
-  /* ❌ خطأ API */
   if (isError) {
     console.error("Cart API Error:", error);
     return (
@@ -70,10 +85,6 @@ const Cart = () => {
       </div>
     );
   }
-
-  const items = Array.isArray(cartData?.items) ? cartData.items : [];
-
-  /* 🛒 سلة فارغة */
   if (items.length === 0) {
     return (
       <EmptyState imageSrc={p} descriptionKey="Add items to start shopping" />
@@ -82,69 +93,123 @@ const Cart = () => {
 
   return (
     <div
-      className="max-w-5xl mx-auto px-4 py-10 space-y-6"
+      className="max-w-5xl mx-auto px-4 py-10 space-y-8"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      {/* Title */}
       <h2 className="text-2xl font-bold">{t("Your Cart")}</h2>
-
-      {/* Cart Items */}
       <div className="space-y-4">
-        {items.map((item) => (
-          <motion.div
-            key={`${item.productId}-${item.variantId}`}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between
-              gap-4 bg-white rounded-2xl p-5 shadow-md"
-          >
-            {/* Product Info */}
-            <div className="flex items-center gap-4">
-              {item.image && (
-                <img
-                  src={item.image}
-                  alt={item.productName}
-                  className="w-20 h-20 object-cover rounded-xl bg-gray-100"
-                />
-              )}
+        {items.map((item) => {
+          const productName = isRTL
+            ? item.productNameArabic
+            : item.productNameEnglish;
 
-              <div>
-                <h3 className="font-semibold text-lg">{item.productName}</h3>
-                <p className="text-sm text-gray-500">
-                  {t("Quantity")}: {item.quantity}
-                </p>
-                <p className="text-sm font-medium text-primary">
-                  ${item.price}
-                </p>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <button
-              disabled={removing}
-              onClick={() =>
-                removeFromCart({
-                  productId: item.productId,
-                  variantId: item.variantId,
-                })
-              }
-              className="text-red-500 font-medium hover:underline
-                disabled:opacity-50 self-start sm:self-auto"
+          return (
+            <motion.div
+              key={item.cartItemId}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between
+                gap-4 bg-white rounded-2xl p-5 shadow-md"
             >
-              {t("Remove")}
-            </button>
-          </motion.div>
-        ))}
-      </div>
+              <div className="flex items-center gap-4">
+                {item.productImage && (
+                  <img
+                    src={item.productImage}
+                    alt={productName}
+                    className="w-20 h-20 object-cover rounded-xl bg-gray-100"
+                  />
+                )}
 
-      {/* Footer / Total */}
-      {cartData?.total && (
-        <div className="flex justify-end pt-6 border-t">
-          <p className="text-xl font-bold">
-            {t("Total")}: ${cartData.total}
-          </p>
-        </div>
-      )}
+                <div>
+                  <h3 className="font-semibold text-lg">{productName}</h3>
+                  <p className="text-sm text-gray-500">
+                    {t("Quantity")}: {item.quantity}
+                  </p>
+                  <p className="text-sm font-medium text-primary">
+                    ${item.totalPrice}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                disabled={removing}
+                onClick={() =>
+                  removeFromCart({
+                    productId: item.productId,
+                    variantId: item.variantId,
+                  })
+                }
+                className="text-red-500 font-medium hover:underline
+                  disabled:opacity-50 self-start sm:self-auto"
+              >
+                {t("Remove")}
+              </button>
+            </motion.div>
+          );
+        })}
+      </div>
+      <Formik
+        initialValues={{
+          shippingName: "",
+          shippingPhone: "",
+          shippingAddress: "",
+          paymentMethod: "cash",
+        }}
+        validationSchema={CheckoutSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            await checkout(values).unwrap();
+            navigate("/orders");
+          } catch (err) {
+            console.error("Checkout error:", err);
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form className="space-y-4 pt-6 border-t">
+            <MuiTextField
+              name="shippingName"
+              label={t("Full Name")}
+              placeholder={t("Enter your full name")}
+            />
+
+            <MuiPhoneField
+              name="shippingPhone"
+              label={t("Phone Number")}
+              placeholder="+961..."
+            />
+
+            <MuiTextField
+              name="shippingAddress"
+              label={t("Shipping Address")}
+              placeholder={t("City, Street, Building")}
+            />
+
+            <MuiTextField
+              name="paymentMethod"
+              label={t("Payment Method")}
+              disabled
+            />
+
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
+              <p className="text-xl font-bold">
+                {t("Total")}: ${total.toFixed(2)}
+              </p>
+
+              <button
+                type="submit"
+                disabled={placingOrder || isSubmitting}
+                className="bg-primary text-white px-8 py-3 rounded-xl
+                  font-medium hover:opacity-90 disabled:opacity-50"
+              >
+                {placingOrder ? t("Placing order...") : t("Place Order")}
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

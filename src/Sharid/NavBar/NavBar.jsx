@@ -16,6 +16,8 @@ import {
   useLogoutMutation,
 } from "../../redux/features/apiSlice";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
+import { useGetCartQuery } from "../../redux/features/apiSlice";
+
 import UAE from "../../assets/images/NavBar/UAE.png";
 import UK from "../../assets/images/NavBar/UK.png";
 import logo from "../../assets/images/authentication/p1.png";
@@ -29,12 +31,19 @@ const Navbar = () => {
   const lang = useSelector(selectTranslate);
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
+  const { data: cartData } = useGetCartQuery(undefined, {
+    skip: !token,
+  });
+
+  const cartCount = Array.isArray(cartData?.data?.cartItems)
+    ? cartData.data.cartItems.length
+    : 0;
+
   const [logoutApi, { isLoading }] = useLogoutMutation();
 
- const { data: wishlistData } = useGetWishlistQuery(
-  token ? undefined : skipToken
-);
-
+  const { data: wishlistData } = useGetWishlistQuery(
+    token ? undefined : skipToken,
+  );
 
   const loading = useSelector((state) => state.loader.isLoading);
   const navigate = useNavigate();
@@ -43,7 +52,7 @@ const Navbar = () => {
     { label: "Home", path: "/" },
     { label: "Search With Items", path: "/search" },
     { label: "Wishlist", path: "/wishlist" },
-    { label: "Trackorder", path: "/trackorder" },
+    { label: "Trackorder", path: "/orders" },
     { label: "About", path: "/about" },
     { label: "Contact", path: "/contact" },
   ];
@@ -107,8 +116,14 @@ const Navbar = () => {
                 className="relative transition hover:text-primary"
               >
                 <HiShoppingCart size={24} />
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full" />
+
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
+
               {user ? (
                 <>
                   <Link
@@ -175,7 +190,12 @@ const Navbar = () => {
               className="relative transition hover:text-blue-600"
             >
               <HiShoppingCart size={24} />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"></span>
+
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             <button

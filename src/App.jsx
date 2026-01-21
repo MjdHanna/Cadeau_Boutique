@@ -89,7 +89,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/trackorder" element={<OrderTracking />} />
+        <Route path="/orders" element={<OrderTracking />} />
         {/* End User And Protected Pages*/}
 
         <Route
@@ -97,7 +97,7 @@ function App() {
           element={
             <>
               <FilterSidebar filters={filters} setFilters={setFilters} />
-              <SearchPage/>
+              <SearchPage />
             </>
           }
         />

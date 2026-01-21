@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import WishlistButton from "../../components/WishlistButton/WishlistButton";
 import { useNavigate } from "react-router-dom";
-import AddToCartButton from "../AddToCartButton/AddToCartButton";
 const ItemCard = ({
   product,
   onClick,
@@ -110,10 +109,6 @@ const ItemCard = ({
           </motion.ul>
         )}
       </AnimatePresence>
-      <AddToCartButton
-        productId={product.productId}
-        variantId={product.variantId}
-      />
     </motion.div>
   );
 };

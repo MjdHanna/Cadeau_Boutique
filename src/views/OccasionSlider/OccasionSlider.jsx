@@ -70,7 +70,6 @@ const OccasionSlider = () => {
               key={`${o.occasionId}-${index}`}
               className="!w-[140px] flex items-stretch"
             >
-              {/* Wrapper يعطي نفسًا عموديًا */}
               <div className="w-full px-2 py-6">
                 <div
                   role="button"
@@ -78,8 +77,9 @@ const OccasionSlider = () => {
                   onClick={() => navigate(`/occasions/${o.occasionId}`)}
                   onMouseEnter={() => swiperRef.current?.autoplay.stop()}
                   onMouseLeave={() => swiperRef.current?.autoplay.start()}
-                  className="bg-white rounded-2xl shadow-lg cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="bg-white  cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
+                  {/* rounded-2xl shadow-lg */}
                   <img
                     src={o.occasionImage}
                     alt={o.occasionName}

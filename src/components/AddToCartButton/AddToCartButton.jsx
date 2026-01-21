@@ -1,28 +1,48 @@
 import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAddToCartMutation } from "../../redux/features/apiSlice";
-import { useTranslation } from "react-i18next";
+import { selectToken } from "../../redux/features/authSlice";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+
 const AddToCartButton = ({ productId, variantId }) => {
   const [addToCart, { isLoading }] = useAddToCartMutation();
   const lang = useSelector(selectTranslate);
+  const token = useSelector(selectToken);
 
   const handleAdd = async (e) => {
     e.stopPropagation();
+
+    if (!token) {
+      toast.error(
+        lang === "ar" ? "الرجاء تسجيل الدخول أولاً" : "Please login first",
+      );
+      return;
+    }
+
+    if (!variantId) {
+      toast.error(
+        lang === "ar"
+          ? "يرجى اختيار خيار المنتج أولاً"
+          : "Please select a product option first",
+      );
+      return;
+    }
+
     try {
-      const payload = {
+      await addToCart({
         productId: Number(productId),
+        variantId: Number(variantId),
         quantity: 1,
-      };
+      }).unwrap();
 
-      if (variantId) {
-        payload.variantId = Number(variantId);
-      }
-
-      await addToCart(payload).unwrap();
+      toast.success(lang === "ar" ? "تمت الإضافة إلى السلة" : "Added to cart");
     } catch (err) {
-      console.error("Add to cart failed:", err);
+      toast.error(
+        err?.data?.message ||
+          (lang === "ar" ? "حدث خطأ" : "Something went wrong"),
+      );
     }
   };
 

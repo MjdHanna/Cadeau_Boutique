@@ -18,6 +18,8 @@ export const apiSlice = createApi({
         "getCart",
         "addToCart",
         "removeFromCart",
+        "getOrders",
+        "checkout",
       ];
 
       if (token && protectedEndpoints.includes(endpoint)) {
@@ -29,7 +31,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Wishlist", "Cart"],
+  tagTypes: ["Auth", "Wishlist", "Cart", "Orders"],
   endpoints: (builder) => ({
     // Auth
     register: builder.mutation({
@@ -203,6 +205,24 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Cart"],
     }),
+
+    // Orders
+    getOrders: builder.query({
+      query: () => ({
+        url: "orders",
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+    }),
+
+    checkout: builder.mutation({
+      query: (data) => ({
+        url: "checkout",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Cart", "Orders"],
+    }),
   }),
 });
 
@@ -234,4 +254,6 @@ export const {
   useAddToCartMutation,
   useRemoveFromCartMutation,
   useGetFilteredProductsQuery,
+  useGetOrdersQuery,
+  useCheckoutMutation,
 } = apiSlice;

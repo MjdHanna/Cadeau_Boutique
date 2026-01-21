@@ -23,7 +23,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"gender\": \"male\",\r\n    \"phoneNumber\": \"123456789\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\",\r\n    \"password_confirmation\": \"password123\"\r\n}",
+              "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"gender\": \"male\",\r\n    \"phoneNumber\": \"1223456789\",\r\n    \"email\": \"john2@example.com\",\r\n    \"password\": \"password123\",\r\n    \"password_confirmation\": \"password123\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n   \"password\": \"password123\"\r\n}"
+              "raw": "{\r\n  \"email\": \"john2@example.com\",\r\n  \"password\": \"password123\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -794,7 +794,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/4",
+              "raw": "http://127.0.0.1:8000/api/products",
               "protocol": "http",
               "host": [
                 "127",
@@ -805,8 +805,7 @@
               "port": "8000",
               "path": [
                 "api",
-                "products",
-                "4"
+                "products"
               ]
             }
           },
@@ -820,7 +819,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|4fuUS59SzMkLAVgfOtUdQS6xXgLpoO1YsnT1jCdd09ce4dca",
+                  "value": "4|AP0yWoKlDJvFGdHG1JjOimOcYZapU8RXD7sv1IHW86458825",
                   "type": "string"
                 }
               ]
@@ -840,7 +839,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 2,\r\n    \"rating\": 4.5,\r\n    \"review\": \"testttt\"\r\n}"
+              "raw": "{\r\n    \"productId\": 1,\r\n    \"rating\": 5,\r\n    \"review\": \"testttt\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/rating",
@@ -975,7 +974,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
+                  "value": "1|sibyCV4C3CL1I6o8ZujAkKDovlJDpjt7drqaKnxlb87c1b50",
                   "type": "string"
                 }
               ]
@@ -1019,7 +1018,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
+                  "value": "1|sibyCV4C3CL1I6o8ZujAkKDovlJDpjt7drqaKnxlb87c1b50",
                   "type": "string"
                 }
               ]
@@ -1034,7 +1033,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 4,\r\n    \"variantId\": 7,\r\n    \"quantity\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1068,7 +1067,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|pe04urqJPQZSA8AAEHd2pwoe8O9eZ3MSyOk3xsd9f8f65d9b",
+                  "value": "1|sibyCV4C3CL1I6o8ZujAkKDovlJDpjt7drqaKnxlb87c1b50",
                   "type": "string"
                 }
               ]
@@ -1228,7 +1227,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"paymentMethod\": \"\"\r\n}",
+              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"c\": \"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1263,7 +1262,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "1|fEva56ycHZj84BffAlCJ2ArzUGCnTfkWqXgVLf2H34a0ab08",
+              "value": "1|1tJECRu7LvQUpK1fPjy17HQo0gMaIA7R9F34H2Sy24aa645e",
               "type": "string"
             }
           ]
@@ -1278,7 +1277,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"userName\": \"jana\",\r\n    \"email\": \"jana@example.com\",\r\n    \"phoneNumber\": \"000000000\",\r\n    \"gender\": \"female\"\r\n}",
+          "raw": "{\r\n    \"email\": \"karam.asntas.2003@gmail.com\",\r\n    \"password\": \"password123\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1286,7 +1285,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/account-edit",
+          "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1295,7 +1294,8 @@
           ],
           "path": [
             "api",
-            "account-edit"
+            "cart",
+            "add"
           ],
           "query": [
             {

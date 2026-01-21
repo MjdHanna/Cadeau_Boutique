@@ -1,15 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
-
 @theme {
   --color-primary: #f2ae2e;
   --color-secondary: #d9d9d9;
 }
-@font-face {
-  font-family: "Poppins";
-  src: local("Poppins"),
-    url("./assets/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+body {
+  font-family: "Poppins", sans-serif;
 }
 
-* {
-  font-family: "Poppins", sans-serif;
+html[dir="rtl"] body {
+  font-family: "Cairo", sans-serif;
+  line-height: 1.9;
+  letter-spacing: 0;
+}
+html[dir="rtl"] {
+  font-feature-settings: "lnum";
 }

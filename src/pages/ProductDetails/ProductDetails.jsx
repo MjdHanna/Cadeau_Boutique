@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
 import { useEffect, useState } from "react";
 import { selectTranslate } from "../../redux/features/translateSlice";
+import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const ProductDetails = () => {
   const { data, isLoading, error } = useGetProductByIdQuery(id);
   const [userRating, setUserRating] = useState(0);
   const [review, setReview] = useState("");
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   const token = useSelector(selectToken);
   const [addRating, { isLoading: ratingLoading }] =
@@ -44,6 +46,12 @@ const ProductDetails = () => {
       variants: Array.isArray(product.variants) ? product.variants : [],
     };
   }, [product, isRTL]);
+  useEffect(() => {
+    if (localized?.variants?.length === 1) {
+      setSelectedVariant(localized.variants[0].variantId);
+    }
+  }, [localized]);
+
   useEffect(() => {
     if (product?.userRating) {
       setUserRating(product.userRating);
@@ -158,19 +166,31 @@ const ProductDetails = () => {
               <h3 className="font-semibold mb-2">{t("Options")}</h3>
               <div className="flex gap-3 flex-wrap">
                 {localized.variants.map((v) => (
-                  <span
+                  <button
                     key={v.variantId}
-                    className={`px-4 py-2 rounded-full border text-sm
-                      ${!v.inStock ? "opacity-50 line-through" : ""}
-                    `}
+                    disabled={!v.inStock}
+                    onClick={() => setSelectedVariant(v.variantId)}
+                    className={`px-4 py-2 rounded-full border text-sm transition
+            ${
+              selectedVariant === v.variantId
+                ? "bg-primary text-white"
+                : "bg-white"
+            }
+            ${!v.inStock ? "opacity-50 cursor-not-allowed" : ""}
+          `}
                   >
                     {Object.values(v.attributes).join(" / ")} – $
                     {v.variantPrice}
-                  </span>
+                  </button>
                 ))}
               </div>
             </div>
           )}
+          <AddToCartButton
+            productId={product.productId}
+            variantId={selectedVariant}
+          />
+
           {localized.features && (
             <ul className="mt-8 space-y-3">
               {Object.entries(localized.features).map(([key, value]) => (
