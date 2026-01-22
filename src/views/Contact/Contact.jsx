@@ -94,14 +94,14 @@ const Contact = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex justify-center text-center mb-8"
+        className="flex justify-around  text-center mb-8"
       >
         <img
           src={logo}
           width={100}
           height={100}
           loading="lazy"
-          className="w-24 mx-auto mb-2"
+          className="w-auto h-12 transition-transform duration-300 hover:scale-110"
           alt="logo"
         />
         <div>

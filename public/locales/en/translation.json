@@ -188,5 +188,13 @@
   "Previous": "Previous",
   "Next": "Next",
   "Page": "Page",
-  "of": "of"
+  "of": "of",
+  "Your Information": "Your Information",
+  "Edit Profile": "Edit Profile",
+  "Delete": "Delete",
+  "Cancel": "Cancel",
+  "Confirm Account Deletion": "Confirm Account Deletion",
+  "Latest Products": "Latest Products",
+  "Logout": "Logout",
+  "Logging out...": "Logging out..."
 }

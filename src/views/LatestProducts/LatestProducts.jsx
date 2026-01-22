@@ -1,42 +1,75 @@
-import banner2 from "../../assets/images/Banner/p1.png";
-import banner3 from "../../assets/images/Banner/p2.png";
-import banner1 from "../../assets/images/Banner/p3.png";
-
+import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import ShowData from "../../components/ShowData/ShowData";
-
-const products = [
-  { id: "mock-1", name: "باقة ورد فاخرة", price: "$40", img: banner2 },
-  { id: "mock-2", name: "علبة شوكولا فاخرة", price: "$32", img: banner3 },
-  { id: "mock-3", name: "هدايا فاخرة", price: "$55", img: banner1 },
-];
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/features/authSlice";
+import {
+  useGetLatestProductsQuery,
+  useGetWishlistQuery,
+} from "../../redux/features/apiSlice";
+import ItemCard from "../../components/brands/ItemCard";
 
 const LatestProducts = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const isRTL = i18n.language === "ar";
+  const token = useSelector(selectToken);
+
+  // ===== Fetch latest products =====
+  const { data, isLoading, error } = useGetLatestProductsQuery();
+
+  // ===== Fetch wishlist if user logged in =====
+  const { data: wishlistData } = useGetWishlistQuery(undefined, {
+    skip: !token,
+  });
+  const wishlistItems = wishlistData?.data?.wishlistItems || [];
+
+  // ===== Normalize products =====
+  const products = useMemo(() => {
+    if (!data?.data) return [];
+    return data.data.map((p) => ({
+      ...p,
+      productName: isRTL ? p.productNameArabic : p.productNameEnglish,
+      productDescription: isRTL
+        ? p.productDescriptionArabic
+        : p.productDescriptionEnglish,
+    }));
+  }, [data, isRTL]);
+
+  if (isLoading) {
+    return <p className="text-center py-20">{t("Loading...")}</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="text-center py-20 text-red-500">
+        {t("Failed to load latest products")}
+      </p>
+    );
+  }
 
   return (
-    <ShowData
-      title={t("Latest")}
-      items={products}
-      renderItem={(product) => (
-        <>
-          <div className="relative">
-            <img
-              src={product.img}
-              alt={product.name}
-              className="w-full h-52 object-cover rounded-md"
-            />
-          </div>
+    <div className="max-w-7xl mx-auto px-4 py-28" dir={isRTL ? "rtl" : "ltr"}>
+      <h1 className="text-3xl font-bold mb-10">{t("Latest Products")}</h1>
 
-          <div className="p-4 text-center">
-            <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-            <span className="font-bold text-primary text-xl">
-              {product.price}
-            </span>
-          </div>
-        </>
+      {products.length === 0 ? (
+        <p className="text-gray-500">{t("No products found")}</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((p) => (
+            <ItemCard
+              key={p.productId}
+              title={p.productName}
+              description={p.productDescription}
+              price={p.productPrice}
+              product={p}
+              onClick={() => navigate(`/products/${p.productId}`)}
+              wishlistItems={wishlistItems}
+            />
+          ))}
+        </div>
       )}
-    />
+    </div>
   );
 };
 

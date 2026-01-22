@@ -8,6 +8,8 @@ export const apiSlice = createApi({
       const token = getState().auth.token;
       const protectedEndpoints = [
         "getProfile",
+        "getUser",
+        "editProfile",
         "logout",
         "getWishlist",
         "addToWishlist",
@@ -74,10 +76,27 @@ export const apiSlice = createApi({
       }),
     }),
 
-    getProfile: builder.query({
-      query: () => "profile",
+    // Profile
+    getUser: builder.query({
+      query: () => ({
+        url: "user",
+        method: "GET",
+      }),
       providesTags: ["Auth"],
-      keepUnusedDataFor: 300,
+    }),
+
+    editProfile: builder.mutation({
+      query: (data) => ({
+        url: "account-edit",
+        method: "POST",
+        body: {
+          userName: data.name,
+          email: data.email,
+          phoneNumber: data.phone_number,
+          gender: data.gender,
+        },
+      }),
+      invalidatesTags: ["Auth"],
     }),
 
     // Reset Flow
@@ -136,6 +155,7 @@ export const apiSlice = createApi({
     getOccasionsById: builder.query({ query: (id) => `occasions/${id}` }),
     getProducts: builder.query({ query: () => "products" }),
     getProductById: builder.query({ query: (id) => `products/${id}` }),
+    getLatestProducts: builder.query({ query: () => "latest-products" }),
 
     // Rating
     addProductRating: builder.mutation({
@@ -231,7 +251,8 @@ export const {
   useLoginMutation,
   useVerifyEmailMutation,
   useAccountDeleteMutation,
-  useGetProfileQuery,
+  useGetUserQuery,
+  useEditProfileMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useLogoutMutation,
@@ -242,6 +263,7 @@ export const {
   useGetCategoryByIdQuery,
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useGetLatestProductsQuery,
   useGetWishlistQuery,
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,

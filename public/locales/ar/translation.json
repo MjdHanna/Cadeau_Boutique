@@ -189,5 +189,13 @@
   "Previous": "السابق",
   "Next": "التالي",
   "Page": "الصفحة",
-  "of": "من"
+  "of": "من",
+  "Your Information": "المعلومات الخاصة بك",
+  "Edit Profile": "تعديل الملف الشخصي",
+  "Delete": "حذف",
+  "Cancel": "إلغاء",
+  "Confirm Account Deletion": "تأكيد حذف الحساب",
+  "Latest Products": "أحدث المنتجات",
+  "Logout": "تسجيل خروج ",
+  "Logging out...": "جار تسجيل الخروج..."
 }
