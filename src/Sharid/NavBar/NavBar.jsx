@@ -243,7 +243,7 @@ const Navbar = () => {
                 { label: "Home", path: "/" },
                 { label: "Search With Items", path: "/search" },
                 { label: "Wishlist", path: "/wishlist" },
-                { label: "Trackorder", path: "/trackorder" },
+                { label: "Trackorder", path: "/orders" },
                 { label: "About", path: "/about" },
                 { label: "Contact", path: "/contact" },
               ].map(({ label, path }) => (

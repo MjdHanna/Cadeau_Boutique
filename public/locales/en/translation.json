@@ -196,5 +196,15 @@
   "Confirm Account Deletion": "Confirm Account Deletion",
   "Latest Products": "Latest Products",
   "Logout": "Logout",
-  "Logging out...": "Logging out..."
+  "Logging out...": "Logging out...",
+  "Filters": "Filters",
+  "Reset": "Reset",
+  "Category": "Category",
+  "Brand": "Brand",
+  "Color": "Color",
+  "Size": "Size",
+  "Price Range": "Price Range",
+  "Select category": "Select category",
+  "Select brand": "Select brand",
+  "Select occasion": "Select occasion"
 }

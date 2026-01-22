@@ -1,13 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetFilteredProductsQuery } from "../../redux/features/apiSlice";
+import {
+  useGetFilteredProductsQuery,
+  useGetWishlistQuery,
+} from "../../redux/features/apiSlice";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/features/authSlice";
 import ItemCard from "../../components/brands/ItemCard";
 
 const SearchPage = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
-
+  const token = useSelector(selectToken);
   const filters = useMemo(() => {
     const params = new URLSearchParams(search);
     return Object.fromEntries(params.entries());
@@ -20,7 +25,11 @@ const SearchPage = () => {
   const { data, isLoading, error } = useGetFilteredProductsQuery(
     hasValidSearch ? filters : skipToken,
   );
+  const { data: wishlistData } = useGetWishlistQuery(undefined, {
+    skip: !token,
+  });
 
+  const wishlistItems = wishlistData?.data?.wishlistItems || [];
   if (isLoading) return <p className="text-center py-20">Loading...</p>;
   if (error)
     return (
@@ -28,7 +37,7 @@ const SearchPage = () => {
     );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 pt-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {data?.data?.map((product) => (
           <ItemCard
@@ -36,6 +45,7 @@ const SearchPage = () => {
             price={product.productPriceFrom}
             product={product}
             onClick={() => navigate(`/products/${product.productId}`)}
+            wishlistItems={wishlistItems}
           />
         ))}
       </div>

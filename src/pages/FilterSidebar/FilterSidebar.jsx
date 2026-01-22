@@ -19,7 +19,15 @@ const FilterSidebar = ({ filters, setFilters }) => {
   const { data: occasions } = useGetOccasionsQuery();
 
   const [searchDraft, setSearchDraft] = useState(filters.name || "");
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openBrand, setOpenBrand] = useState(false);
+  const [openOccasion, setOpenOccasion] = useState(false);
+
   const debouncedSearch = useDebounce(searchDraft, 600);
+  useEffect(() => {
+    setSearchDraft(filters.name ?? "");
+  }, [filters.name]);
+
   useEffect(() => {
     if (debouncedSearch.length >= 3 || debouncedSearch === "") {
       applyFilters({ ...filters, name: debouncedSearch });
@@ -98,68 +106,141 @@ const FilterSidebar = ({ filters, setFilters }) => {
           )}
         </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* CATEGORY */}
-          <section>
+          <section className="relative">
             <h3 className="font-semibold mb-3">{t("Category")}</h3>
-            <div className="flex flex-wrap gap-2">
-              {categories?.data?.map((c) => (
-                <Chip
-                  key={c.categoryId}
-                  active={filters.categoryId === c.categoryId}
-                  onClick={() =>
-                    handleChange(
-                      "categoryId",
-                      filters.categoryId === c.categoryId ? "" : c.categoryId,
-                    )
-                  }
-                >
-                  {isRTL ? c.categoryNameArabic : c.categoryNameEnglish}
-                </Chip>
-              ))}
-            </div>
+
+            <button
+              onClick={() => setOpenCategory((v) => !v)}
+              className="w-full flex justify-between items-center px-4 py-3 border rounded-xl bg-white hover:bg-gray-50"
+            >
+              <span className="text-sm truncate">
+                {filters.categoryId
+                  ? isRTL
+                    ? categories?.data?.find(
+                        (c) => c.categoryId === filters.categoryId,
+                      )?.categoryNameArabic
+                    : categories?.data?.find(
+                        (c) => c.categoryId === filters.categoryId,
+                      )?.categoryNameEnglish
+                  : t("Select category")}
+              </span>
+              <span>▾</span>
+            </button>
+
+            {openCategory && (
+              <div
+                className={`absolute z-20 mt-2 w-full bg-white border rounded-xl shadow-lg max-h-60 overflow-auto ${isRTL ? "right-0" : "left-0"}`}
+              >
+                {categories?.data?.map((c) => (
+                  <button
+                    key={c.categoryId}
+                    onClick={() => {
+                      handleChange("categoryId", c.categoryId);
+                      setOpenCategory(false);
+                    }}
+                    className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-100 ${
+                      filters.categoryId === c.categoryId
+                        ? "bg-primary/10 text-primary font-medium"
+                        : ""
+                    }`}
+                  >
+                    {isRTL ? c.categoryNameArabic : c.categoryNameEnglish}
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* BRAND */}
-          <section>
+          <section className="relative">
             <h3 className="font-semibold mb-3">{t("Brand")}</h3>
-            <div className="flex flex-wrap gap-2">
-              {brands?.data?.map((b) => (
-                <Chip
-                  key={b.brandId}
-                  active={filters.brandId === b.brandId}
-                  onClick={() =>
-                    handleChange(
-                      "brandId",
-                      filters.brandId === b.brandId ? "" : b.brandId,
-                    )
-                  }
-                >
-                  {isRTL ? b.brandNameArabic : b.brandNameEnglish}
-                </Chip>
-              ))}
-            </div>
+
+            <button
+              onClick={() => setOpenBrand((v) => !v)}
+              className="w-full flex justify-between items-center px-4 py-3 border rounded-xl bg-white hover:bg-gray-50"
+            >
+              <span className="text-sm truncate">
+                {filters.brandId
+                  ? isRTL
+                    ? brands?.data?.find((b) => b.brandId === filters.brandId)
+                        ?.brandNameArabic
+                    : brands?.data?.find((b) => b.brandId === filters.brandId)
+                        ?.brandNameEnglish
+                  : t("Select brand")}
+              </span>
+              <span>▾</span>
+            </button>
+
+            {openBrand && (
+              <div
+                className={`absolute z-20 mt-2 w-full bg-white border rounded-xl shadow-lg max-h-60 overflow-auto ${isRTL ? "right-0" : "left-0"}`}
+              >
+                {brands?.data?.map((b) => (
+                  <button
+                    key={b.brandId}
+                    onClick={() => {
+                      handleChange("brandId", b.brandId);
+                      setOpenBrand(false);
+                    }}
+                    className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-100 ${
+                      filters.brandId === b.brandId
+                        ? "bg-primary/10 text-primary font-medium"
+                        : ""
+                    }`}
+                  >
+                    {isRTL ? b.brandNameArabic : b.brandNameEnglish}
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* OCCASION */}
-          <section>
+          <section className="relative">
             <h3 className="font-semibold mb-3">{t("Occasion")}</h3>
-            <div className="flex flex-wrap gap-2">
-              {occasions?.data?.map((o) => (
-                <Chip
-                  key={o.occasionId}
-                  active={filters.occasionId === o.occasionId}
-                  onClick={() =>
-                    handleChange(
-                      "occasionId",
-                      filters.occasionId === o.occasionId ? "" : o.occasionId,
-                    )
-                  }
-                >
-                  {isRTL ? o.occasionNameArabic : o.occasionNameEnglish}
-                </Chip>
-              ))}
-            </div>
+
+            <button
+              onClick={() => setOpenOccasion((v) => !v)}
+              className="w-full flex justify-between items-center px-4 py-3 border rounded-xl bg-white hover:bg-gray-50"
+            >
+              <span className="text-sm truncate">
+                {filters.occasionId
+                  ? isRTL
+                    ? occasions?.data?.find(
+                        (o) => o.occasionId === filters.occasionId,
+                      )?.occasionNameArabic
+                    : occasions?.data?.find(
+                        (o) => o.occasionId === filters.occasionId,
+                      )?.occasionNameEnglish
+                  : t("Select occasion")}
+              </span>
+              <span>▾</span>
+            </button>
+
+            {openOccasion && (
+              <div
+                className={`absolute z-20 mt-2 w-full bg-white border rounded-xl shadow-lg max-h-60 overflow-auto ${isRTL ? "right-0" : "left-0"}`}
+              >
+                {occasions?.data?.map((o) => (
+                  <button
+                    key={o.occasionId}
+                    onClick={() => {
+                      handleChange("occasionId", o.occasionId);
+                      setOpenOccasion(false);
+                    }}
+                    className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-100 ${
+                      filters.occasionId === o.occasionId
+                        ? "bg-primary/10 text-primary font-medium"
+                        : ""
+                    }`}
+                  >
+                    {isRTL ? o.occasionNameArabic : o.occasionNameEnglish}
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
         </div>
 

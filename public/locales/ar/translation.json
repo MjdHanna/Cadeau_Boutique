@@ -197,5 +197,15 @@
   "Confirm Account Deletion": "تأكيد حذف الحساب",
   "Latest Products": "أحدث المنتجات",
   "Logout": "تسجيل خروج ",
-  "Logging out...": "جار تسجيل الخروج..."
+  "Logging out...": "جار تسجيل الخروج...",
+  "Filters": "الفلترة ",
+  "Reset": "اعادة ضبط",
+  "Category": "التصنيف",
+  "Brand": "العلامة التجارية ",
+  "Color": "اللون",
+  "Size": "القياس",
+  "Price Range": "نطاق السعر",
+  "Select category": "اختر التصنيف",
+  "Select brand": "اختر العلامة التجارية",
+  "Select occasion": "اختر المناسبة"
 }

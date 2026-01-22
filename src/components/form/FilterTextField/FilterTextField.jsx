@@ -12,7 +12,7 @@ const FilterTextField = ({ label, value, onChange, ...props }) => {
     <TextField
       fullWidth
       label={t(label)}
-      value={value}
+      value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
       {...props}
       inputProps={{

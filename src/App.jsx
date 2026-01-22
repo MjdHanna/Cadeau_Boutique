@@ -35,6 +35,7 @@ import { selectTranslate } from "./redux/features/translateSlice";
 import Profile from "./pages/Profile/Profile";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import FilterSidebar from "./pages/FilterSidebar/FilterSidebar";
+import SearchLayout from "./pages/SearchLayout/SearchLayout";
 
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
@@ -92,7 +93,7 @@ function App() {
         <Route path="/orders" element={<OrderTracking />} />
         {/* End User And Protected Pages*/}
 
-        <Route
+        {/* <Route
           path="/search"
           element={
             <>
@@ -100,7 +101,8 @@ function App() {
               <SearchPage />
             </>
           }
-        />
+        /> */}
+        <Route path="/search" element={<SearchLayout />} />
 
         {/* Static Pages */}
         <Route path="/contact" element={<Contact />} />
