@@ -34,12 +34,9 @@ const ForgotPassword = () => {
       const response = await forgotPassword(values.email.trim()).unwrap();
 
       sessionStorage.setItem("resetEmail", values.email.trim());
-
-      // استخدم userId من redux state إذا كان موجودًا
       if (user?.id) {
         sessionStorage.setItem("resetUserId", user.id);
       } else {
-        // fallback لو endpoint أعاد user_id
         sessionStorage.setItem("resetUserId", response.user_id);
       }
 

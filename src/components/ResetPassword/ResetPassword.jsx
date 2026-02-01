@@ -71,7 +71,7 @@ const ResetPassword = () => {
           <Form>
             <MuiTextField name="password" type="password" />
             <MuiTextField name="confirmPassword" type="password" />
-            <AuthButton label="Set New Password" />
+            <AuthButton label={t("Set New Password")} />
           </Form>
         </Formik>
       </div>

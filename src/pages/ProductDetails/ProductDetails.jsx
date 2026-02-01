@@ -155,9 +155,8 @@ const ProductDetails = () => {
                     ? "اكتب تعليقك هنا (اختياري)"
                     : "Write your review here (optional)"
                 }
-                className="w-full rounded-xl border px-4 py-2 text-sm
-      focus:outline-none focus:ring-2 focus:ring-primary
-      dark:bg-gray-900 dark:border-gray-700"
+                className="w-full rounded-xl  px-4 py-2 text-sm
+      focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>

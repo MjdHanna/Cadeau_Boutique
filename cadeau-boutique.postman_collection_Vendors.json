@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"john2@example.com\",\r\n  \"password\": \"password123\"\r\n}"
+              "raw": "{\r\n  \"email\": \"vendor1@example.com\",\r\n  \"password\": \"password\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -478,7 +478,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/categories/2",
+              "raw": "http://127.0.0.1:8000/api/categories",
               "protocol": "http",
               "host": [
                 "127",
@@ -489,8 +489,7 @@
               "port": "8000",
               "path": [
                 "api",
-                "categories",
-                "2"
+                "categories"
               ]
             }
           },
@@ -960,6 +959,65 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "productByVendor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/products-by-vendor/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "products-by-vendor",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getVendors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/vendors",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "vendors"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1018,7 +1076,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|sibyCV4C3CL1I6o8ZujAkKDovlJDpjt7drqaKnxlb87c1b50",
+                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
                   "type": "string"
                 }
               ]
@@ -1033,7 +1091,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 4,\r\n    \"variantId\": 7,\r\n    \"quantity\": 2\r\n}",
+              "raw": "{\r\n    \"productId\": 2,\r\n    \"variantId\": 3,\r\n    \"quantity\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1173,7 +1231,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
+                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
                   "type": "string"
                 }
               ]
@@ -1212,7 +1270,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|d7JmKva5Rnn5rmxkalBBmB3ZkUt8JUIDq76AU7VY38c686eb",
+                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
                   "type": "string"
                 }
               ]
@@ -1227,7 +1285,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"c\": \"\"\r\n}",
+              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"paymentMethod\": \"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1256,18 +1314,11 @@
     },
     {
       "name": "test",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
       "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "1|1tJECRu7LvQUpK1fPjy17HQo0gMaIA7R9F34H2Sy24aa645e",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
+        "method": "GET",
         "header": [
           {
             "key": "Accept",
@@ -1277,7 +1328,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"email\": \"karam.asntas.2003@gmail.com\",\r\n    \"password\": \"password123\"\r\n}",
+          "raw": "{\r\n    \"productId\": 4\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1285,7 +1336,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
+          "raw": "https://cdb-back.bw-businessworld.net/api/vendors",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1294,8 +1345,7 @@
           ],
           "path": [
             "api",
-            "cart",
-            "add"
+            "vendors"
           ],
           "query": [
             {

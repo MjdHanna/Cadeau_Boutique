@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
 import ItemCard from "../../components/brands/ItemCard";
-
+import { useTranslation } from "react-i18next";
 const SearchPage = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const SearchPage = () => {
     const params = new URLSearchParams(search);
     return Object.fromEntries(params.entries());
   }, [search]);
-
+  const { t, i18n } = useTranslation();
   const hasValidSearch =
     Object.keys(filters).length > 0 &&
     (!filters.name || filters.name.length >= 3);
@@ -30,7 +30,7 @@ const SearchPage = () => {
   });
 
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
-  if (isLoading) return <p className="text-center py-20">Loading...</p>;
+  if (isLoading) return <p className="text-center py-20">{t("Loading...")}</p>;
   if (error)
     return (
       <p className="text-center py-20 text-red-500">{error?.data?.message}</p>
