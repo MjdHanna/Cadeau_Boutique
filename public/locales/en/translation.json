@@ -224,5 +224,8 @@
   "Verification code sent to your email": "Verification code sent to your email",
   "Send Code": "Send Code",
   "Password reset successfully": "Password reset successfully",
-  "Reset failed": "Reset failed"
+  "Reset failed": "Reset failed",
+  "Verify Your Email": "Verify Your Email",
+  "Enter the verification code sent to your email": "Enter the verification code sent to your email",
+  "Enter verification code": "Enter verification code"
 }

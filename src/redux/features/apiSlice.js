@@ -156,6 +156,7 @@ export const apiSlice = createApi({
     getProducts: builder.query({ query: () => "products" }),
     getProductById: builder.query({ query: (id) => `products/${id}` }),
     getLatestProducts: builder.query({ query: () => "latest-products" }),
+    getVendorById: builder.query({query: (vendorId) => `products-by-vendor/${vendorId}`,}),
 
     // Rating
     addProductRating: builder.mutation({
@@ -278,4 +279,5 @@ export const {
   useGetFilteredProductsQuery,
   useGetOrdersQuery,
   useCheckoutMutation,
+  useGetVendorByIdQuery,
 } = apiSlice;

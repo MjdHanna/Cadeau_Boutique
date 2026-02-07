@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"vendor1@example.com\",\r\n  \"password\": \"password\"\r\n}"
+              "raw": "{\r\n    \"email\": \"john2@example.com\",\r\n    \"password\": \"password123\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -632,7 +632,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|4ZomLFpnbdtQhKAqgHeiYxmM70N4T9y7cFunrlTi4a9d15f1",
+                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
                   "type": "string"
                 }
               ]
@@ -676,7 +676,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|4ZomLFpnbdtQhKAqgHeiYxmM70N4T9y7cFunrlTi4a9d15f1",
+                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
                   "type": "string"
                 }
               ]
@@ -793,7 +793,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products",
+              "raw": "http://127.0.0.1:8000/api/products/1",
               "protocol": "http",
               "host": [
                 "127",
@@ -804,7 +804,8 @@
               "port": "8000",
               "path": [
                 "api",
-                "products"
+                "products",
+                "1"
               ]
             }
           },
@@ -1032,7 +1033,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|sibyCV4C3CL1I6o8ZujAkKDovlJDpjt7drqaKnxlb87c1b50",
+                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
                   "type": "string"
                 }
               ]
@@ -1076,7 +1077,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
+                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
                   "type": "string"
                 }
               ]
@@ -1091,7 +1092,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 2,\r\n    \"variantId\": 3,\r\n    \"quantity\": 2\r\n}",
+              "raw": "{\r\n    \"productId\": 4,\r\n    \"variantId\": 6,\r\n    \"quantity\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1231,7 +1232,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
+                  "value": "1|qNON4VQbguEMAuNNCmVjdoM3ULHySwtIdc0dmS1ze851ac49",
                   "type": "string"
                 }
               ]
@@ -1270,7 +1271,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|FmsH8SMyibgrgdHqrsVqwPAAzBvQKTGS8Cpjm5JNb9417ebd",
+                  "value": "1|qNON4VQbguEMAuNNCmVjdoM3ULHySwtIdc0dmS1ze851ac49",
                   "type": "string"
                 }
               ]
@@ -1318,17 +1319,26 @@
         "disableBodyPruning": true
       },
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "5|r8iixQjCWRKrrW69EuBYukexbKQA09IYGI4dm83S81ba08e0",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [
           {
             "key": "Accept",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"productId\": 4\r\n}",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"
@@ -1336,7 +1346,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/vendors",
+          "raw": "https://cdb-back.bw-businessworld.net/api/products",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1345,20 +1355,7 @@
           ],
           "path": [
             "api",
-            "vendors"
-          ],
-          "query": [
-            {
-              "key": "name",
-              "value": "cake",
-              "disabled": true
-            },
-            {
-              "key": "color",
-              "value": "Blue",
-              "type": "text",
-              "disabled": true
-            }
+            "products"
           ]
         }
       },

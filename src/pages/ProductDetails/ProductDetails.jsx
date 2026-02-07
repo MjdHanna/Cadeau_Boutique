@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { useGetProductByIdQuery } from "../../redux/features/apiSlice";
 import { useAddProductRatingMutation } from "../../redux/features/apiSlice";
+import { useGetVendorByIdQuery } from "../../redux/features/apiSlice";
 import StarRating from "../../components/StarRating/StarRating";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -10,6 +11,7 @@ import { selectToken } from "../../redux/features/authSlice";
 import { useEffect, useState } from "react";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -29,6 +31,11 @@ const ProductDetails = () => {
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
+
+  const { data: vendorData } = useGetVendorByIdQuery(product?.vendorId, {
+    skip: !product?.vendorId,
+  });
+  const vendor = vendorData?.data;
 
   const localized = useMemo(() => {
     if (!product) return null;
@@ -136,6 +143,27 @@ const ProductDetails = () => {
               ${localized.price}
             </p>
           )}
+
+          {vendor && (
+            <div className="mt-6 ">
+              <h3 className="font-semibold text-lg">
+                {isRTL ? vendor.shopNameArabic : vendor.shopNameEnglish}
+              </h3>
+
+              <p className="text-gray-600 text-sm mt-1">
+                {isRTL
+                  ? vendor.shopDescriptionArabic
+                  : vendor.shopDescriptionEnglish}
+              </p>
+
+              {vendor.shopPhoneNumber && (
+                <p className="text-sm mt-2">
+                  {t("Phone Number")}: {vendor.shopPhoneNumber}
+                </p>
+              )}
+            </div>
+          )}
+
           <div className="mt-6">
             <p className="font-medium mb-2">
               {lang === "ar" ? "قيّم هذا المنتج" : "Rate this product"}

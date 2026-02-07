@@ -10,13 +10,19 @@ import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetCartQuery,
   useRemoveFromCartMutation,
+  useAddToCartMutation,
   useCheckoutMutation,
 } from "../../redux/features/apiSlice";
 
 import EmptyState from "../../components/EmptyState/EmptyState";
 import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
 import MuiPhoneField from "../../components/form/MuiPhoneField/MuiPhoneField";
+import toast from "react-hot-toast";
 import p from "../../assets/images/Cart/Frame.png";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import Stack from "@mui/material/Stack";
 
 const LoginRequired = lazy(
   () => import("../../components/LoginRequired/LoginRequired"),
@@ -45,6 +51,7 @@ const Cart = () => {
   });
 
   const [removeFromCart, { isLoading: removing }] = useRemoveFromCartMutation();
+  const [addToCart, { isLoading: updating }] = useAddToCartMutation();
 
   const [checkout, { isLoading: placingOrder }] = useCheckoutMutation();
   const items = Array.isArray(cartData?.data?.cartItems)
@@ -90,7 +97,24 @@ const Cart = () => {
       <EmptyState imageSrc={p} descriptionKey="Add items to start shopping" />
     );
   }
+  const handleIncrease = async (item) => {
+    const stock = Number(item.stockQuantity || 99);
 
+    if (item.quantity >= stock) {
+      toast.error(t("No more stock available"));
+      return;
+    }
+
+    try {
+      await addToCart({
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: 1,
+      }).unwrap();
+    } catch (err) {
+      toast.error(t("Failed to update quantity"));
+    }
+  };
   return (
     <div
       className="max-w-5xl mx-auto px-4 py-10 space-y-8"
@@ -122,16 +146,55 @@ const Cart = () => {
 
                 <div>
                   <h3 className="font-semibold text-lg">{productName}</h3>
-                  <p className="text-sm text-gray-500">
-                    {t("Quantity")}: {item.quantity}
-                  </p>
-                  <p className="text-sm font-medium text-primary">
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    className="mt-2"
+                  >
+                    <IconButton
+                      size="small"
+                      disabled={removing}
+                      onClick={() =>
+                        removeFromCart({
+                          productId: item.productId,
+                          variantId: item.variantId,
+                        })
+                      }
+                      sx={{
+                        border: "1px solid #e5e7eb",
+                        bgcolor: "#f9fafb",
+                        "&:hover": { bgcolor: "#f3f4f6" },
+                      }}
+                    >
+                      <RemoveIcon fontSize="small" />
+                    </IconButton>
+
+                    <span className="min-w-[28px] text-center font-semibold">
+                      {item.quantity}
+                    </span>
+
+                    <IconButton
+                      size="small"
+                      onClick={() => handleIncrease(item)}
+                      disabled={updating || removing}
+                      sx={{
+                        border: "1px solid #e5e7eb",
+                        bgcolor: "#f9fafb",
+                        "&:hover": { bgcolor: "#f3f4f6" },
+                      }}
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Stack>
+
+                  <p className="text-sm font-medium text-primary mt-1.5">
                     ${item.totalPrice}
                   </p>
                 </div>
               </div>
 
-              <button
+              {/* <button
                 disabled={removing}
                 onClick={() =>
                   removeFromCart({
@@ -143,7 +206,7 @@ const Cart = () => {
                   disabled:opacity-50 self-start sm:self-auto"
               >
                 {t("Remove")}
-              </button>
+              </button> */}
             </motion.div>
           );
         })}

@@ -225,5 +225,8 @@
   "Verification code sent to your email": "تم إرسال رمز التحقق إلى بريدك الإلكتروني",
   "Send Code": "إرسال الرمز",
   "Password reset successfully": "تم إعادة تعيين كلمة المرور بنجاح",
-  "Reset failed": "فشلت إعادة التعيين"
+  "Reset failed": "فشلت إعادة التعيين",
+  "Verify Your Email": "التحقق من البريد الإلكتروني الخاص بك",
+  "Enter the verification code sent to your email": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
+  "Enter verification code": "أدخل رمز التحقق"
 }
