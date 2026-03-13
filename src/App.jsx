@@ -10,11 +10,11 @@ import WishList from "./views/WishList/WishList";
 import Cart from "./views/Cart/Cart";
 import Loader from "./views/Loader/Loader";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
-// import Verification from "./components/Verification/Verification";
 import NotFoundPage from "./views/Error/Error";
 import SearchPage from "./views/SearchPage/SearchPage";
 import Contact from "./views/Contact/Contact";
 import Footer from "./Sharid/Footer/Footer";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import OrderTracking from "./pages/Orders/OrderTracking";
 import AboutUs from "./views/AboutUs/AboutUs";
 import { Toaster } from "react-hot-toast";
@@ -73,6 +73,7 @@ function App() {
       {isLoading && <Loader />}
       <Toaster />
       <Navbar />
+      <ScrollToTop />
       <Routes>
         {/* Home */}
         <Route path="/" element={<Home />} />
@@ -91,17 +92,6 @@ function App() {
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<OrderTracking />} />
-        {/* End User And Protected Pages*/}
-
-        {/* <Route
-          path="/search"
-          element={
-            <>
-              <FilterSidebar filters={filters} setFilters={setFilters} />
-              <SearchPage />
-            </>
-          }
-        /> */}
         <Route path="/search" element={<SearchLayout />} />
 
         {/* Static Pages */}
