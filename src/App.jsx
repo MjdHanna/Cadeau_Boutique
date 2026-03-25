@@ -118,3 +118,16 @@ function App() {
 }
 
 export default App;
+
+// integravity
+/* 
+underline 
+pagination11111111111111
+accent color 1111111111
+toast circle
+تمميز الكلمات 11111111111
+وزنين للكلمات
+E-mail
+رسالة المنتج.
+صور الايقونات 1111111111111
+*/

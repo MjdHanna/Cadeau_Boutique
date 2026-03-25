@@ -227,5 +227,9 @@
   "Reset failed": "Reset failed",
   "Verify Your Email": "Verify Your Email",
   "Enter the verification code sent to your email": "Enter the verification code sent to your email",
-  "Enter verification code": "Enter verification code"
+  "Enter verification code": "Enter verification code",
+  "Full name is required": "Full name is required",
+  "Email is required": "Email is required",
+  "Phone number is required": "Phone number is required",
+  "Passwords do not match": "Passwords do not match"
 }

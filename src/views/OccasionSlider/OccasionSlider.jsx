@@ -83,7 +83,7 @@ const OccasionSlider = () => {
                   <img
                     src={o.occasionImage}
                     alt={o.occasionName}
-                    className="w-full h-24 object-cover rounded-xl mb-3"
+                    className="w-full h-32 object-cover rounded-xl mb-3"
                   />
                   <h3
                     title={o.occasionName}

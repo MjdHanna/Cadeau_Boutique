@@ -3,7 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGetBrandsQuery } from "../../redux/features/apiSlice";
 import BrandCard from "../../components/brands/BrandCard";
-
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { IconButton } from "@mui/material";
 const ITEMS_PER_PAGE = 8;
 
 const Brands = () => {
@@ -79,25 +81,33 @@ const Brands = () => {
       </div>
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-10">
-          <button
+          <IconButton
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            sx={{
+              backgroundColor: "#e5e7eb",
+              "&:hover": { backgroundColor: "#d1d5db" },
+            }}
           >
-            {t("Previous")}
-          </button>
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
+
           <span>
             {t("Page")} {currentPage} {t("of")} {totalPages}
           </span>
-          <button
+
+          <IconButton
             onClick={() =>
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages}
-            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            sx={{
+              backgroundColor: "#e5e7eb",
+              "&:hover": { backgroundColor: "#d1d5db" },
+            }}
           >
-            {t("Next")}
-          </button>
+            <ArrowForwardIosIcon fontSize="small" />
+          </IconButton>
         </div>
       )}
     </section>

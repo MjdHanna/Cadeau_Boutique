@@ -118,7 +118,7 @@ const Profile = () => {
     >
       <div className="w-full max-w-6xl bg-white shadow-xl rounded-2xl p-8 flex flex-col lg:flex-row gap-8">
         <div className="flex-1 bg-gray-50 rounded-xl p-6 space-y-4">
-          <h2 className="text-lg font-semibold mb-4">
+          <h2 className="text-lg font-extrabold mb-4">
             {t("Your Information")}
           </h2>
           {userLoading ? (
@@ -128,19 +128,19 @@ const Profile = () => {
           ) : user ? (
             <div className="space-y-2 text-sm">
               <p>
-                <span className="font-medium">{t("Name")}:</span>{" "}
+                <span className="font-extrabold">{t("Name")}:</span>{" "}
                 {user.name || "-"}
               </p>
               <p>
-                <span className="font-medium">{t("Email")}:</span>{" "}
+                <span className="font-extrabold">{t("Email")}:</span>{" "}
                 {user.email || "-"}
               </p>
               <p>
-                <span className="font-medium">{t("Phone")}:</span>{" "}
+                <span className="font-extrabold">{t("Phone")}:</span>{" "}
                 {user.phone_number || "-"}
               </p>
               <p>
-                <span className="font-medium">{t("Gender")}:</span>{" "}
+                <span className="font-extrabold">{t("Gender")}:</span>{" "}
                 {user.gender || "-"}
               </p>
             </div>
@@ -181,11 +181,12 @@ const Profile = () => {
                 <Button
                   type="submit"
                   variant="contained"
+                  color="success"
                   fullWidth
                   disabled={!dirty || !isValid || isSaving}
                 >
                   {isSaving ? (
-                    <CircularProgress size={22} />
+                    <CircularProgress size={22} color="inherit" />
                   ) : (
                     t("Save Changes")
                   )}
@@ -194,9 +195,6 @@ const Profile = () => {
             )}
           </Formik>
           <div className="rounded-xl border border-red-200 bg-red-50 p-6">
-            {/* <h2 className="text-lg font-semibold text-red-600 mb-4">
-              {t("Danger Zone")}
-            </h2> */}
             <Formik
               initialValues={deleteInitialValues}
               validationSchema={deleteValidationSchema}

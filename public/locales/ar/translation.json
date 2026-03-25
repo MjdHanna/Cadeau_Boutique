@@ -228,5 +228,9 @@
   "Reset failed": "فشلت إعادة التعيين",
   "Verify Your Email": "التحقق من البريد الإلكتروني الخاص بك",
   "Enter the verification code sent to your email": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
-  "Enter verification code": "أدخل رمز التحقق"
+  "Enter verification code": "أدخل رمز التحقق",
+  "Full name is required": "الاسم الكامل مطلوب",
+  "Email is required": "البريد الإلكتروني مطلوب",
+  "Phone number is required": "رقم الهاتف مطلوب",
+  "Passwords do not match": "كلمات المرور غير متطابقة"
 }

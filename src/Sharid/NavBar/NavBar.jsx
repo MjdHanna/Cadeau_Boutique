@@ -17,7 +17,7 @@ import {
 } from "../../redux/features/apiSlice";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
 import { useGetCartQuery } from "../../redux/features/apiSlice";
-
+import { useLocation } from "react-router-dom";
 import UAE from "../../assets/images/NavBar/UAE.png";
 import UK from "../../assets/images/NavBar/UK.png";
 import logo from "../../assets/images/authentication/p1.png";
@@ -28,6 +28,7 @@ import { motion } from "framer-motion";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
   const lang = useSelector(selectTranslate);
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
@@ -93,9 +94,17 @@ const Navbar = () => {
                 <Link
                   key={label}
                   to={path}
-                  className="font-medium transition hover:text-primary"
+                  className={`relative font-medium transition hover:text-primary
+        ${location.pathname === path ? "text-primary" : "text-gray-700"}
+      `}
                 >
                   {t(label)}
+
+                  <span
+                    className={`absolute left-0 -bottom-1 h-[2px] bg-primary transition-all duration-300
+          ${location.pathname === path ? "w-full" : "w-0"}
+        `}
+                  />
                 </Link>
               ))}
             </div>
