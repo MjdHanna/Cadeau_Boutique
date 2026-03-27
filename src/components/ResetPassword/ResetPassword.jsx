@@ -9,12 +9,15 @@ import AuthButton from "../AuthButton/AuthButton";
 import { selectUser } from "../../redux/features/authSlice";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+
 const ResetPassword = () => {
   const { t } = useTranslation();
   const [resetPassword] = useResetPasswordMutation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
+
   let userId = sessionStorage.getItem("resetUserId");
+
   if (user?.id) {
     userId = user.id;
     sessionStorage.setItem("resetUserId", userId);
@@ -43,12 +46,16 @@ const ResetPassword = () => {
         password,
         password_confirmation: confirmPassword,
       }).unwrap();
+      sessionStorage.removeItem("resetUserId");
+      sessionStorage.removeItem("resetEmail");
+      sessionStorage.removeItem("resetOtp");
 
-      sessionStorage.clear();
-      toast.success("Password reset successfully");
-      navigate("/login");
+      toast.success(t("Password reset successfully"));
+      setTimeout(() => {
+        navigate("/login", { state: { email } });
+      }, 1500);
     } catch (err) {
-      toast.error(err?.data?.message || "Reset failed");
+      toast.error(err?.data?.message || t("Reset failed"));
     }
   };
 
@@ -63,6 +70,7 @@ const ResetPassword = () => {
             {t("Enter your new password and confirm it a second time")}
           </p>
         </div>
+
         <Formik
           initialValues={{ password: "", confirmPassword: "" }}
           validationSchema={validationSchema}
