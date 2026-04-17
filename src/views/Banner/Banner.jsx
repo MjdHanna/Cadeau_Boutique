@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import banner2 from "../../assets/images/Banner/p1.png";
-import banner3 from "../../assets/images/Banner/p2.png";
+import banner2 from "../../assets/images/Banner/p5.png";
+import banner3 from "../../assets/images/Banner/p6.png";
 import banner1 from "../../assets/images/Banner/p3.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
