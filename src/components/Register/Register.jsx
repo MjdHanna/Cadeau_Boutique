@@ -8,13 +8,13 @@ import { selectTranslate } from "../../redux/features/translateSlice";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useRegisterMutation } from "../../redux/features/apiSlice";
-import p1 from "../../assets/images/authentication/p1.png";
+import p1 from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 
-const MuiTextField = lazy(() =>
-  import("../../components/form/MuiTextField/MuiTextField")
+const MuiTextField = lazy(
+  () => import("../../components/form/MuiTextField/MuiTextField"),
 );
-const MuiPhoneField = lazy(() =>
-  import("../../components/form/MuiPhoneField/MuiPhoneField")
+const MuiPhoneField = lazy(
+  () => import("../../components/form/MuiPhoneField/MuiPhoneField"),
 );
 const AuthButton = lazy(() => import("../AuthButton/AuthButton"));
 
@@ -75,7 +75,7 @@ const Register = () => {
     } catch (error) {
       toast.error(
         error?.data?.message || error?.message || t("Registration failed"),
-        { position: "top-center" }
+        { position: "top-center" },
       );
     } finally {
       dispatch(hideLoader());

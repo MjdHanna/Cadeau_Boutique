@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
 import Loader from "../Loader/Loader";
-import logo from "../../assets/images/authentication/p1.png";
+import logo from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 import toast from "react-hot-toast";
 import { selectToken, selectUser } from "../../redux/features/authSlice";
 import { useContactUsMutation } from "../../redux/features/apiSlice";

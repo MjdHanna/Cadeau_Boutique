@@ -20,7 +20,7 @@ import { useGetCartQuery } from "../../redux/features/apiSlice";
 import { useLocation } from "react-router-dom";
 import UAE from "../../assets/images/NavBar/UAE.png";
 import UK from "../../assets/images/NavBar/UK.png";
-import logo from "../../assets/images/authentication/p1.png";
+import logo from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 import { toast } from "react-hot-toast";
 import { skipToken } from "@reduxjs/toolkit/query";
 

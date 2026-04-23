@@ -1,13 +1,13 @@
 import React, { Suspense } from "react";
 import { motion } from "framer-motion";
-import logo from "../../assets/images/authentication/p1.png";
+import logo from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 import Loader from "../../views/Loader/Loader";
 import { useTranslation } from "react-i18next";
-const FooterSection = React.lazy(() =>
-  import("../../components/FooterSection/FooterSection")
+const FooterSection = React.lazy(
+  () => import("../../components/FooterSection/FooterSection"),
 );
-const FooterSocials = React.lazy(() =>
-  import("../../components/FooterSocials/FooterSocials")
+const FooterSocials = React.lazy(
+  () => import("../../components/FooterSocials/FooterSocials"),
 );
 const Footer = () => {
   const { t, i18n } = useTranslation();

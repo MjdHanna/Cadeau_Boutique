@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { useLoginMutation } from "../../redux/features/apiSlice";
 import { setCredentials } from "../../redux/features/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
-import p1 from "../../assets/images/authentication/p1.png";
+import p1 from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 import FcGoogle from "../../assets/images/authentication/Google__G__logo.svg.png";
 import FaFacebookF from "../../assets/images/authentication/png-transparent-fb-facebook-facebook-logo-social-media-icon-removebg-preview.png";
 const MuiTextField = lazy(

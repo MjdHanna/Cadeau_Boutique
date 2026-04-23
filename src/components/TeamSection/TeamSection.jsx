@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import p from "../../assets/images/Team/photo_2025-11-25_01-40-06.png";
 import p1 from "../../assets/images/Team/0326__23-09-2025__Ghandi_Mallouhi_-_Copy-removebg-preview.jpg";
 import p2 from "../../assets/images/Team/photo_2026-01-14_01-44-48.png";
+import p3 from "../../assets/images/Team/moo.png";
 const TeamSection = () => {
   const { t } = useTranslation();
 
@@ -27,6 +28,12 @@ const TeamSection = () => {
       role: t("Backend Developer (Laravel)"),
       img: p,
     },
+    {
+      id: 3,
+      name: "Mohammad Ali",
+      role: t("Application Developer(Flutter)"),
+      img: p3,
+    },
   ];
 
   return (
@@ -40,7 +47,7 @@ const TeamSection = () => {
         {t("Our Team")}
       </motion.h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto px-4">
         {team.map((member, i) => (
           <motion.div
             key={member.id}
