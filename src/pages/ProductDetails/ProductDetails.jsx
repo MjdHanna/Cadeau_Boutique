@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { selectTranslate } from "../../redux/features/translateSlice";
 import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
 
-
 const ProductDetails = () => {
   const { id } = useParams();
   const { i18n, t } = useTranslation();
@@ -40,19 +39,24 @@ const ProductDetails = () => {
   const localized = useMemo(() => {
     if (!product) return null;
 
+    const featuresRaw = isRTL
+      ? product.featuresArabic
+      : product.featuresEnglish;
+
     return {
       name: isRTL ? product.productNameArabic : product.productNameEnglish,
       description: isRTL
         ? product.productDescriptionArabic
         : product.productDescriptionEnglish,
-      features: isRTL
-        ? product.featuresArabic || null
-        : product.featuresEnglish || null,
+      features: Array.isArray(featuresRaw)
+        ? Object.assign({}, ...featuresRaw)
+        : featuresRaw || {},
       price: product.price,
       images: Array.isArray(product.images) ? product.images : [],
       variants: Array.isArray(product.variants) ? product.variants : [],
     };
   }, [product, isRTL]);
+
   useEffect(() => {
     if (localized?.variants?.length === 1) {
       setSelectedVariant(localized.variants[0].variantId);
@@ -206,8 +210,12 @@ const ProductDetails = () => {
             ${!v.inStock ? "opacity-50 cursor-not-allowed" : ""}
           `}
                   >
-                    {Object.values(v.attributes).join(" / ")} – $
-                    {v.variantPrice}
+                    {Object.values(v.attributes || {})
+                      .map((val) =>
+                        typeof val === "object" ? JSON.stringify(val) : val,
+                      )
+                      .join(" / ")}{" "}
+                    – ${v.variantPrice}
                   </button>
                 ))}
               </div>
@@ -220,13 +228,15 @@ const ProductDetails = () => {
 
           {localized.features && (
             <ul className="mt-8 space-y-3">
-              {Object.entries(localized.features).map(([key, value]) => (
+              {Object.entries(localized.features || {}).map(([key, value]) => (
                 <li
                   key={key}
                   className="flex justify-between bg-gray-50 rounded-xl px-4 py-2"
                 >
                   <span className="font-medium">{key}</span>
-                  <span>{value}</span>
+                  <span>
+                    {typeof value === "object" ? JSON.stringify(value) : value}
+                  </span>
                 </li>
               ))}
             </ul>

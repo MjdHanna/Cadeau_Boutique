@@ -199,7 +199,6 @@ const Navbar = () => {
               className="relative transition hover:text-blue-600"
             >
               <HiShoppingCart size={24} />
-
               {cartCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full">
                   {cartCount}
