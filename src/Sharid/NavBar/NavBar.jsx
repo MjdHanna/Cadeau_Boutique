@@ -76,7 +76,14 @@ const Navbar = () => {
       toast.error(error?.data?.message || t("Logout failed"));
     }
   };
+  const profileImg = user?.profile_img || user?.profileImg;
+  const getImageUrl = (img) => {
+    if (!img) return null;
 
+    if (img.startsWith("http")) return img;
+
+    return `https://cdb-back.bw-businessworld.net/${img}`;
+  };
   return (
     <nav className="fixed top-0 w-full left-0 right-0 z-50 shadow-md bg-white text-gray-800 transition-colors duration-300">
       <div className="px-4 sm:px-6 lg:px-8 w-full">
@@ -137,9 +144,20 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/profile"
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white shadow-lg hover:scale-105 transition"
+                    className="flex items-center justify-center"
                   >
-                    <HiUser size={24} />
+                    <img
+                      src={
+                        profileImg
+                          ? `${getImageUrl(profileImg)}?t=${Date.now()}`
+                          : `https://ui-avatars.com/api/?name=${user?.name || "User"}`
+                      }
+                      onError={(e) => {
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${user?.name || "User"}`;
+                      }}
+                      alt="user"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                    />
                   </Link>
                   <button
                     onClick={handleLogout}

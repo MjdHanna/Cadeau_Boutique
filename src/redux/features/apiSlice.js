@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { setUser } from "./authSlice";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -86,17 +86,36 @@ export const apiSlice = createApi({
     }),
 
     editProfile: builder.mutation({
-      query: (data) => ({
-        url: "account-edit",
-        method: "POST",
-        body: {
-          userName: data.name,
-          email: data.email,
-          phoneNumber: data.phone_number,
-          gender: data.gender,
-        },
-      }),
+      query: (data) => {
+        const formData = new FormData();
+
+        formData.append("userName", data.name);
+        formData.append("email", data.email);
+        formData.append("gender", data.gender);
+        formData.append("birthDate", data.birthDate || "");
+        formData.append("phoneNumber", data.phone_number);
+
+        if (data.profileImg) {
+          formData.append("profileImg", data.profileImg);
+        }
+
+        return {
+          url: "account-edit",
+          method: "POST",
+          body: formData,
+        };
+      },
+
       invalidatesTags: ["Auth"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          const updatedUser = data?.data || data?.user || data;
+
+          dispatch(setUser(updatedUser));
+        } catch (e) {}
+      },
     }),
 
     // Reset Flow
@@ -156,7 +175,9 @@ export const apiSlice = createApi({
     getProducts: builder.query({ query: () => "products" }),
     getProductById: builder.query({ query: (id) => `products/${id}` }),
     getLatestProducts: builder.query({ query: () => "latest-products" }),
-    getVendorById: builder.query({query: (vendorId) => `products-by-vendor/${vendorId}`,}),
+    getVendorById: builder.query({
+      query: (vendorId) => `products-by-vendor/${vendorId}`,
+    }),
 
     // Rating
     addProductRating: builder.mutation({

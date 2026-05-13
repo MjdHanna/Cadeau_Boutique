@@ -31,11 +31,17 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/register",
+              "raw": "http://127.0.0.1:8000/api/register",
+              "protocol": "http",
               "host": [
-                "{{localhost}}"
+                "127",
+                "0",
+                "0",
+                "1"
               ],
+              "port": "8000",
               "path": [
+                "api",
                 "register"
               ]
             }
@@ -60,7 +66,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"john2@example.com\",\r\n    \"password\": \"password123\"\r\n}"
+              "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -317,7 +323,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|8gfMzDhMkg4NTvMYjyYj4GHgBPhyzqHRCa17x8s64d29254b",
+                  "value": "1|CWV4jIxXwpQ5HAOi6T2pPcdivA3ksmx9SKKFqNMR9fed210b",
                   "type": "string"
                 }
               ]
@@ -331,13 +337,45 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"userName\": \"jana\",\r\n    \"email\": \"jana@example.com\",\r\n    \"phoneNumber\": \"000000000\",\r\n    \"gender\": \"female\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userName",
+                  "value": "Karam",
+                  "type": "text",
+                  "uuid": "7a3adace-6bd8-4b56-abf2-f329f2438043"
+                },
+                {
+                  "key": "email",
+                  "value": "john123@example.com",
+                  "type": "text",
+                  "uuid": "805f99eb-a063-4f95-858c-75d0ae69f610"
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text",
+                  "uuid": "84d73339-0c75-4043-ab54-8a85a84f2390"
+                },
+                {
+                  "key": "birthDate",
+                  "value": "2003-12-18",
+                  "type": "text",
+                  "uuid": "3ee1fa7f-1b4b-4dd2-a911-ac8133641a82"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "2345678904",
+                  "type": "text",
+                  "uuid": "6aa9484d-991b-4435-8d8b-eefb1ab9231e"
+                },
+                {
+                  "key": "profileImg",
+                  "type": "file",
+                  "uuid": "4c613de3-1096-412b-b865-ad9a2a90f81c",
+                  "src": "/C:/Users/karam/Downloads/home.png"
                 }
-              }
+              ]
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/account-edit",
@@ -386,7 +424,7 @@
               "raw": ""
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/1",
+              "raw": "http://127.0.0.1:8000/api/brands",
               "protocol": "http",
               "host": [
                 "127",
@@ -397,8 +435,7 @@
               "port": "8000",
               "path": [
                 "api",
-                "brands",
-                "1"
+                "brands"
               ]
             }
           },
@@ -421,7 +458,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/occasions",
+              "raw": "http://127.0.0.1:8000/api/occasions/2",
               "protocol": "http",
               "host": [
                 "127",
@@ -432,7 +469,8 @@
               "port": "8000",
               "path": [
                 "api",
-                "occasions"
+                "occasions",
+                "2"
               ]
             }
           },
@@ -478,7 +516,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/categories",
+              "raw": "http://127.0.0.1:8000/api/categories/2",
               "protocol": "http",
               "host": [
                 "127",
@@ -489,7 +527,8 @@
               "port": "8000",
               "path": [
                 "api",
-                "categories"
+                "categories",
+                "2"
               ]
             }
           },
@@ -508,7 +547,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|niQBX2wCQQl4IbprShkzoINqbNL4vmbrsaPh6zd0dd10d303",
+                  "value": "1|WEeJ6A7xIcubVuZzyq5jGLxcGU4p1uvQ7YHTd8yj4b4023a5",
                   "type": "string"
                 }
               ]
@@ -523,7 +562,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"shopName\": \"text1\",\r\n    \"phoneNumber\": \"0395956727\",\r\n    \"shopDescription\": \"test 123\",\r\n    \"country\": \"somewhere on earth\",\r\n    \"city\": \"fungis\",\r\n    \"address\": \"popop\"\r\n}",
+              "raw": "{\r\n    \"shopNameEn\": \"text1\",\r\n    \"shopNameAr\": \"اختبار1\",\r\n    \"phoneNumber\": \"0395956727\",\r\n    \"shopDescriptionEn\": \"test 123\",\r\n    \"country\": \"somewhere on earth\",\r\n    \"city\": \"fungis\",\r\n    \"address\": \"popop\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -555,69 +594,2527 @@
       "name": "Admin",
       "item": [
         {
-          "name": "getPendingVendors",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://127.0.0.1:8000/api/admin/vendors/pending",
-              "protocol": "http",
-              "host": [
-                "127",
-                "0",
-                "0",
-                "1"
-              ],
-              "port": "8000",
-              "path": [
-                "api",
-                "admin",
-                "vendors",
-                "pending"
-              ]
+          "name": "adCategoory",
+          "item": [
+            {
+              "name": "adGetCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|pNzNh0OrppYrY1ilDumomIQ3DJMJJaE4Lh5yBoyq14ea68f4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-categories",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "addCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "chritsmas2",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "عيد الميلاد2",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test112",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار112",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/add-category",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "updateCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afaZKeMe7pe111c5fc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "chritsmas2222",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "عيد الميلاد2222",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test11",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار112",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "src": "/C:/Users/karam/Downloads/home.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-category/2",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "edit-category",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|2GqpzlIejGvI1i8Rb2G2t3YQJXNHHWBYD25TIVlI37a0a751",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "chritsmas22",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "عيد الميلاد22",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test11",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار11",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af",
+                      "disabled": true
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "src": "/C:/Users/karam/Downloads/home.png",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/delete-category/25",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-category",
+                    "25"
+                  ]
+                }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ]
         },
         {
-          "name": "aproveAVendor",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://127.0.0.1:8000/api/admin/vendors/1/approve",
-              "protocol": "http",
-              "host": [
-                "127",
-                "0",
-                "0",
-                "1"
-              ],
-              "port": "8000",
-              "path": [
-                "api",
-                "admin",
-                "vendors",
-                "1",
-                "approve"
-              ]
+          "name": "adBrands",
+          "item": [
+            {
+              "name": "getAdminBrands",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|a8m1NEJV4QVyfDJiHl61BlzC22AB3uEZtALgIRHN14c409b3",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-brands/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-brands",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "addBrand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|97W1GgV9Khn7X62maGfyfcgk4T60njxGf542F9Wy03ada4c4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Apple1",
+                      "type": "text",
+                      "uuid": "c0214658-fb17-4bf9-989a-b99050c5dc25"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "أبل1",
+                      "type": "text",
+                      "uuid": "d0263ad8-2f05-4267-97bf-a0f1b8310f9c"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test111",
+                      "type": "text",
+                      "uuid": "388d9d0f-8919-4b77-9938-1f0200b01a40"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار111",
+                      "type": "text",
+                      "uuid": "d6901364-fb55-4009-9a32-845713f8c135"
+                    },
+                    {
+                      "key": "logo",
+                      "type": "file",
+                      "uuid": "e9f4965e-4cdb-4b22-98eb-01e24250efcb",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/add-brand",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-brand"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "updateBrand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "apple1223",
+                      "type": "text",
+                      "uuid": "d8f36934-e630-4898-98a3-29c139b70474"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "ابل1223",
+                      "type": "text",
+                      "uuid": "1e856942-c55a-423d-85a8-04be5bad6b3b"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "trst22",
+                      "type": "text",
+                      "uuid": "aeb55c52-302b-441c-97d7-5062fee48396",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "trst22",
+                      "type": "text",
+                      "uuid": "b6d2464c-092b-4c2e-a7f8-173f90a261b0",
+                      "disabled": true
+                    },
+                    {
+                      "key": "logo",
+                      "type": "file",
+                      "uuid": "c272d542-1f30-4023-9540-243838028c8c",
+                      "src": "/C:/Users/karam/Downloads/deer.png",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-brand/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "edit-brand",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteBrand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|97W1GgV9Khn7X62maGfyfcgk4T60njxGf542F9Wy03ada4c4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/delete-brand/12",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-brand",
+                    "12"
+                  ]
+                }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ]
         },
         {
-          "name": "New Request",
-          "request": {
-            "method": "GET",
-            "header": []
-          },
-          "response": []
+          "name": "adOccasions",
+          "item": [
+            {
+              "name": "adGetOccasion",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|cIqWQl83J0tZ7r1tJMunVwfqEvNHm44fjVhX57SNfb1cb6c4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-occasions/9",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-occasions",
+                    "9"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adOccasion",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|a8m1NEJV4QVyfDJiHl61BlzC22AB3uEZtALgIRHN14c409b3",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Birthday12",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "عيد ميلاد12",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test11",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار11",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/add-occasion",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-occasion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "upadateOccasion",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|35ZVNi9B0XE2BImQegozm6fIsgl9tkVZiXRB6N8p70021857",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Birthday1223",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "عيد ميلاد1223",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "test11",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140",
+                      "disabled": true
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "اختبار11",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af",
+                      "disabled": true
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "src": "/C:/Users/karam/Downloads/home.png",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-occasion/4",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "edit-occasion",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteOccasion",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|a8m1NEJV4QVyfDJiHl61BlzC22AB3uEZtALgIRHN14c409b3",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/delete-occasion/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-occasion",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adContact",
+          "item": [
+            {
+              "name": "getMessages",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-messages",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-messages"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteMessage",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|RcBQZTj3O9CFRCDMZfM6GFa6LzgfnVeM9GIdnkRD1d37670d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-message/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-message",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adUsers",
+          "item": [
+            {
+              "name": "getUsers",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-users/7",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-users",
+                    "7"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteUser",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|RcBQZTj3O9CFRCDMZfM6GFa6LzgfnVeM9GIdnkRD1d37670d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-user/11",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-user",
+                    "11"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adUpdateUser",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "5|2hl9GeyKpFL65eWORNea8VkBMxhmUaO5k6xAsQt6f6a1dfdf",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "hadi",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "email",
+                      "value": "test123@example.com",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "test112454545454",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "female",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
+                      "value": null
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "146997d7-18fa-4e8c-8ffc-33ec01364721",
+                      "disabled": true
+                    },
+                    {
+                      "key": "birthDate",
+                      "value": "2000-01-01",
+                      "type": "text",
+                      "uuid": "d478316d-7aa1-4859-855d-94ccae0890fa"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-user/7",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "edit-user",
+                    "7"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "AdVendors",
+          "item": [
+            {
+              "name": "getVendors",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|oXv7dgu1eJFe87z8l9lVefykhqlxSzJlLfgmt5zcf6f44695",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-vendors",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-vendors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteVendor",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|35ZVNi9B0XE2BImQegozm6fIsgl9tkVZiXRB6N8p70021857",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-vendor/2",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-vendor",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getPendingVendors",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|oXv7dgu1eJFe87z8l9lVefykhqlxSzJlLfgmt5zcf6f44695",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/vendors/pending",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "vendors",
+                    "pending"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adAproveAVendor",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|2Y7HM4ZtTawMABjuK2e335v2kNc6wXf7zNnTlqDEa16d34ce",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/vendors/3/approve",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "vendors",
+                    "3",
+                    "approve"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adRejectVendor",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|h22Q2C9NaFsPT6dJoQTzT4osRaUmS8Ur3zGtjIr56b4b809c",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/vendors/3/reject",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "vendors",
+                    "3",
+                    "reject"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adOrders",
+          "item": [
+            {
+              "name": "adGetOrders",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|fU7UdVrbXcGEs56De0ubMueLByuKiHIVqiYe9comb08b95f2",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-orders",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-orders"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteOrder",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|lM4jKZOtfD4MBSVEoLjnU2Owd41eJUN6AfLuN7cZ10895b8f",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-order/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-order",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adEditOrder",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|fU7UdVrbXcGEs56De0ubMueLByuKiHIVqiYe9comb08b95f2",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "shippingAddress",
+                      "value": "Lattakia, Owiena",
+                      "type": "text",
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3"
+                    },
+                    {
+                      "key": "shippingPhone",
+                      "value": "0956956727",
+                      "type": "text",
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394"
+                    },
+                    {
+                      "key": "shippingName",
+                      "value": "karam Anstas",
+                      "type": "text",
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                    },
+                    {
+                      "key": "status",
+                      "value": "processing",
+                      "type": "text",
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-order/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "edit-order",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adStatistic",
+          "item": [
+            {
+              "name": "adGetStatistics",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|pNzNh0OrppYrY1ilDumomIQ3DJMJJaE4Lh5yBoyq14ea68f4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/statistics",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "statistics"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adproducts",
+          "item": [
+            {
+              "name": "adGetProducts",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-products/4",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-products",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adCreateProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Product test",
+                      "type": "text",
+                      "uuid": "df9d2d28-48a8-48f6-935a-3f9486f0ea93"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "اختبار للمنتج",
+                      "type": "text",
+                      "uuid": "acd765fd-4b90-42fa-aa7b-0aaa3ccb8f7f"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "iusdhfkgebhjbshsdckjhskchds",
+                      "type": "text",
+                      "uuid": "ecfb79df-ba3a-4000-8497-9b67e3585ca5"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "يسابنسايباسليبا",
+                      "type": "text",
+                      "uuid": "e24d2eee-0330-4482-b373-a6734d4b62b8"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "aaa67acd-e8b5-4a79-a41b-c786b0514a95"
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "68ecaaf3-08a4-4c2e-8e4b-2d48f8e529b7"
+                    },
+                    {
+                      "key": "vendorId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "78ab1c27-67dd-423f-b722-79b7f660b847"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "2a7f2ba7-92d6-49da-b3a4-64debce13c56",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "d6595613-67e7-484d-8701-f6250ddea01b",
+                      "src": "/C:/Users/karam/Downloads/home.png"
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "e8f303dd-d8d2-4656-9fd6-7896b1773202"
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "d630ae63-c353-4c92-984b-a26c4d2ada09"
+                    },
+                    {
+                      "key": "price",
+                      "value": "400",
+                      "type": "text",
+                      "uuid": "e8449926-91d7-4227-a870-d41730d0389b"
+                    },
+                    {
+                      "key": "variants[0][price]",
+                      "value": "400",
+                      "type": "text",
+                      "uuid": "455d68c4-ff6c-4c36-9d60-3678a91e5656"
+                    },
+                    {
+                      "key": "variants[0][stockQuantity]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "fb91568f-f58b-43c4-8958-0086b9426ebf"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "bdccdf05-ae51-4b2f-92ba-0e2946a2c06e"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][color]",
+                      "value": "Red",
+                      "type": "text",
+                      "uuid": "1411a9d5-74ad-492a-b439-8c2ff904814c"
+                    },
+                    {
+                      "key": "variants[1][price]",
+                      "value": "500",
+                      "type": "text",
+                      "uuid": "073733e8-7b6e-48bd-b093-561d4cc20609"
+                    },
+                    {
+                      "key": "variants[1][stockQuantity]",
+                      "value": "5",
+                      "type": "text",
+                      "uuid": "03dc0ad0-6549-4ea4-9a25-974a2bd241da"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][size]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "3ff32609-b9f5-4ecc-82c3-b413589cf719"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][color]",
+                      "value": "pink",
+                      "type": "text",
+                      "uuid": "2bc9e639-c16d-46ff-a1e7-6f63cda489e4"
+                    },
+                    {
+                      "key": "features[0][Weight]",
+                      "value": "3kg",
+                      "type": "text",
+                      "uuid": "5200f026-a2ed-4a9d-a817-d4a58ad1f54c"
+                    },
+                    {
+                      "key": "features[0][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "dfbf4898-40af-43ce-8c87-591e5093a18c"
+                    },
+                    {
+                      "key": "featuresAr[0][وزن]",
+                      "value": "3كج",
+                      "type": "text",
+                      "uuid": "076313d8-7d09-4298-a193-ca4ff4fd1bac"
+                    },
+                    {
+                      "key": "featuresAr[0][حجم]",
+                      "value": "وسط",
+                      "type": "text",
+                      "uuid": "485f2aa8-16d8-4db3-9751-8c5b78f438bc"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][مقاس]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "0268bee1-b261-4ba6-9875-839b14cf2278"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][اللون]",
+                      "value": "أحمر",
+                      "type": "text",
+                      "uuid": "51d0e92e-07d1-45b8-a6ed-e8f302af891c"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][اللون]",
+                      "value": "زهري",
+                      "type": "text",
+                      "uuid": "2a67f858-558b-45e6-8ac9-ae11e683e647"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][مقاس]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "ce754e99-17e1-425a-928b-16b4498e006f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-add-products",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-add-products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adEditProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Product test",
+                      "type": "text",
+                      "uuid": "df9d2d28-48a8-48f6-935a-3f9486f0ea93"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "اختبار للمنتج2",
+                      "type": "text",
+                      "uuid": "acd765fd-4b90-42fa-aa7b-0aaa3ccb8f7f"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "iusdhfkgebhjbshsdckjhskchds",
+                      "type": "text",
+                      "uuid": "ecfb79df-ba3a-4000-8497-9b67e3585ca5"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "يسابنسايباسليبا45454",
+                      "type": "text",
+                      "uuid": "e24d2eee-0330-4482-b373-a6734d4b62b8"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "7",
+                      "type": "text",
+                      "uuid": "aaa67acd-e8b5-4a79-a41b-c786b0514a95"
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "68ecaaf3-08a4-4c2e-8e4b-2d48f8e529b7"
+                    },
+                    {
+                      "key": "vendorId",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "78ab1c27-67dd-423f-b722-79b7f660b847"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "2a7f2ba7-92d6-49da-b3a4-64debce13c56",
+                      "src": "/C:/Users/karam/Downloads/car.webp"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "d6595613-67e7-484d-8701-f6250ddea01b",
+                      "src": [
+                        "/C:/Users/karam/Downloads/deer.png",
+                        "/C:/Users/karam/Downloads/home.png"
+                      ]
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "e8f303dd-d8d2-4656-9fd6-7896b1773202"
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "4",
+                      "type": "text",
+                      "uuid": "d630ae63-c353-4c92-984b-a26c4d2ada09"
+                    },
+                    {
+                      "key": "price",
+                      "value": "40",
+                      "type": "text",
+                      "uuid": "e8449926-91d7-4227-a870-d41730d0389b"
+                    },
+                    {
+                      "key": "variants[0][price]",
+                      "value": "4002",
+                      "type": "text",
+                      "uuid": "455d68c4-ff6c-4c36-9d60-3678a91e5656"
+                    },
+                    {
+                      "key": "variants[0][stockQuantity]",
+                      "value": "36",
+                      "type": "text",
+                      "uuid": "fb91568f-f58b-43c4-8958-0086b9426ebf"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][size]",
+                      "value": "XL",
+                      "type": "text",
+                      "uuid": "bdccdf05-ae51-4b2f-92ba-0e2946a2c06e"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][color]",
+                      "value": "Violet",
+                      "type": "text",
+                      "uuid": "1411a9d5-74ad-492a-b439-8c2ff904814c"
+                    },
+                    {
+                      "key": "variants[1][price]",
+                      "value": "500",
+                      "type": "text",
+                      "uuid": "073733e8-7b6e-48bd-b093-561d4cc20609"
+                    },
+                    {
+                      "key": "variants[1][stockQuantity]",
+                      "value": "5",
+                      "type": "text",
+                      "uuid": "03dc0ad0-6549-4ea4-9a25-974a2bd241da"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][size]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "3ff32609-b9f5-4ecc-82c3-b413589cf719"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][color]",
+                      "value": "pink",
+                      "type": "text",
+                      "uuid": "2bc9e639-c16d-46ff-a1e7-6f63cda489e4"
+                    },
+                    {
+                      "key": "features[0][Weight]",
+                      "value": "3kg",
+                      "type": "text",
+                      "uuid": "5200f026-a2ed-4a9d-a817-d4a58ad1f54c"
+                    },
+                    {
+                      "key": "features[0][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "dfbf4898-40af-43ce-8c87-591e5093a18c"
+                    },
+                    {
+                      "key": "featuresAr[0][وزن]",
+                      "value": "3كج",
+                      "type": "text",
+                      "uuid": "076313d8-7d09-4298-a193-ca4ff4fd1bac"
+                    },
+                    {
+                      "key": "featuresAr[0][حجم]",
+                      "value": "وسط",
+                      "type": "text",
+                      "uuid": "485f2aa8-16d8-4db3-9751-8c5b78f438bc"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][اللون]",
+                      "value": "لافندر",
+                      "type": "text",
+                      "uuid": "79cf479e-032d-47dd-b24f-9ea7872b712f"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][مقاس]",
+                      "value": "XL",
+                      "type": "text",
+                      "uuid": "6338a826-5b43-4961-a8fc-4ff3ca848615"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][مقاس]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "7bc72d03-2f50-4d04-bfc9-efcaefbe9ce4"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][اللون]",
+                      "value": "زهري",
+                      "type": "text",
+                      "uuid": "fcefe983-d56c-43d0-a3ab-793c86664594"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-edit-product/4",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-edit-product",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|SJvbzShgjA7sm9QtnK7X8hju4DQ8srRdtovDW3pd811b8e6d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-product/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-product",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adPendingProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "5|dLJKzQ3X9NjFxfT9dF2MrKfV9NQsZNrQC2wsZf9z0e397ba6",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-pending-products",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-pending-products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adApproveProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "5|dLJKzQ3X9NjFxfT9dF2MrKfV9NQsZNrQC2wsZf9z0e397ba6",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-product/5/approve",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-product",
+                    "5",
+                    "approve"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adRejectProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|k6Y4x1cfsZ4p4QRcFprex2b2zohF9CvoGxI2atoL4f04eb0d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-product/9/reject",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-product",
+                    "9",
+                    "reject"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "adDrivers",
+          "item": [
+            {
+              "name": "adGetDrivers",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-drivers",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-drivers"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adCreateDriver",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "driverTest2",
+                      "type": "text",
+                      "uuid": "31b6a7ea-b216-453c-9d9d-b41506157ec3"
+                    },
+                    {
+                      "key": "email",
+                      "value": "test1@example.com",
+                      "type": "text",
+                      "uuid": "1c67a03e-e581-492b-b9d5-fe33657b55d7"
+                    },
+                    {
+                      "key": "password",
+                      "value": "pass1233211",
+                      "type": "text",
+                      "uuid": "9357b718-0903-4572-9918-46c20e8a6342"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "263f9851-4703-433a-bed8-268d5d768e94",
+                      "src": "/C:/Users/karam/Downloads/home.png"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "1236987456",
+                      "type": "text",
+                      "uuid": "e1d6f27e-ff1c-4d69-a9cb-706fd8957b6c"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-create-driver",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-create-driver"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adEditDriver",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "driverTest22",
+                      "type": "text",
+                      "uuid": "31b6a7ea-b216-453c-9d9d-b41506157ec3"
+                    },
+                    {
+                      "key": "email",
+                      "value": "test1@example.com",
+                      "type": "text",
+                      "uuid": "1c67a03e-e581-492b-b9d5-fe33657b55d7",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "pass1233211",
+                      "type": "text",
+                      "uuid": "9357b718-0903-4572-9918-46c20e8a6342"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "263f9851-4703-433a-bed8-268d5d768e94",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "1236987456",
+                      "type": "text",
+                      "uuid": "e1d6f27e-ff1c-4d69-a9cb-706fd8957b6c",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-edit-driver/17",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-edit-driver",
+                    "17"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "adDeleteDriver",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-driver/17",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "admin-delete-driver",
+                    "17"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     },
@@ -632,7 +3129,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
+                  "value": "1|zXUIFKuHydlJ2PIeghUI6y455KKLQXZPvHEGrEcD4c6769b9",
                   "type": "string"
                 }
               ]
@@ -676,7 +3173,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
+                  "value": "1|zXUIFKuHydlJ2PIeghUI6y455KKLQXZPvHEGrEcD4c6769b9",
                   "type": "string"
                 }
               ]
@@ -793,7 +3290,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/1",
+              "raw": "http://127.0.0.1:8000/api/products/",
               "protocol": "http",
               "host": [
                 "127",
@@ -805,7 +3302,7 @@
               "path": [
                 "api",
                 "products",
-                "1"
+                ""
               ]
             }
           },
@@ -819,7 +3316,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "4|AP0yWoKlDJvFGdHG1JjOimOcYZapU8RXD7sv1IHW86458825",
+                  "value": "3|U6XaLWNoCfOCueN9sRBH3NnaRT9CY402a2vkWlxf06dd0aa5",
                   "type": "string"
                 }
               ]
@@ -839,7 +3336,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1,\r\n    \"rating\": 5,\r\n    \"review\": \"testttt\"\r\n}"
+              "raw": "{\r\n    \"productId\": 4,\r\n    \"rating\": 5,\r\n    \"review\": \"testttt\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/rating",
@@ -1033,7 +3530,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
+                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
                   "type": "string"
                 }
               ]
@@ -1077,7 +3574,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|CUPUaHS9BIlG753FwltQJCv8qD6PuV2wm1bh1LC085445150",
+                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
                   "type": "string"
                 }
               ]
@@ -1185,7 +3682,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|J3OtnkBjLzIYhsP6F229BgVifxFcmhqA2S9cyeWve7fc973b",
+                  "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
                   "type": "string"
                 }
               ]
@@ -1200,7 +3697,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \r\n}",
+              "raw": "{\r\n    \"userName\": \"tse2t\",\r\n    \"email\": \"john@example.com\",\r\n    \"subject\": \"test\",\r\n    \"message\": \"jhaskdjhascgjhzxbcljyiudgQWKJDBASNMXBIUUEFNASMDsoXDU\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1232,7 +3729,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|qNON4VQbguEMAuNNCmVjdoM3ULHySwtIdc0dmS1ze851ac49",
+                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
                   "type": "string"
                 }
               ]
@@ -1271,7 +3768,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|qNON4VQbguEMAuNNCmVjdoM3ULHySwtIdc0dmS1ze851ac49",
+                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
                   "type": "string"
                 }
               ]
@@ -1314,6 +3811,634 @@
       ]
     },
     {
+      "name": "Vendor",
+      "item": [
+        {
+          "name": "venProducts",
+          "item": [
+            {
+              "name": "venGetProducts",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|0duPEyi8jZTQi29m9jYRzarYGxATT9qJg5SqSl884c059a5d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/vendor/products",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "vendor",
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "venAddProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|0duPEyi8jZTQi29m9jYRzarYGxATT9qJg5SqSl884c059a5d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Product test2",
+                      "type": "text",
+                      "uuid": "df9d2d28-48a8-48f6-935a-3f9486f0ea93"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "اختبار للمنتج",
+                      "type": "text",
+                      "uuid": "acd765fd-4b90-42fa-aa7b-0aaa3ccb8f7f"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "iusdhfkgebhjbshsdckjhskchds",
+                      "type": "text",
+                      "uuid": "ecfb79df-ba3a-4000-8497-9b67e3585ca5"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "يسابنسايباسليبا",
+                      "type": "text",
+                      "uuid": "e24d2eee-0330-4482-b373-a6734d4b62b8"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "aaa67acd-e8b5-4a79-a41b-c786b0514a95"
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "68ecaaf3-08a4-4c2e-8e4b-2d48f8e529b7"
+                    },
+                    {
+                      "key": "vendorId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "78ab1c27-67dd-423f-b722-79b7f660b847"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "2a7f2ba7-92d6-49da-b3a4-64debce13c56",
+                      "src": "/C:/Users/karam/Downloads/party-hat.png"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "d6595613-67e7-484d-8701-f6250ddea01b",
+                      "value": null
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "e8f303dd-d8d2-4656-9fd6-7896b1773202"
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "d630ae63-c353-4c92-984b-a26c4d2ada09"
+                    },
+                    {
+                      "key": "price",
+                      "value": "40",
+                      "type": "text",
+                      "uuid": "e8449926-91d7-4227-a870-d41730d0389b"
+                    },
+                    {
+                      "key": "variants[0][price]",
+                      "value": "40",
+                      "type": "text",
+                      "uuid": "455d68c4-ff6c-4c36-9d60-3678a91e5656"
+                    },
+                    {
+                      "key": "variants[0][stockQuantity]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "fb91568f-f58b-43c4-8958-0086b9426ebf"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "bdccdf05-ae51-4b2f-92ba-0e2946a2c06e"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][color]",
+                      "value": "Red",
+                      "type": "text",
+                      "uuid": "1411a9d5-74ad-492a-b439-8c2ff904814c"
+                    },
+                    {
+                      "key": "variants[1][price]",
+                      "value": "50",
+                      "type": "text",
+                      "uuid": "073733e8-7b6e-48bd-b093-561d4cc20609"
+                    },
+                    {
+                      "key": "variants[1][stockQuantity]",
+                      "value": "5",
+                      "type": "text",
+                      "uuid": "03dc0ad0-6549-4ea4-9a25-974a2bd241da"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][size]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "3ff32609-b9f5-4ecc-82c3-b413589cf719"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][color]",
+                      "value": "pink",
+                      "type": "text",
+                      "uuid": "2bc9e639-c16d-46ff-a1e7-6f63cda489e4"
+                    },
+                    {
+                      "key": "features[0][Weight]",
+                      "value": "3kg",
+                      "type": "text",
+                      "uuid": "5200f026-a2ed-4a9d-a817-d4a58ad1f54c"
+                    },
+                    {
+                      "key": "features[0][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "dfbf4898-40af-43ce-8c87-591e5093a18c"
+                    },
+                    {
+                      "key": "featuresAr[0][وزن]",
+                      "value": "3كج",
+                      "type": "text",
+                      "uuid": "076313d8-7d09-4298-a193-ca4ff4fd1bac"
+                    },
+                    {
+                      "key": "featuresAr[0][حجم]",
+                      "value": "وسط",
+                      "type": "text",
+                      "uuid": "485f2aa8-16d8-4db3-9751-8c5b78f438bc"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][مقاس]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "0268bee1-b261-4ba6-9875-839b14cf2278"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][اللون]",
+                      "value": "أحمر",
+                      "type": "text",
+                      "uuid": "51d0e92e-07d1-45b8-a6ed-e8f302af891c"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][اللون]",
+                      "value": "زهري",
+                      "type": "text",
+                      "uuid": "2a67f858-558b-45e6-8ac9-ae11e683e647"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][مقاس]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "ce754e99-17e1-425a-928b-16b4498e006f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/vendor/add-products",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "vendor",
+                    "add-products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "venEditProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|5m2So5VnY4S3gMnZvSDqBINKvwHjVKQwAONZZ0N53ccf8fa6",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "nameEn",
+                      "value": "Product test",
+                      "type": "text",
+                      "uuid": "df9d2d28-48a8-48f6-935a-3f9486f0ea93"
+                    },
+                    {
+                      "key": "nameAr",
+                      "value": "اختبار للمنتج",
+                      "type": "text",
+                      "uuid": "acd765fd-4b90-42fa-aa7b-0aaa3ccb8f7f"
+                    },
+                    {
+                      "key": "descriptionEn",
+                      "value": "iusdhfkgebhjbshsdckjhskchds",
+                      "type": "text",
+                      "uuid": "ecfb79df-ba3a-4000-8497-9b67e3585ca5"
+                    },
+                    {
+                      "key": "descriptionAr",
+                      "value": "يسابنسايباسليبا",
+                      "type": "text",
+                      "uuid": "e24d2eee-0330-4482-b373-a6734d4b62b8"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "aaa67acd-e8b5-4a79-a41b-c786b0514a95"
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "68ecaaf3-08a4-4c2e-8e4b-2d48f8e529b7"
+                    },
+                    {
+                      "key": "vendorId",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "78ab1c27-67dd-423f-b722-79b7f660b847"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "2a7f2ba7-92d6-49da-b3a4-64debce13c56",
+                      "src": "/C:/Users/karam/Pictures/mothers-day.png"
+                    },
+                    {
+                      "key": "images[]",
+                      "type": "file",
+                      "uuid": "d6595613-67e7-484d-8701-f6250ddea01b",
+                      "value": null
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "e8f303dd-d8d2-4656-9fd6-7896b1773202"
+                    },
+                    {
+                      "key": "occasionIds[]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "d630ae63-c353-4c92-984b-a26c4d2ada09"
+                    },
+                    {
+                      "key": "price",
+                      "value": "400",
+                      "type": "text",
+                      "uuid": "e8449926-91d7-4227-a870-d41730d0389b"
+                    },
+                    {
+                      "key": "variants[0][price]",
+                      "value": "400",
+                      "type": "text",
+                      "uuid": "455d68c4-ff6c-4c36-9d60-3678a91e5656"
+                    },
+                    {
+                      "key": "variants[0][stockQuantity]",
+                      "value": "3",
+                      "type": "text",
+                      "uuid": "fb91568f-f58b-43c4-8958-0086b9426ebf"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "bdccdf05-ae51-4b2f-92ba-0e2946a2c06e"
+                    },
+                    {
+                      "key": "variants[0][attributesEn][color]",
+                      "value": "Red",
+                      "type": "text",
+                      "uuid": "1411a9d5-74ad-492a-b439-8c2ff904814c"
+                    },
+                    {
+                      "key": "variants[1][price]",
+                      "value": "500",
+                      "type": "text",
+                      "uuid": "073733e8-7b6e-48bd-b093-561d4cc20609"
+                    },
+                    {
+                      "key": "variants[1][stockQuantity]",
+                      "value": "5",
+                      "type": "text",
+                      "uuid": "03dc0ad0-6549-4ea4-9a25-974a2bd241da"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][size]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "3ff32609-b9f5-4ecc-82c3-b413589cf719"
+                    },
+                    {
+                      "key": "variants[1][attributesEn][color]",
+                      "value": "pinkkkkk",
+                      "type": "text",
+                      "uuid": "2bc9e639-c16d-46ff-a1e7-6f63cda489e4"
+                    },
+                    {
+                      "key": "features[0][Weight]",
+                      "value": "3000000kg",
+                      "type": "text",
+                      "uuid": "5200f026-a2ed-4a9d-a817-d4a58ad1f54c"
+                    },
+                    {
+                      "key": "features[0][size]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "dfbf4898-40af-43ce-8c87-591e5093a18c"
+                    },
+                    {
+                      "key": "featuresAr[0][وزن]",
+                      "value": "3كج",
+                      "type": "text",
+                      "uuid": "076313d8-7d09-4298-a193-ca4ff4fd1bac"
+                    },
+                    {
+                      "key": "featuresAr[0][حجم]",
+                      "value": "وسط",
+                      "type": "text",
+                      "uuid": "485f2aa8-16d8-4db3-9751-8c5b78f438bc"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][مقاس]",
+                      "value": "M",
+                      "type": "text",
+                      "uuid": "0268bee1-b261-4ba6-9875-839b14cf2278"
+                    },
+                    {
+                      "key": "variants[0][attributesAr][اللون]",
+                      "value": "أحمر",
+                      "type": "text",
+                      "uuid": "51d0e92e-07d1-45b8-a6ed-e8f302af891c"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][اللون]",
+                      "value": "زهري",
+                      "type": "text",
+                      "uuid": "2a67f858-558b-45e6-8ac9-ae11e683e647"
+                    },
+                    {
+                      "key": "variants[1][attributesAr][مقاس]",
+                      "value": "L",
+                      "type": "text",
+                      "uuid": "ce754e99-17e1-425a-928b-16b4498e006f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/vendor/edit-product/5",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "vendor",
+                    "edit-product",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "venDeleteProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "3|5m2So5VnY4S3gMnZvSDqBINKvwHjVKQwAONZZ0N53ccf8fa6",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/vendor/delete-product/4",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "vendor",
+                    "delete-product",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "venStatistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "6|PsrgQIuwMYGa6BUQCvo7KhBaWBYull8LNJ4r0V8D55632ed1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/vendor/statistics",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "vendor",
+                "statistics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "venSplitOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "6|PsrgQIuwMYGa6BUQCvo7KhBaWBYull8LNJ4r0V8D55632ed1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/vendor/orders",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "vendor",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "test",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
@@ -1324,7 +4449,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "5|r8iixQjCWRKrrW69EuBYukexbKQA09IYGI4dm83S81ba08e0",
+              "value": "20|7EoDycZeoPqWrR54J3Ousx1HEpcEngwYOJ2O3qfUc6160374",
               "type": "string"
             }
           ]
@@ -1338,7 +4463,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "",
+          "raw": "{\r\n    \"shippingAddress\":\"Homsss\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1346,7 +4471,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/products",
+          "raw": "https://cdb-back.bw-businessworld.net/api/admin/admin-orders/4",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -1355,7 +4480,9 @@
           ],
           "path": [
             "api",
-            "products"
+            "admin",
+            "admin-orders",
+            "4"
           ]
         }
       },

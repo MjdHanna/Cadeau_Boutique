@@ -232,5 +232,6 @@
   "Full name is required": "الاسم الكامل مطلوب",
   "Email is required": "البريد الإلكتروني مطلوب",
   "Phone number is required": "رقم الهاتف مطلوب",
-  "Passwords do not match": "كلمات المرور غير متطابقة"
+  "Passwords do not match": "كلمات المرور غير متطابقة",
+  "View Products": "عرض المنتجات"
 }
