@@ -1,41 +1,62 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { useGetProductByIdQuery } from "../../redux/features/apiSlice";
-import { useAddProductRatingMutation } from "../../redux/features/apiSlice";
-import { useGetVendorByIdQuery } from "../../redux/features/apiSlice";
-import StarRating from "../../components/StarRating/StarRating";
-import toast from "react-hot-toast";
+import { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectToken } from "../../redux/features/authSlice";
-import { useEffect, useState } from "react";
-import { selectTranslate } from "../../redux/features/translateSlice";
+import toast from "react-hot-toast";
+
+import {
+  useGetProductByIdQuery,
+  useAddProductRatingMutation,
+} from "../../redux/features/apiSlice";
+
+import StarRating from "../../components/StarRating/StarRating";
 import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
+
+import { selectToken } from "../../redux/features/authSlice";
+import { selectTranslate } from "../../redux/features/translateSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { i18n, t } = useTranslation();
+
   const lang = useSelector(selectTranslate);
   const isRTL = i18n.language === "ar";
+  const token = useSelector(selectToken);
+
   const { data, isLoading, error } = useGetProductByIdQuery(id);
+  const product = data?.data;
+
   const [userRating, setUserRating] = useState(0);
   const [review, setReview] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  const token = useSelector(selectToken);
   const [addRating, { isLoading: ratingLoading }] =
     useAddProductRatingMutation();
 
-  const product = data?.data;
+  // sync language
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
 
-  const { data: vendorData } = useGetVendorByIdQuery(product?.vendorId, {
-    skip: !product?.vendorId,
-  });
-  const vendor = vendorData?.data;
+  // auto select variant if only one
+  const variants = useMemo(() => {
+    return Array.isArray(product?.variants) ? product.variants : [];
+  }, [product]);
 
+  useEffect(() => {
+    if (variants.length === 1) {
+      setSelectedVariant(variants[0].variantId);
+    }
+  }, [variants]);
+
+  // rating init
+  useEffect(() => {
+    if (product?.userRating) {
+      setUserRating(product.userRating);
+    }
+  }, [product]);
+
+  // localized product
   const localized = useMemo(() => {
     if (!product) return null;
 
@@ -45,29 +66,22 @@ const ProductDetails = () => {
 
     return {
       name: isRTL ? product.productNameArabic : product.productNameEnglish,
+
       description: isRTL
         ? product.productDescriptionArabic
         : product.productDescriptionEnglish,
-      features: Array.isArray(featuresRaw)
-        ? Object.assign({}, ...featuresRaw)
-        : featuresRaw || {},
+
+      features: featuresRaw || {},
+
       price: product.price,
+
       images: Array.isArray(product.images) ? product.images : [],
-      variants: Array.isArray(product.variants) ? product.variants : [],
+
+      variants,
     };
-  }, [product, isRTL]);
+  }, [product, isRTL, variants]);
 
-  useEffect(() => {
-    if (localized?.variants?.length === 1) {
-      setSelectedVariant(localized.variants[0].variantId);
-    }
-  }, [localized]);
-
-  useEffect(() => {
-    if (product?.userRating) {
-      setUserRating(product.userRating);
-    }
-  }, [product]);
+  // rate handler
   const handleRate = async (value) => {
     if (!token) {
       toast.error(t("Please login to rate this product"));
@@ -109,6 +123,7 @@ const ProductDetails = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-24" dir={isRTL ? "rtl" : "ltr"}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Images */}
         <div className="space-y-4">
           {localized.images.length > 0 ? (
             <img
@@ -135,6 +150,8 @@ const ProductDetails = () => {
             </div>
           )}
         </div>
+
+        {/* Details */}
         <div>
           <h1 className="text-4xl font-bold">{localized.name}</h1>
 
@@ -148,87 +165,78 @@ const ProductDetails = () => {
             </p>
           )}
 
-          {vendor && (
-            <div className="mt-6 ">
-              <h3 className="font-semibold text-lg">
-                {isRTL ? vendor.shopNameArabic : vendor.shopNameEnglish}
-              </h3>
-
-              <p className="text-gray-600 text-sm mt-1">
-                {isRTL
-                  ? vendor.shopDescriptionArabic
-                  : vendor.shopDescriptionEnglish}
-              </p>
-
-              {vendor.shopPhoneNumber && (
-                <p className="text-sm mt-2">
-                  {t("Phone Number")}: {vendor.shopPhoneNumber}
-                </p>
-              )}
-            </div>
-          )}
-
+          {/* Rating */}
           <div className="mt-6">
             <p className="font-medium mb-2">
               {lang === "ar" ? "قيّم هذا المنتج" : "Rate this product"}
             </p>
+
             <StarRating
               onRate={handleRate}
               disabled={ratingLoading}
               value={userRating}
             />
-            <div className="mt-4">
-              <textarea
-                value={review}
-                onChange={(e) => setReview(e.target.value)}
-                rows={3}
-                placeholder={
-                  lang === "ar"
-                    ? "اكتب تعليقك هنا (اختياري)"
-                    : "Write your review here (optional)"
-                }
-                className="w-full rounded-xl  px-4 py-2 text-sm
-      focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
+
+            <textarea
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              rows={3}
+              placeholder={
+                lang === "ar"
+                  ? "اكتب تعليقك هنا (اختياري)"
+                  : "Write your review here (optional)"
+              }
+              className="w-full mt-4 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
           </div>
+
+          {/* Variants */}
           {localized.variants.length > 0 && (
             <div className="mt-6">
               <h3 className="font-semibold mb-2">{t("Options")}</h3>
+
               <div className="flex gap-3 flex-wrap">
-                {localized.variants.map((v) => (
-                  <button
-                    key={v.variantId}
-                    disabled={!v.inStock}
-                    onClick={() => setSelectedVariant(v.variantId)}
-                    className={`px-4 py-2 rounded-full border text-sm transition
-            ${
-              selectedVariant === v.variantId
-                ? "bg-primary text-white"
-                : "bg-white"
-            }
-            ${!v.inStock ? "opacity-50 cursor-not-allowed" : ""}
-          `}
-                  >
-                    {Object.values(v.attributes || {})
-                      .map((val) =>
-                        typeof val === "object" ? JSON.stringify(val) : val,
-                      )
-                      .join(" / ")}{" "}
-                    – ${v.variantPrice}
-                  </button>
-                ))}
+                {localized.variants.map((v) => {
+                  const attrs = isRTL ? v.attributesAr : v.attributesEn;
+
+                  return (
+                    <button
+                      key={v.variantId}
+                      disabled={!v.inStock}
+                      onClick={() => setSelectedVariant(v.variantId)}
+                      className={`px-4 py-2 rounded-full border text-sm transition
+                        ${
+                          selectedVariant === v.variantId
+                            ? "bg-primary text-white"
+                            : "bg-white"
+                        }
+                        ${!v.inStock ? "opacity-50 cursor-not-allowed" : ""}
+                      `}
+                    >
+                      {Object.values(attrs || {})
+                        .map((val) =>
+                          typeof val === "object" ? JSON.stringify(val) : val,
+                        )
+                        .join(" / ")}
+                      {" - "}
+                      {Number(v.variantPrice).toFixed(2)}$
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
+
+          {/* Add to cart */}
           <AddToCartButton
             productId={product.productId}
             variantId={selectedVariant}
           />
 
+          {/* Features */}
           {localized.features && (
             <ul className="mt-8 space-y-3">
-              {Object.entries(localized.features || {}).map(([key, value]) => (
+              {Object.entries(localized.features).map(([key, value]) => (
                 <li
                   key={key}
                   className="flex justify-between bg-gray-50 rounded-xl px-4 py-2"
