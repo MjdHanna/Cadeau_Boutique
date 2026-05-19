@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import {
   useGetProductByIdQuery,
   useAddProductRatingMutation,
+  useGetVendorByIdQuery,
 } from "../../redux/features/apiSlice";
 
 import StarRating from "../../components/StarRating/StarRating";
@@ -25,6 +26,13 @@ const ProductDetails = () => {
 
   const { data, isLoading, error } = useGetProductByIdQuery(id);
   const product = data?.data;
+  const vendorId = product?.vendorId;
+
+  const { data: vendorData } = useGetVendorByIdQuery(vendorId, {
+    skip: !vendorId,
+  });
+
+  const vendor = vendorData?.data;
 
   const [userRating, setUserRating] = useState(0);
   const [review, setReview] = useState("");
@@ -226,7 +234,163 @@ const ProductDetails = () => {
               </div>
             </div>
           )}
+          {/* Vendor Info */}
 
+          {vendor && (
+            <div
+              className="
+      mt-10
+      rounded-3xl
+      border border-gray-200
+      bg-white
+      shadow-sm
+      overflow-hidden
+    "
+            >
+              {/* HEADER */}
+
+              <div
+                className="
+        p-6
+        border-b border-gray-100
+        flex flex-col sm:flex-row
+        sm:items-center
+        justify-between
+        gap-5
+      "
+              >
+                <div className="flex items-center gap-4">
+                  {/* LOGO */}
+
+                  <div
+                    className="
+            w-20 h-20
+            rounded-2xl
+            overflow-hidden
+            bg-gray-100
+            flex items-center justify-center
+            border
+          "
+                  >
+                    {vendor.shopLogo ? (
+                      <img
+                        src={vendor.shopLogo}
+                        alt={vendor.shopNameEnglish}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-3xl">🏪</span>
+                    )}
+                  </div>
+
+                  {/* INFO */}
+
+                  <div>
+                    <h3 className="text-2xl font-black">
+                      {isRTL ? vendor.shopNameArabic : vendor.shopNameEnglish}
+                    </h3>
+
+                    <p className="text-gray-500 mt-1 max-w-md">
+                      {isRTL
+                        ? vendor.shopDescriptionArabic ||
+                          vendor.shopDescriptionEnglish
+                        : vendor.shopDescriptionEnglish}
+                    </p>
+
+                    <div className="flex items-center gap-3 mt-3 text-sm text-gray-500">
+                      <span>📞 {vendor.shopPhoneNumber}</span>
+
+                      <span>•</span>
+
+                      <span>
+                        {vendor.products?.length || 0} {t("Products")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* BUTTON */}
+
+                {/* <button
+                  className="
+          px-6 py-3
+          rounded-2xl
+          bg-primary
+          text-white
+          font-bold
+          hover:opacity-90
+          transition
+        "
+                >
+                  {t("Visit Store")}
+                </button> */}
+              </div>
+
+              {/* MORE PRODUCTS */}
+
+              {vendor.products?.length > 0 && (
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-5">
+                    <h4 className="text-xl font-black">
+                      {t("More From This Store")}
+                    </h4>
+
+                    <span className="text-sm text-gray-400">
+                      {vendor.products.length} {t("items")}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {vendor.products
+                      .filter((p) => p.productId !== product.productId)
+                      .slice(0, 4)
+                      .map((item) => (
+                        <div
+                          key={item.productId}
+                          className="
+                  flex gap-4
+                  rounded-2xl
+                  border border-gray-100
+                  p-3
+                  hover:shadow-md
+                  transition
+                "
+                        >
+                          <img
+                            src={item.productImage}
+                            alt={item.productNameEnglish}
+                            className="
+                    w-24 h-24
+                    rounded-xl
+                    object-cover
+                    bg-gray-100
+                  "
+                          />
+
+                          <div className="flex-1">
+                            <h5 className="font-bold line-clamp-2">
+                              {isRTL
+                                ? item.productNameArabic
+                                : item.productNameEnglish}
+                            </h5>
+
+                            <p className="text-primary font-black mt-2">
+                              ${item.price}
+                            </p>
+
+                            <p className="text-sm text-gray-500 mt-1">
+                              {isRTL
+                                ? item.brandNameArabic
+                                : item.brandNameEnglish}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           {/* Add to cart */}
           <AddToCartButton
             productId={product.productId}

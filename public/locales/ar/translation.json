@@ -233,5 +233,66 @@
   "Email is required": "البريد الإلكتروني مطلوب",
   "Phone number is required": "رقم الهاتف مطلوب",
   "Passwords do not match": "كلمات المرور غير متطابقة",
-  "View Products": "عرض المنتجات"
+  "View Products": "عرض المنتجات",
+  "Shopping Cart": "سلة التسوق",
+  "Gift Message": "رسالة الهدية",
+  "Gift Wrapping": "تغليف الهدايا",
+  "Gift Experience": "تجربة الهدايا",
+  "Turn your order into a luxury gift": "حوّل طلبك إلى هدية فاخرة",
+  "Choose premium wrapping style": "اختر أسلوب التغليف الفاخر",
+  "Greeting Message": "رسالة تحية",
+  "Delivery Date": "تاريخ التسليم او الوصول",
+  "Gift Wrap": "تغليف الهدايا",
+  "Complete Order": "إكمال الطلب",
+  "Premium Gift Product": "منتج هدايا مميز",
+  "Order Summary": "ملخص الطلب",
+  "Recipient": "المتلقي",
+  "Choose Follower": "اختر متابعًا لك",
+  "Gift Recipient ✨": "متلقي الهدية ✨",
+  "Choose who will receive this gift": "اختر من سيتلقى هذه الهدية",
+  "More From This Store": "المزيد من هذا المتجر",
+  "Friends": "الأصدقاء",
+  "Requests": "الطلبات",
+  "Sent": "المرسلة",
+  "Sent Requests": "الطلبات المرسلة",
+  "Manage your friendships and requests": "إدارة صداقاتك وطلباتك",
+  "Search users...": "ابحث عن مستخدمين...",
+  "Please login to access friends": "يرجى تسجيل الدخول للوصول إلى الأصدقاء",
+  "Login": "تسجيل الدخول",
+
+  "No Friends Yet": "لا يوجد أصدقاء بعد",
+  "You don't have any friends right now.": "ليس لديك أي أصدقاء حاليًا.",
+
+  "No Requests": "لا توجد طلبات",
+  "You don't have pending requests.": "ليس لديك طلبات معلقة.",
+
+  "No Sent Requests": "لا توجد طلبات مرسلة",
+  "You have not sent any requests yet.": "لم تقم بإرسال أي طلبات بعد.",
+
+  "Remove": "إزالة",
+  "Accept": "قبول",
+  "Cancel": "إلغاء",
+
+  "Unknown User": "مستخدم غير معروف",
+  "No Email": "لا يوجد بريد إلكتروني",
+
+  "Manage Friends": "إدارة الأصدقاء",
+  "Friend Requests": "طلبات الصداقة",
+  "Your Connections": "اتصالاتك",
+
+  "Loading...": "جاري التحميل...",
+  "Search Friends": "البحث عن أصدقاء",
+  "No Results Found": "لم يتم العثور على نتائج",
+
+  "Friend Removed Successfully": "تمت إزالة الصديق بنجاح",
+  "Friend Request Accepted": "تم قبول طلب الصداقة",
+  "Friend Request Rejected": "تم رفض طلب الصداقة",
+  "Friend Request Cancelled": "تم إلغاء طلب الصداقة",
+
+  "Online": "متصل",
+  "Offline": "غير متصل",
+
+  "View Profile": "عرض الملف الشخصي",
+  "Pending": "قيد الانتظار",
+  "Connection Requests": "طلبات الاتصال"
 }

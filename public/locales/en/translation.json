@@ -232,5 +232,66 @@
   "Full name is required": "Full name is required",
   "Email is required": "Email is required",
   "Phone number is required": "Phone number is required",
-  "Passwords do not match": "Passwords do not match"
+  "Passwords do not match": "Passwords do not match",
+  "Shopping Cart": "Shopping Cart",
+  "Gift Message": "Gift Message",
+  "Gift Wrapping": "Gift Wrapping",
+  "Gift Experience": "Gift Experience",
+  "Turn your order into a luxury gift": "Turn your order into a luxury gift",
+  "Choose premium wrapping style": "Choose premium wrapping style",
+  "Greeting Message": "Greeting Message",
+  "Delivery Date": "Delivery Date",
+  "Gift Wrap": "Gift Wrap",
+  "Complete Order": "Complete Order",
+  "Premium Gift Product": "Premium Gift Product",
+  "Order Summary": "Order Summary",
+  "Recipient": "Recipient",
+  "Choose Follower": "Choose Follower",
+  "Gift Recipient ✨": "Gift Recipient ✨",
+  "Choose who will receive this gift": "Choose who will receive this gift",
+  "More From This Store": "More From This Store",
+  "Friends": "Friends",
+  "Requests": "Requests",
+  "Sent": "Sent",
+  "Sent Requests": "Sent Requests",
+  "Manage your friendships and requests": "Manage your friendships and requests",
+  "Search users...": "Search users...",
+  "Please login to access friends": "Please login to access friends",
+  "Login": "Login",
+
+  "No Friends Yet": "No Friends Yet",
+  "You don't have any friends right now.": "You don't have any friends right now.",
+
+  "No Requests": "No Requests",
+  "You don't have pending requests.": "You don't have pending requests.",
+
+  "No Sent Requests": "No Sent Requests",
+  "You have not sent any requests yet.": "You have not sent any requests yet.",
+
+  "Remove": "Remove",
+  "Accept": "Accept",
+  "Cancel": "Cancel",
+
+  "Unknown User": "Unknown User",
+  "No Email": "No Email",
+
+  "Manage Friends": "Manage Friends",
+  "Friend Requests": "Friend Requests",
+  "Your Connections": "Your Connections",
+
+  "Loading...": "Loading...",
+  "Search Friends": "Search Friends",
+  "No Results Found": "No Results Found",
+
+  "Friend Removed Successfully": "Friend Removed Successfully",
+  "Friend Request Accepted": "Friend Request Accepted",
+  "Friend Request Rejected": "Friend Request Rejected",
+  "Friend Request Cancelled": "Friend Request Cancelled",
+
+  "Online": "Online",
+  "Offline": "Offline",
+
+  "View Profile": "View Profile",
+  "Pending": "Pending",
+  "Connection Requests": "Connection Requests"
 }

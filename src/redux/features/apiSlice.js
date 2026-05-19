@@ -22,6 +22,14 @@ export const apiSlice = createApi({
         "removeFromCart",
         "getOrders",
         "checkout",
+        "getFriends",
+        "getPendingRequests",
+        "getSentRequests",
+        "addFriend",
+        "acceptFriend",
+        "rejectFriend",
+        "cancelFriendRequest",
+        "removeFriend",
       ];
 
       if (token && protectedEndpoints.includes(endpoint)) {
@@ -33,7 +41,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Wishlist", "Cart", "Orders"],
+  tagTypes: ["Auth", "Wishlist", "Cart", "Orders", "Friends"],
   endpoints: (builder) => ({
     // Auth
     register: builder.mutation({
@@ -265,6 +273,70 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Cart", "Orders"],
     }),
+    // Friends
+    getFriends: builder.query({
+      query: () => ({
+        url: "friends",
+        method: "GET",
+      }),
+      providesTags: ["Friends"],
+    }),
+
+    getPendingRequests: builder.query({
+      query: () => ({
+        url: "friends/incoming-requests",
+        method: "GET",
+      }),
+      providesTags: ["Friends"],
+    }),
+
+    getSentRequests: builder.query({
+      query: () => ({
+        url: "friends/sent-requests",
+        method: "GET",
+      }),
+      providesTags: ["Friends"],
+    }),
+
+    addFriend: builder.mutation({
+      query: (userId) => ({
+        url: `friends/${userId}/request`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Friends"],
+    }),
+
+    acceptFriend: builder.mutation({
+      query: (requestId) => ({
+        url: `friends/request/${requestId}/accept`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Friends"],
+    }),
+
+    rejectFriend: builder.mutation({
+      query: (requestId) => ({
+        url: `friends/request/${requestId}/reject`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Friends"],
+    }),
+
+    cancelFriendRequest: builder.mutation({
+      query: (requestId) => ({
+        url: `friends/${requestId}/cancel`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Friends"],
+    }),
+
+    removeFriend: builder.mutation({
+      query: (friendId) => ({
+        url: `friends/${friendId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Friends"],
+    }),
   }),
 });
 
@@ -301,4 +373,12 @@ export const {
   useGetOrdersQuery,
   useCheckoutMutation,
   useGetVendorByIdQuery,
+  useGetFriendsQuery,
+  useGetPendingRequestsQuery,
+  useGetSentRequestsQuery,
+  useAddFriendMutation,
+  useAcceptFriendMutation,
+  useRejectFriendMutation,
+  useCancelFriendRequestMutation,
+  useRemoveFriendMutation,
 } = apiSlice;

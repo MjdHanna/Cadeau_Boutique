@@ -1,278 +1,91 @@
-import React, { lazy, Suspense, useMemo } from "react";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
-import { selectToken } from "../../redux/features/authSlice";
-import {
-  useGetCartQuery,
-  useRemoveFromCartMutation,
-  useAddToCartMutation,
-  useCheckoutMutation,
-} from "../../redux/features/apiSlice";
+import CartItem from "./CartItem";
+import GiftExperience from "./GiftExperience";
+import OrderSummary from "./OrderSummary";
 
-import EmptyState from "../../components/EmptyState/EmptyState";
-import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
-import MuiPhoneField from "../../components/form/MuiPhoneField/MuiPhoneField";
-import toast from "react-hot-toast";
-import p from "../../assets/images/Cart/Frame.png";
-import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import Stack from "@mui/material/Stack";
-
-const LoginRequired = lazy(
-  () => import("../../components/LoginRequired/LoginRequired"),
-);
-const CheckoutSchema = Yup.object({
-  shippingName: Yup.string().required("Full name is required"),
-  shippingPhone: Yup.string().required("Phone number is required"),
-  shippingAddress: Yup.string().required("Address is required"),
-  paymentMethod: Yup.string().required("Payment method is required"),
-});
+const staticCartItems = [
+  {
+    cartItemId: 1,
+    productName: "Luxury Watch",
+    quantity: 1,
+    totalPrice: 120,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+  },
+  {
+    cartItemId: 2,
+    productName: "Elegant Perfume",
+    quantity: 2,
+    totalPrice: 80,
+    image: "https://images.unsplash.com/photo-1541643600914-78b084683601",
+  },
+];
 
 const Cart = () => {
-  const token = useSelector(selectToken);
-  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+
   const isRTL = i18n.language === "ar";
 
-  const {
-    data: cartData,
-    isLoading,
-    isFetching,
-    isError,
-    error,
-  } = useGetCartQuery(undefined, {
-    skip: !token,
+  const [giftData, setGiftData] = useState({
+    enabled: true,
+
+    occasion: "birthday",
+
+    coverId: 1,
+
+    coverPrice: 8,
+
+    message: "",
+
+    recipientType: "self",
+
+    selectedFollower: null,
+
+    recipient: {
+      name: "",
+      phone: "",
+      address: "",
+    },
+
+    deliveryDate: "",
   });
 
-  const [removeFromCart, { isLoading: removing }] = useRemoveFromCartMutation();
-  const [addToCart, { isLoading: updating }] = useAddToCartMutation();
-
-  const [checkout, { isLoading: placingOrder }] = useCheckoutMutation();
-  const items = Array.isArray(cartData?.data?.cartItems)
-    ? cartData.data.cartItems
-    : [];
   const total = useMemo(() => {
-    return items.reduce((sum, item) => sum + Number(item.totalPrice || 0), 0);
-  }, [items]);
-  if (!token) {
-    return (
-      <Suspense
-        fallback={
-          <div className="text-center py-28 text-lg font-medium opacity-60">
-            Loading...
-          </div>
-        }
-      >
-        <LoginRequired
-          message={t("Please login to view your cart")}
-          redirectTo="/login"
-          buttonText={t("Login")}
-        />
-      </Suspense>
+    const itemsTotal = staticCartItems.reduce(
+      (sum, item) => sum + item.totalPrice,
+      0,
     );
-  }
-  if (isLoading || isFetching) {
-    return (
-      <div className="text-center py-28 text-lg font-medium opacity-60">
-        {t("Loading cart...")}
-      </div>
-    );
-  }
-  if (isError) {
-    console.error("Cart API Error:", error);
-    return (
-      <div className="text-center py-28 text-red-500 font-medium">
-        {t("Failed to load cart")}
-      </div>
-    );
-  }
-  if (items.length === 0) {
-    return (
-      <EmptyState imageSrc={p} descriptionKey="Add items to start shopping" />
-    );
-  }
-  const handleIncrease = async (item) => {
-    const stock = Number(item.stockQuantity || 99);
 
-    if (item.quantity >= stock) {
-      toast.error(t("No more stock available"));
-      return;
-    }
+    return itemsTotal + (giftData.enabled ? giftData.coverPrice : 0);
+  }, [giftData]);
 
-    try {
-      await addToCart({
-        productId: item.productId,
-        variantId: item.variantId,
-        quantity: 1,
-      }).unwrap();
-    } catch (err) {
-      toast.error(t("Failed to update quantity"));
-    }
-  };
   return (
-    <div
-      className="max-w-5xl mx-auto px-4 py-10 space-y-8"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
-      <h2 className="text-2xl font-bold">{t("Your Cart")}</h2>
-      <div className="space-y-4">
-        {items.map((item) => {
-          const productName = isRTL
-            ? item.productNameArabic
-            : item.productNameEnglish;
+    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-[#f5f7fb]">
+      <div className="max-w-7xl mx-auto px-4 py-26">
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl font-black mb-10"
+        >
+          {t("Shopping Cart")}
+        </motion.h1>
 
-          return (
-            <motion.div
-              key={item.cartItemId}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between
-                gap-4 bg-white rounded-2xl p-5 shadow-md"
-            >
-              <div className="flex items-center gap-4">
-                {item.productImage && (
-                  <img
-                    src={item.productImage}
-                    alt={productName}
-                    className="w-20 h-20 object-cover rounded-xl bg-gray-100"
-                  />
-                )}
-
-                <div>
-                  <h3 className="font-semibold text-lg">{productName}</h3>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    className="mt-2"
-                  >
-                    <IconButton
-                      size="small"
-                      disabled={removing}
-                      onClick={() =>
-                        removeFromCart({
-                          productId: item.productId,
-                          variantId: item.variantId,
-                        })
-                      }
-                      sx={{
-                        border: "1px solid #e5e7eb",
-                        bgcolor: "#f9fafb",
-                        "&:hover": { bgcolor: "#f3f4f6" },
-                      }}
-                    >
-                      <RemoveIcon fontSize="small" />
-                    </IconButton>
-
-                    <span className="min-w-[28px] text-center font-semibold">
-                      {item.quantity}
-                    </span>
-
-                    <IconButton
-                      size="small"
-                      onClick={() => handleIncrease(item)}
-                      disabled={updating || removing}
-                      sx={{
-                        border: "1px solid #e5e7eb",
-                        bgcolor: "#f9fafb",
-                        "&:hover": { bgcolor: "#f3f4f6" },
-                      }}
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Stack>
-
-                  <p className="text-sm font-medium text-primary mt-1.5">
-                    ${item.totalPrice}
-                  </p>
-                </div>
-              </div>
-
-              {/* <button
-                disabled={removing}
-                onClick={() =>
-                  removeFromCart({
-                    productId: item.productId,
-                    variantId: item.variantId,
-                  })
-                }
-                className="text-red-500 font-medium hover:underline
-                  disabled:opacity-50 self-start sm:self-auto"
-              >
-                {t("Remove")}
-              </button> */}
-            </motion.div>
-          );
-        })}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="xl:col-span-2 space-y-6">
+            {staticCartItems.map((item) => (
+              <CartItem key={item.cartItemId} item={item} />
+            ))}
+            <GiftExperience giftData={giftData} setGiftData={setGiftData} />
+          </div>
+          <OrderSummary
+            total={total}
+            items={staticCartItems}
+            giftData={giftData}
+          />
+        </div>
       </div>
-      <Formik
-        initialValues={{
-          shippingName: "",
-          shippingPhone: "",
-          shippingAddress: "",
-          paymentMethod: "cash",
-        }}
-        validationSchema={CheckoutSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          try {
-            await checkout(values).unwrap();
-            navigate("/orders");
-          } catch (err) {
-            console.error("Checkout error:", err);
-          } finally {
-            setSubmitting(false);
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form className="space-y-4 pt-6 border-t">
-            <MuiTextField
-              name="shippingName"
-              label={t("Full Name")}
-              placeholder={t("Enter your full name")}
-            />
-
-            <MuiPhoneField
-              name="shippingPhone"
-              label={t("Phone Number")}
-              placeholder="+961..."
-            />
-
-            <MuiTextField
-              name="shippingAddress"
-              label={t("Shipping Address")}
-              placeholder={t("City, Street, Building")}
-            />
-
-            <MuiTextField
-              name="paymentMethod"
-              label={t("Payment Method")}
-              disabled
-            />
-
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
-              <p className="text-xl font-bold">
-                {t("Total")}: ${total.toFixed(2)}
-              </p>
-
-              <button
-                type="submit"
-                disabled={placingOrder || isSubmitting}
-                className="bg-primary text-white px-8 py-3 rounded-xl
-                  font-medium hover:opacity-90 disabled:opacity-50"
-              >
-                {placingOrder ? t("Placing order...") : t("Place Order")}
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
     </div>
   );
 };

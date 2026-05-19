@@ -2033,7 +2033,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|fU7UdVrbXcGEs56De0ubMueLByuKiHIVqiYe9comb08b95f2",
+                      "value": "2|YO6ZW2ELzqWsydX8slMIHUWR8pU8ITbyLbyJCO9Idadae74e",
                       "type": "string"
                     }
                   ]
@@ -2058,30 +2058,33 @@
                       "key": "shippingAddress",
                       "value": "Lattakia, Owiena",
                       "type": "text",
-                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3"
+                      "uuid": "a1c265b7-6eee-4b9f-9208-1c8ef586e6c3",
+                      "disabled": true
                     },
                     {
                       "key": "shippingPhone",
                       "value": "0956956727",
                       "type": "text",
-                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394"
+                      "uuid": "43ba939d-e5d6-4c46-b0c1-f5e2e98d9394",
+                      "disabled": true
                     },
                     {
                       "key": "shippingName",
                       "value": "karam Anstas",
                       "type": "text",
-                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140",
+                      "disabled": true
                     },
                     {
                       "key": "status",
-                      "value": "processing",
+                      "value": "cancelled",
                       "type": "text",
                       "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
                     }
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-order/1",
+                  "raw": "http://127.0.0.1:8000/api/admin/edit-order/2",
                   "protocol": "http",
                   "host": [
                     "127",
@@ -2094,7 +2097,7 @@
                     "api",
                     "admin",
                     "edit-order",
-                    "1"
+                    "2"
                   ]
                 }
               },
@@ -2223,7 +2226,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "value": "19|H7Cr3YHsEANJ4kqoDngnLOYMJtsSb58PcsZkX7VQc7fcb4e4",
                       "type": "string"
                     }
                   ]
@@ -3574,7 +3577,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
+                  "value": "1|99sbCqy7jgJhcOaOCzPy4CC7jRS3jpBpLoyAn0knb74acefd",
                   "type": "string"
                 }
               ]
@@ -3589,7 +3592,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 4,\r\n    \"variantId\": 6,\r\n    \"quantity\": 2\r\n}",
+              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3729,7 +3732,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
+                  "value": "1|1lnSoPZUR1TXNMZq55XHD8hxCKjB3XZ1ikE1PIMl2b4b4d1b",
                   "type": "string"
                 }
               ]
@@ -3768,7 +3771,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
+                  "value": "1|99sbCqy7jgJhcOaOCzPy4CC7jRS3jpBpLoyAn0knb74acefd",
                   "type": "string"
                 }
               ]
@@ -3783,7 +3786,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"shippingName\": \"John Doe\",\r\n    \"shippingPhone\": \"+96170123456\",\r\n    \"shippingAddress\": \"Beirut, Hamra Street\",\r\n    \"paymentMethod\": \"\"\r\n}",
+              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\",\r\n  \"paymentMethod\": \"Cash on Delivery\",\r\n  \"couponCode\": \"popo\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3803,6 +3806,51 @@
               "path": [
                 "api",
                 "checkout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "orderHistory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|x6t52oGv8U5vZDZUBkJjB9zV6OOjqSGmRqJjnoci63c34ed3",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders/history",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders",
+                "history"
               ]
             }
           },
@@ -3869,7 +3917,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "4|0duPEyi8jZTQi29m9jYRzarYGxATT9qJg5SqSl884c059a5d",
+                      "value": "3|0U5ufwYQP43dJ9Fmxt92qxEQs53sWiM29kJQ9GC77e8f40db",
                       "type": "string"
                     }
                   ]
@@ -3936,13 +3984,17 @@
                       "key": "images[]",
                       "type": "file",
                       "uuid": "2a7f2ba7-92d6-49da-b3a4-64debce13c56",
-                      "src": "/C:/Users/karam/Downloads/party-hat.png"
+                      "src": [
+                        "/C:/Users/karam/Downloads/party-hat.png",
+                        "/C:/Users/karam/Downloads/home.png"
+                      ]
                     },
                     {
                       "key": "images[]",
                       "type": "file",
                       "uuid": "d6595613-67e7-484d-8701-f6250ddea01b",
-                      "value": null
+                      "value": null,
+                      "disabled": true
                     },
                     {
                       "key": "occasionIds[]",
@@ -4439,6 +4491,425 @@
       ]
     },
     {
+      "name": "Friends",
+      "item": [
+        {
+          "name": "getFriends",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getPendingRequests",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "4|QhVmFdTDTPdKvhmsT9GspnCu7aPf7EfrQYoh8gsye1e6101c",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/incoming-requests",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "incoming-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getsendingRequests",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/sent-requests",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "sent-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "addFriend",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|HPQTKBSPYsl0JzZv81xQEpCWH1WzYstkPeOdsSMJ71ece0c8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/11/request",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "11",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "acceptFriend",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|WoRQDfg5jNNnUETCo8uv6nt9P8JZbYLgVysYwPHj4738017a",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/request/1/accept",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "request",
+                "1",
+                "accept"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "rejectFriend",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|JZ5BTELnDuIFvtbVbACA7TauoSdBEW2Zx7cfUqIu1c57dfdc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/request/3/reject",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "request",
+                "3",
+                "reject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cancelFriendReq",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/13/cancel",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "13",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removeFriend",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/13",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "13"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "giftWrappers",
+      "item": [
+        {
+          "name": "getGiftWrappers",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|m3VcyDXNun9KY5ZA1bfRvGCmFpbDKsPuoeEVZfsyea735652",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/gift-wrappers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "gift-wrappers"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "test",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
@@ -4449,7 +4920,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "20|7EoDycZeoPqWrR54J3Ousx1HEpcEngwYOJ2O3qfUc6160374",
+              "value": "6|O9gHzISgs4kHNJVPwdJoMqIy8Dpp1F1CzT4Hn9cPac8bedbb",
               "type": "string"
             }
           ]
@@ -4463,7 +4934,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"shippingAddress\":\"Homsss\"\r\n}",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"
@@ -4471,7 +4942,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/admin/admin-orders/4",
+          "raw": "https://cdb-back.bw-businessworld.net/api/vendor/apply",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -4480,9 +4951,8 @@
           ],
           "path": [
             "api",
-            "admin",
-            "admin-orders",
-            "4"
+            "vendor",
+            "apply"
           ]
         }
       },

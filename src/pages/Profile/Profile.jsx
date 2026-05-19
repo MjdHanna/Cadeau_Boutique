@@ -1,7 +1,8 @@
 import React, { Suspense, lazy, memo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectTranslate } from "../../redux/features/translateSlice";
+
 import { selectToken } from "../../redux/features/authSlice";
+import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { toast } from "react-hot-toast";

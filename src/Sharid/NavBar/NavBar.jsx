@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { HiMenu, HiX, HiShoppingCart, HiUser } from "react-icons/hi";
+import {
+  HiMenu,
+  HiX,
+  HiShoppingCart,
+  HiUser,
+  HiUsers,
+  HiOutlineBell,
+  HiCheckCircle,
+  HiOutlineHeart,
+  HiOutlineShoppingBag,
+} from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -23,8 +33,8 @@ import UK from "../../assets/images/NavBar/UK.png";
 import logo from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 import { toast } from "react-hot-toast";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { motion } from "framer-motion";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
@@ -32,6 +42,7 @@ const Navbar = () => {
   const lang = useSelector(selectTranslate);
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
+  // const [showNotifications, setShowNotifications] = useState(false);
   const { data: cartData } = useGetCartQuery(undefined, {
     skip: !token,
   });
@@ -50,18 +61,66 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const dataa = [
-    { label: "Home", path: "/" },
-    { label: "Search With Items", path: "/search" },
-    { label: "Wishlist", path: "/wishlist" },
-    { label: "Trackorder", path: "/orders" },
-    { label: "About", path: "/about" },
-    { label: "Contact", path: "/contact" },
+    {
+      label: "Home",
+      path: "/",
+    },
+    {
+      label: "Search With Items",
+      path: "/search",
+    },
+    {
+      label: "Friends",
+      path: "/friends",
+      icon: HiUsers,
+    },
+    {
+      label: "Wishlist",
+      path: "/wishlist",
+    },
+    {
+      label: "Trackorder",
+      path: "/orders",
+    },
+    {
+      label: "About",
+      path: "/about",
+    },
+    {
+      label: "Contact",
+      path: "/contact",
+    },
   ];
   useEffect(() => {
     i18n.changeLanguage(lang);
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang, i18n]);
-
+  // const notifications = [
+  //   {
+  //     id: 1,
+  //     title: "Order Shipped",
+  //     message: "Your order has been shipped successfully.",
+  //     time: "2 min ago",
+  //     read: false,
+  //     icon: HiOutlineShoppingBag,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "New Friend Request",
+  //     message: "Sarah sent you a friend request.",
+  //     time: "10 min ago",
+  //     read: false,
+  //     icon: HiUsers,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Wishlist Updated",
+  //     message: "A product from your wishlist is on sale.",
+  //     time: "1 hour ago",
+  //     read: true,
+  //     icon: HiOutlineHeart,
+  //   },
+  // ];
   const handleLogout = async () => {
     try {
       if (token) {
@@ -97,7 +156,7 @@ const Navbar = () => {
           </Link>
           <div className="hidden md:flex flex-1 items-center justify-between">
             <div className="flex space-x-6 ml-4">
-              {dataa.map(({ label, path }) => (
+              {dataa.map(({ label, path, icon: Icon }) => (
                 <Link
                   key={label}
                   to={path}
@@ -127,6 +186,116 @@ const Navbar = () => {
                   className="w-full h-full object-cover"
                 />
               </button>
+              {/* Notification */}
+              {/* <div className="relative">
+                <button
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="relative w-10 h-10 rounded-2xl flex items-center justify-center 
+    bg-gray-100 hover:bg-primary/10 transition-all duration-300"
+                >
+                  <HiOutlineBell className="text-2xl text-gray-700" />
+
+                  {notifications.some((n) => !n.read) && (
+                    <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {showNotifications && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      transition={{ duration: 0.25 }}
+                      className="absolute right-0 mt-4 w-[380px] max-w-[95vw]
+        bg-white/90 backdrop-blur-2xl border border-white/30
+        shadow-2xl rounded-3xl overflow-hidden z-50"
+                    >
+                      {/* Header */}
+              {/* <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+                        <div>
+                          <h3 className="font-bold text-lg text-gray-800">
+                            Notifications
+                          </h3>
+
+                          <p className="text-sm text-gray-500">
+                            {notifications.length} new updates
+                          </p>
+                        </div>
+
+                        <button className="text-sm text-primary hover:underline">
+                          Mark all as read
+                        </button>
+                      </div> */}
+
+              {/* Notifications List */}
+              {/* <div className="max-h-[420px] overflow-y-auto custom-scrollbar">
+                        {notifications.map((item) => {
+                          const Icon = item.icon;
+
+                          return (
+                            <motion.div
+                              key={item.id}
+                              whileHover={{ x: 4 }}
+                              className={`flex gap-4 px-5 py-4 transition cursor-pointer
+                border-b border-gray-100
+                ${!item.read ? "bg-primary/5" : "bg-transparent"}`}
+                            >
+                              <div
+                                className={`w-12 h-12 rounded-2xl flex items-center justify-center
+                  ${
+                    !item.read
+                      ? "bg-primary text-white"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                              >
+                                <Icon className="text-xl" />
+                              </div>
+
+                              <div className="flex-1">
+                                <div className="flex items-start justify-between gap-3">
+                                  <h4 className="font-semibold text-gray-800 text-sm">
+                                    {item.title}
+                                  </h4>
+
+                                  {!item.read && (
+                                    <span className="w-2 h-2 rounded-full bg-primary mt-2" />
+                                  )}
+                                </div>
+
+                                <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                  {item.message}
+                                </p>
+
+                                <div className="flex items-center gap-2 mt-2">
+                                  <span className="text-xs text-gray-400">
+                                    {item.time}
+                                  </span>
+
+                                  {item.read && (
+                                    <HiCheckCircle className="text-green-500 text-sm" />
+                                  )}
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div> */}
+
+              {/* Footer */}
+              {/* <div className="p-4 bg-gray-50">
+                        <button
+                          className="w-full py-3 rounded-2xl bg-primary text-white
+            font-medium hover:opacity-90 transition"
+                        >
+                          View All Notifications
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              End Notification */}
               <Link
                 to="/cart"
                 className="relative transition hover:text-primary"
@@ -265,21 +434,16 @@ const Navbar = () => {
             />
 
             <div className="flex flex-col items-center space-y-4 w-full text-center">
-              {[
-                { label: "Home", path: "/" },
-                { label: "Search With Items", path: "/search" },
-                { label: "Wishlist", path: "/wishlist" },
-                { label: "Trackorder", path: "/orders" },
-                { label: "About", path: "/about" },
-                { label: "Contact", path: "/contact" },
-              ].map(({ label, path }) => (
+              {dataa.map(({ label, path }) => (
                 <Link
                   key={label}
                   to={path}
                   onClick={() => setIsOpen(false)}
                   className="text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-primary transition"
                 >
-                  {t(label)}
+                  <div className="flex items-center gap-3">
+                    <span>{t(label)}</span>
+                  </div>
                 </Link>
               ))}
 

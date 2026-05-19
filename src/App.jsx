@@ -36,6 +36,7 @@ import Profile from "./pages/Profile/Profile";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import FilterSidebar from "./pages/FilterSidebar/FilterSidebar";
 import SearchLayout from "./pages/SearchLayout/SearchLayout";
+import Friends from "./pages/Friends/index";
 
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
@@ -93,7 +94,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<OrderTracking />} />
         <Route path="/search" element={<SearchLayout />} />
-
+        <Route path="/friends" element={<Friends />} />
         {/* Static Pages */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<AboutUs />} />
