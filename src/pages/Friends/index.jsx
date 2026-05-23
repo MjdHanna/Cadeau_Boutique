@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo, useState } from "react";
+import React, { lazy, Suspense, useMemo, useState, useEffect } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -22,6 +22,8 @@ import {
   useRejectFriendMutation,
   useCancelFriendRequestMutation,
   useRemoveFriendMutation,
+  useSearchUsersQuery,
+  useAddFriendMutation,
 } from "../../redux/features/apiSlice";
 
 import FriendCard from "./FriendCard";
@@ -59,9 +61,39 @@ const Friends = () => {
   const [activeTab, setActiveTab] = useState("friends");
 
   const [search, setSearch] = useState("");
+  const [localSearchUsers, setLocalSearchUsers] = useState([]);
 
+  const { data: searchRes, isLoading: searchLoading } = useSearchUsersQuery(
+    search,
+    {
+      skip: !token || search.trim().length < 2,
+    },
+  );
 
+  const searchedUsers = useMemo(() => {
+    if (!Array.isArray(searchRes?.data)) return [];
 
+    return searchRes.data.map((item) => ({
+      id: item.id,
+      name: item.userName,
+      email: item.userEmail,
+
+      image:
+        item.userprofileImg ||
+        item.userImg ||
+        item.profileImg ||
+        item.profile_img,
+
+      requestSent: item.requestSent,
+      requestId: item.requestId,
+    }));
+  }, [searchRes]);
+
+  useEffect(() => {
+    if (searchedUsers.length > 0) {
+      setLocalSearchUsers(searchedUsers);
+    }
+  }, [searchedUsers]);
   const { data: friendsRes, isLoading: friendsLoading } = useGetFriendsQuery(
     undefined,
     {
@@ -80,7 +112,7 @@ const Friends = () => {
       skip: !token,
     },
   );
-
+  const [addFriend, { isLoading: addLoading }] = useAddFriendMutation();
   const [acceptFriend, { isLoading: acceptLoading }] =
     useAcceptFriendMutation();
 
@@ -93,50 +125,51 @@ const Friends = () => {
   const [removeFriend, { isLoading: removeLoading }] =
     useRemoveFriendMutation();
 
-
   const friends = useMemo(() => {
-    if (Array.isArray(friendsRes?.data)) {
-      return friendsRes.data;
-    }
+    if (!Array.isArray(friendsRes?.data)) return [];
 
-    if (Array.isArray(friendsRes?.friends)) {
-      return friendsRes.friends;
-    }
-
-    return [];
+    return friendsRes.data.map((item) => ({
+      id: item.id,
+      name: item.userName,
+      email: item.userEmail,
+      image: item.userImg,
+      birthDate: item.userBirthDate,
+    }));
   }, [friendsRes]);
 
   const requests = useMemo(() => {
-    if (Array.isArray(requestsRes?.data)) {
-      return requestsRes.data;
-    }
+    if (!Array.isArray(requestsRes?.data)) return [];
 
-    if (Array.isArray(requestsRes?.requests)) {
-      return requestsRes.requests;
-    }
-
-    return [];
+    return requestsRes.data.map((item) => ({
+      id: item.id,
+      senderId: item.senderId,
+      name: item.senderName,
+      email: item.senderEmail,
+      image: item.senderProfilImg,
+      reqStatus: item.reqStatus,
+    }));
   }, [requestsRes]);
-
+  console.log(requestsRes?.data);
+  console.log(sentRes?.data);
   const sentRequests = useMemo(() => {
     if (!Array.isArray(sentRes?.data)) return [];
 
     return sentRes.data.map((item) => ({
-      id: item.receiverId,
+      id: item.id,
+      receiverId: item.receiverId,
+
       name: item.receiverName,
       email: item.receiverEmail,
       image: item.receiverProfilImg,
+
       reqStatus: item.reqStatus,
     }));
   }, [sentRes]);
- 
-
   const filterUsers = (users) => {
     return users.filter((user) =>
       user?.name?.toLowerCase()?.includes(search.toLowerCase()),
     );
   };
-
 
   if (!token) {
     return (
@@ -178,7 +211,6 @@ const Friends = () => {
             </p>
           </div>
 
-
           <div className="relative w-full xl:w-[340px]">
             <HiOutlineSearch
               className="
@@ -211,10 +243,70 @@ const Friends = () => {
           </div>
         </div>
 
-      
+        <div className="mb-10">
+          {search.trim().length >= 2 && (
+            <div className="w-full">
+              <h2 className="text-2xl font-bold mb-5">{t("Search Results")}</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          <div className="rounded-[30px] bg-white/80 backdrop-blur-xl p-6 border border-white/20">
+              <div className="w-full space-y-4">
+                {searchLoading ? (
+                  <FriendsSkeleton />
+                ) : searchedUsers.length > 0 ? (
+                  (localSearchUsers.length > 0
+                    ? localSearchUsers
+                    : searchedUsers
+                  ).map((user) => (
+                    <FriendCard
+                      key={user.id}
+                      user={user}
+                      type="search"
+                      t={t}
+                      onAdd={async (id) => {
+                        try {
+                          const res = await addFriend(id).unwrap();
+
+                          setLocalSearchUsers((prev) =>
+                            prev.map((u) =>
+                              u.id === id
+                                ? {
+                                    ...u,
+                                    requestSent: true,
+                                    requestId: res?.requestId,
+                                  }
+                                : u,
+                            ),
+                          );
+                        } catch (err) {
+                          console.log(err);
+                        }
+                      }}
+                      onCancel={async (userId) => {
+                        try {
+                          await cancelRequest(userId).unwrap();
+
+                          setLocalSearchUsers((prev) =>
+                            prev.map((u) =>
+                              u.id === userId
+                                ? { ...u, requestSent: false, requestId: null }
+                                : u,
+                            ),
+                          );
+                        } catch (err) {
+                          console.log(err);
+                        }
+                      }}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    title={t("No Users Found")}
+                    description={t("Try another name")}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+          {/* <div className="rounded-[30px] bg-white/80 backdrop-blur-xl p-6 border border-white/20">
             <p className="text-gray-500">{t("Friends")}</p>
 
             <h2 className="text-5xl font-black mt-3">{friends.length}</h2>
@@ -230,10 +322,8 @@ const Friends = () => {
             <p className="text-gray-500">{t("Sent Requests")}</p>
 
             <h2 className="text-5xl font-black mt-3">{sentRequests.length}</h2>
-          </div>
+          </div> */}
         </div>
-
-        
 
         <div className="flex flex-wrap items-center gap-3 mb-10">
           {tabs.map((tab) => {
@@ -264,8 +354,6 @@ const Friends = () => {
           })}
         </div>
 
-      
-
         {loading ? (
           <FriendsSkeleton />
         ) : (
@@ -277,8 +365,6 @@ const Friends = () => {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-5"
             >
-             
-
               {activeTab === "friends" && (
                 <>
                   {filterUsers(friends).length > 0 ? (
@@ -287,8 +373,6 @@ const Friends = () => {
                         key={friend.id}
                         user={friend}
                         type="friend"
-                        t={t}
-                        loading={removeLoading}
                         onRemove={async (id) => {
                           try {
                             await removeFriend(id).unwrap();
@@ -306,8 +390,6 @@ const Friends = () => {
                   )}
                 </>
               )}
-
-           
 
               {activeTab === "requests" && (
                 <>

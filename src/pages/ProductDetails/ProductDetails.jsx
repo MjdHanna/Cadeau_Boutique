@@ -12,7 +12,7 @@ import {
 
 import StarRating from "../../components/StarRating/StarRating";
 import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
-
+import Loaderer from "../../views/Loader/Loader";
 import { selectToken } from "../../redux/features/authSlice";
 import { selectTranslate } from "../../redux/features/translateSlice";
 
@@ -117,9 +117,12 @@ const ProductDetails = () => {
   };
 
   if (isLoading) {
-    return <p className="text-center py-20">{t("Loading...")}</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loaderer />
+      </div>
+    );
   }
-
   if (error || !localized) {
     return (
       <p className="text-center py-20 text-red-500">

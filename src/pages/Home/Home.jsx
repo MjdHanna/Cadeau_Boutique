@@ -5,6 +5,7 @@ import LatestProducts from "../../views/LatestProducts/LatestProducts";
 import Brands from "../../views/Brands/Brands";
 import OccasionSlider from "../../views/OccasionSlider/OccasionSlider";
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
+import OnlyForYou from "../../views/OnlyForYou/OnlyForYou";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Banner />
       <Slider />
       <OccasionSlider />
+      <OnlyForYou />
       <LatestProducts />
       <Brands />
     </div>

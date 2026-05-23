@@ -66,7 +66,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
+              "raw": "{\r\n    \"email\": \"sara@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -374,6 +374,18 @@
                   "type": "file",
                   "uuid": "4c613de3-1096-412b-b865-ad9a2a90f81c",
                   "src": "/C:/Users/karam/Downloads/home.png"
+                },
+                {
+                  "key": "address",
+                  "value": "in space",
+                  "type": "text",
+                  "uuid": "b9e9bc52-6e3c-4006-b18c-b54555968480"
+                },
+                {
+                  "key": "bio",
+                  "value": "asdfghjkl;poiuytre",
+                  "type": "text",
+                  "uuid": "ea92d34f-f0d8-44de-bc32-9cdc08790ca8"
                 }
               ]
             },
@@ -390,6 +402,45 @@
               "path": [
                 "api",
                 "account-edit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteProfileImg",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|ZAHYdgs7jtGmwoFrPvtSslKR3iNQKPbTNbQk77N48cd9c56c",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/account-remove-profile-img",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "account-remove-profile-img"
               ]
             }
           },
@@ -424,7 +475,7 @@
               "raw": ""
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands",
+              "raw": "http://127.0.0.1:8000/api/brands/1",
               "protocol": "http",
               "host": [
                 "127",
@@ -435,7 +486,136 @@
               "port": "8000",
               "path": [
                 "api",
-                "brands"
+                "brands",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "followBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/brands/5/follow",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "brands",
+                "5",
+                "follow"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "unfollowBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/brands/1/unfollow",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "brands",
+                "1",
+                "unfollow"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "isFollowingBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/brands/2/is-following",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "brands",
+                "2",
+                "is-following"
               ]
             }
           },
@@ -3132,7 +3312,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|zXUIFKuHydlJ2PIeghUI6y455KKLQXZPvHEGrEcD4c6769b9",
+                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
                   "type": "string"
                 }
               ]
@@ -3176,7 +3356,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|zXUIFKuHydlJ2PIeghUI6y455KKLQXZPvHEGrEcD4c6769b9",
+                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
                   "type": "string"
                 }
               ]
@@ -3196,7 +3376,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 4\r\n}",
+              "raw": "{\r\n    \"productId\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3266,6 +3446,47 @@
                 "api",
                 "wishlist",
                 "remove"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "friendWishlist",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|ZAHYdgs7jtGmwoFrPvtSslKR3iNQKPbTNbQk77N48cd9c56c",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/friends/12/wishlist",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "friends",
+                "12",
+                "wishlist"
               ]
             }
           },
@@ -3519,6 +3740,84 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "onlyForYou",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/only-for-you",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "only-for-you"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getProductsFromFollowedBrands",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/products-from-followed-brands",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "products-from-followed-brands"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -3577,7 +3876,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|99sbCqy7jgJhcOaOCzPy4CC7jRS3jpBpLoyAn0knb74acefd",
+                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
                   "type": "string"
                 }
               ]
@@ -3771,7 +4070,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|99sbCqy7jgJhcOaOCzPy4CC7jRS3jpBpLoyAn0knb74acefd",
+                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
                   "type": "string"
                 }
               ]
@@ -3786,7 +4085,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\",\r\n  \"paymentMethod\": \"Cash on Delivery\",\r\n  \"couponCode\": \"popo\"\r\n}",
+              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4501,7 +4800,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "value": "11|uFH2WI8vYBnhGmJd65i8VEXMvOg81H7YyqT1qY5s55503e45",
                   "type": "string"
                 }
               ]
@@ -4545,7 +4844,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "4|QhVmFdTDTPdKvhmsT9GspnCu7aPf7EfrQYoh8gsye1e6101c",
+                  "value": "3|8f9tloHZbqzijIRrd3fQB7YNGSlRJ0XsMzzPh2AI2d600e8d",
                   "type": "string"
                 }
               ]
@@ -4590,7 +4889,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|Lx7JD01eV1JEJhujrqAX7PEIFOBdm81Xqyzh0uhR2a1ba8a9",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -4635,7 +4934,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|HPQTKBSPYsl0JzZv81xQEpCWH1WzYstkPeOdsSMJ71ece0c8",
+                  "value": "2|ZAHYdgs7jtGmwoFrPvtSslKR3iNQKPbTNbQk77N48cd9c56c",
                   "type": "string"
                 }
               ]
@@ -4654,7 +4953,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/11/request",
+              "raw": "http://127.0.0.1:8000/api/friends/13/request",
               "protocol": "http",
               "host": [
                 "127",
@@ -4666,7 +4965,7 @@
               "path": [
                 "api",
                 "friends",
-                "11",
+                "13",
                 "request"
               ]
             }
@@ -4681,7 +4980,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|WoRQDfg5jNNnUETCo8uv6nt9P8JZbYLgVysYwPHj4738017a",
+                  "value": "13|oxxUNhVHCznOWsFsIALwdHGvD6YY9j9DGQywh2lkc70ca58e",
                   "type": "string"
                 }
               ]
@@ -4853,6 +5152,52 @@
                 "api",
                 "friends",
                 "13"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "userFiltering",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/users/filter?name=rice",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "users",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "rice"
+                }
               ]
             }
           },

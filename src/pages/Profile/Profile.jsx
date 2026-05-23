@@ -21,8 +21,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   useGetUserQuery,
   useEditProfileMutation,
+  useDeleteProfileImgMutation,
 } from "../../redux/features/apiSlice";
-
+import { HiTrash } from "react-icons/hi";
 const MuiTextField = lazy(
   () => import("../../components/form/MuiTextField/MuiTextField"),
 );
@@ -40,6 +41,8 @@ const Profile = () => {
 
   const { data: user, isLoading: userLoading } = useGetUserQuery();
   const [editProfile, { isLoading: isSaving }] = useEditProfileMutation();
+  const [deleteProfileImg, { isLoading: isDeletingImage }] =
+    useDeleteProfileImgMutation();
   const [deleteAccount, { isLoading: isDeleting }] = useAccountDeleteMutation();
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,9 +57,10 @@ const Profile = () => {
     phone_number: user?.phone_number || "",
     gender: user?.gender || "",
     birthDate: user?.birth_date || "",
+    address: user?.address || "",
+    bio: user?.bio || "",
     profileImg: null,
   };
-
   const profileValidationSchema = Yup.object({
     name: Yup.string().required(t("Name is required")),
     email: Yup.string()
@@ -79,6 +83,7 @@ const Profile = () => {
       toast.error(error?.data?.message || t("Update failed"));
     }
   };
+  console.log(user);
   const deleteInitialValues = { email: "", password: "" };
 
   const deleteValidationSchema = Yup.object({
@@ -130,7 +135,6 @@ const Profile = () => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-6xl bg-white shadow-xl rounded-2xl p-8 flex flex-col lg:flex-row gap-8">
-        {/* ================= USER INFO ================= */}
         <div className="flex-1 bg-gray-50 rounded-xl p-6 space-y-6">
           <h2 className="text-lg font-extrabold mb-4">
             {t("Your Information")}
@@ -142,11 +146,10 @@ const Profile = () => {
             </div>
           ) : user ? (
             <div className="flex flex-col items-center text-center space-y-4">
-              {/* ================= PROFILE IMAGE ================= */}
               <div className="relative">
                 <img
                   src={
-                    getImageUrl(user.profile_img) ||
+                    getImageUrl(user?.profile_img) ||
                     `https://ui-avatars.com/api/?name=${user.name}`
                   }
                   alt="profile"
@@ -156,7 +159,6 @@ const Profile = () => {
                 <span className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
               </div>
 
-              {/* ================= USER INFO ================= */}
               <div className="space-y-2 text-sm w-full">
                 <p>
                   <b>{t("Name")}:</b> {user.name}
@@ -177,12 +179,18 @@ const Profile = () => {
                 <p>
                   <b>{t("Birth Date")}:</b> {user.birth_date || "-"}
                 </p>
+                <p>
+                  <b>{t("Address")}:</b> {user.address || "-"}
+                </p>
+
+                <p>
+                  <b>{t("Bio")}:</b> {user.bio || "-"}
+                </p>
               </div>
             </div>
           ) : null}
         </div>
 
-        {/* ================= EDIT FORM ================= */}
         <div className="flex-1 space-y-6">
           <Formik
             enableReinitialize
@@ -190,15 +198,34 @@ const Profile = () => {
             validationSchema={profileValidationSchema}
             onSubmit={handleProfileUpdate}
           >
-            {({ dirty, isValid }) => (
+            {({ dirty, isValid, setFieldValue, values }) => (
               <Form className="space-y-4 bg-gray-50 p-6 rounded-xl shadow-sm">
                 <h2 className="text-lg font-semibold">{t("Edit Profile")}</h2>
 
                 <MuiTextField name="name" label={t("Name")} />
                 <MuiTextField name="email" label={t("Email")} />
                 <MuiTextField name="phone_number" label={t("Phone Number")} />
+                <MuiTextField name="address" label={t("Address")} />
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    {t("Bio")}
+                  </label>
 
-                {/* GENDER */}
+                  <Field
+                    as="textarea"
+                    name="bio"
+                    rows={4}
+                    className="w-full border rounded-lg p-3 resize-none"
+                    placeholder={t("Write something about yourself")}
+                  />
+
+                  <ErrorMessage
+                    name="bio"
+                    component="p"
+                    className="text-red-500 text-sm"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     {t("Gender")}
@@ -220,8 +247,6 @@ const Profile = () => {
                     className="text-red-500 text-sm"
                   />
                 </div>
-
-                {/* ================= BIRTH DATE (NEW) ================= */}
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     {t("Birth Date")}
@@ -240,26 +265,88 @@ const Profile = () => {
                   />
                 </div>
 
-                {/* PROFILE IMAGE */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium">
                     {t("Profile Image")}
                   </label>
 
-                  <Field name="profileImg">
-                    {({ form }) => (
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={
+                        values.profileImg
+                          ? URL.createObjectURL(values.profileImg)
+                          : getImageUrl(user?.profile_img) ||
+                            `https://ui-avatars.com/api/?name=${user?.name || "User"}`
+                      }
+                      alt="preview"
+                      className="
+        w-24 h-24 rounded-full
+        object-cover border-4 border-white
+        shadow-lg
+      "
+                    />
+
+                    <div className="flex flex-col gap-2">
                       <input
                         type="file"
                         accept="image/*"
-                        className="w-full border p-2 rounded-lg bg-white"
+                        id="profile-upload"
+                        hidden
                         onChange={(e) => {
-                          form.setFieldValue("profileImg", e.target.files[0]);
+                          const file = e.currentTarget.files[0];
+
+                          if (file) {
+                            setFieldValue("profileImg", file);
+                          }
                         }}
                       />
-                    )}
-                  </Field>
-                </div>
 
+                      <label
+                        htmlFor="profile-upload"
+                        className="
+          px-4 py-2 rounded-lg
+          bg-primary text-white
+          cursor-pointer
+          text-sm text-center
+          hover:opacity-90
+          transition
+        "
+                      >
+                        {t("Upload Image")}
+                      </label>
+
+                      {user?.profile_img && (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              await deleteProfileImg().unwrap();
+
+                              toast.success(t("Profile image removed"));
+                            } catch (error) {
+                              toast.error(
+                                error?.data?.message ||
+                                  t("Failed to remove image"),
+                              );
+                            }
+                          }}
+                          disabled={isDeletingImage}
+                          className="
+            px-4 py-2 rounded-lg
+            bg-red-500 text-white
+            text-sm
+            hover:bg-red-600
+            transition
+          "
+                        >
+                          {isDeletingImage
+                            ? t("Removing...")
+                            : t("Remove Image")}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
                 <Button
                   type="submit"
                   variant="contained"
@@ -277,7 +364,6 @@ const Profile = () => {
             )}
           </Formik>
 
-          {/* ================= DELETE ACCOUNT ================= */}
           <div className="rounded-xl border border-red-200 bg-red-50 p-6">
             <Formik
               initialValues={deleteInitialValues}
@@ -310,8 +396,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
-      {/* ================= CONFIRM DIALOG ================= */}
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}

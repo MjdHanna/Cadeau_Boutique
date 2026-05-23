@@ -8,6 +8,7 @@ import {
   useGetWishlistQuery,
 } from "../../redux/features/apiSlice";
 import ItemCard from "../../components/brands/ItemCard";
+import Loader from "../Loader/Loader";
 
 const LatestProducts = () => {
   const { t, i18n } = useTranslation();
@@ -37,7 +38,11 @@ const LatestProducts = () => {
   }, [data, isRTL]);
 
   if (isLoading) {
-    return <p className="text-center py-20">{t("Loading...")}</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {

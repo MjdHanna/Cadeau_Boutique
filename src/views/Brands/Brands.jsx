@@ -6,6 +6,7 @@ import BrandCard from "../../components/brands/BrandCard";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { IconButton } from "@mui/material";
+import Loader from "../Loader/Loader";
 const ITEMS_PER_PAGE = 8;
 
 const Brands = () => {
@@ -39,8 +40,8 @@ const Brands = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center my-20">
-        <div className="loader border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
       </div>
     );
   }

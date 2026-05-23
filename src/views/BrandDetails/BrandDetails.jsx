@@ -6,6 +6,9 @@ import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetBrandByIdQuery,
   useGetWishlistQuery,
+  useFollowBrandMutation,
+  useUnfollowBrandMutation,
+  useIsFollowingBrandQuery,
 } from "../../redux/features/apiSlice";
 import ItemCard from "../../components/brands/ItemCard";
 import { useNavigate } from "react-router-dom";
@@ -17,12 +20,28 @@ const BrandDetails = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useGetBrandByIdQuery(id);
+  const {
+    data: followData,
+    isLoading: isFollowLoading,
+    refetch: refetchFollowStatus,
+  } = useIsFollowingBrandQuery(id, {
+    skip: !token || !id,
+  });
 
+  const [followBrand, { isLoading: isFollowingBrandLoading }] =
+    useFollowBrandMutation();
+
+  const [unfollowBrand, { isLoading: isUnfollowingBrandLoading }] =
+    useUnfollowBrandMutation();
+
+  const isFollowing =
+    followData?.isFollowing || followData?.data?.isFollowing || false;
   const { data: wishlistData } = useGetWishlistQuery(undefined, {
     skip: !token,
   });
 
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
+  const followersCount = data?.data?.followersCount || 0;
   const brand = useMemo(() => {
     if (!data?.data?.brand) return null;
 
@@ -50,7 +69,24 @@ const BrandDetails = () => {
           : p.productDescriptionEnglish,
     }));
   }, [data, i18n.language]);
+  const handleFollowToggle = async () => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
+    try {
+      if (isFollowing) {
+        await unfollowBrand(id).unwrap();
+      } else {
+        await followBrand(id).unwrap();
+      }
+
+      refetchFollowStatus();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-24">
@@ -92,6 +128,31 @@ const BrandDetails = () => {
           <p className="text-white/90 text-sm sm:text-lg max-w-2xl leading-relaxed">
             {brand?.brandDescription}
           </p>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm sm:text-base shadow-lg">
+              <span className="font-bold">{followersCount}</span>{" "}
+              {followersCount === 1 ? t("Follower") : t("Followers")}
+            </div>
+          </div>
+          <div className="flex items-center gap-4 mt-6">
+            <button
+              onClick={handleFollowToggle}
+              disabled={
+                isFollowingBrandLoading ||
+                isUnfollowingBrandLoading ||
+                isFollowLoading
+              }
+              className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 shadow-lg backdrop-blur-md border
+      ${
+        isFollowing
+          ? "bg-white text-black border-white hover:bg-red-500 hover:text-white"
+          : "bg-black/40 text-white border-white/30 hover:bg-white hover:text-black"
+      }
+    `}
+            >
+              {isFollowing ? t("Unfollow brand") : t("Follow Brand")}
+            </button>
+          </div>
           <button
             onClick={() =>
               document.getElementById("products-section")?.scrollIntoView({

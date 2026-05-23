@@ -8,6 +8,7 @@ export const apiSlice = createApi({
       const token = getState().auth.token;
       const protectedEndpoints = [
         "getProfile",
+        "deleteProfileImg",
         "getUser",
         "editProfile",
         "logout",
@@ -30,6 +31,11 @@ export const apiSlice = createApi({
         "rejectFriend",
         "cancelFriendRequest",
         "removeFriend",
+        "searchUsers",
+        "followBrand",
+        "unfollowBrand",
+        "isFollowingBrand",
+        "onlyForYou",
       ];
 
       if (token && protectedEndpoints.includes(endpoint)) {
@@ -41,7 +47,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Wishlist", "Cart", "Orders", "Friends"],
+  tagTypes: ["Auth", "Wishlist", "Cart", "Orders", "Friends", "Brands"],
   endpoints: (builder) => ({
     // Auth
     register: builder.mutation({
@@ -97,11 +103,13 @@ export const apiSlice = createApi({
       query: (data) => {
         const formData = new FormData();
 
-        formData.append("userName", data.name);
-        formData.append("email", data.email);
-        formData.append("gender", data.gender);
+        formData.append("userName", data.name || "");
+        formData.append("email", data.email || "");
+        formData.append("gender", data.gender || "");
         formData.append("birthDate", data.birthDate || "");
-        formData.append("phoneNumber", data.phone_number);
+        formData.append("phoneNumber", data.phone_number || "");
+        formData.append("address", data.address || "");
+        formData.append("bio", data.bio || "");
 
         if (data.profileImg) {
           formData.append("profileImg", data.profileImg);
@@ -115,6 +123,7 @@ export const apiSlice = createApi({
       },
 
       invalidatesTags: ["Auth"],
+
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -122,7 +131,29 @@ export const apiSlice = createApi({
           const updatedUser = data?.data || data?.user || data;
 
           dispatch(setUser(updatedUser));
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
+      },
+    }),
+    deleteProfileImg: builder.mutation({
+      query: () => ({
+        url: "account-remove-profile-img",
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["Auth"],
+
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          const updatedUser = data?.data || data?.user || data;
+
+          dispatch(setUser(updatedUser));
+        } catch (e) {
+          console.error(e);
+        }
       },
     }),
 
@@ -176,6 +207,35 @@ export const apiSlice = createApi({
     // Brands & Categories & Occasions
     getBrands: builder.query({ query: () => "brands" }),
     getBrandById: builder.query({ query: (id) => `brands/${id}` }),
+    followBrand: builder.mutation({
+      query: (brandId) => ({
+        url: `brands/${brandId}/follow`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, brandId) => [
+        { type: "Brands", id: brandId },
+      ],
+    }),
+
+    unfollowBrand: builder.mutation({
+      query: (brandId) => ({
+        url: `brands/${brandId}/unfollow`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, brandId) => [
+        { type: "Brands", id: brandId },
+      ],
+    }),
+
+    isFollowingBrand: builder.query({
+      query: (brandId) => ({
+        url: `brands/${brandId}/is-following`,
+        method: "GET",
+      }),
+      providesTags: (result, error, brandId) => [
+        { type: "Brands", id: brandId },
+      ],
+    }),
     getCategories: builder.query({ query: () => "categories" }),
     getCategoryById: builder.query({ query: (id) => `categories/${id}` }),
     getOccasions: builder.query({ query: () => "occasions" }),
@@ -186,7 +246,12 @@ export const apiSlice = createApi({
     getVendorById: builder.query({
       query: (vendorId) => `products-by-vendor/${vendorId}`,
     }),
-
+    onlyForYou: builder.query({
+      query: () => ({
+        url: "only-for-you",
+        method: "GET",
+      }),
+    }),
     // Rating
     addProductRating: builder.mutation({
       query: ({ productId, rating, review }) => ({
@@ -337,6 +402,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Friends"],
     }),
+    searchUsers: builder.query({
+      query: (name) => ({
+        url: `users/filter?name=${name}`,
+        method: "GET",
+      }),
+      providesTags: ["Friends"],
+    }),
   }),
 });
 
@@ -347,12 +419,16 @@ export const {
   useAccountDeleteMutation,
   useGetUserQuery,
   useEditProfileMutation,
+  useDeleteProfileImgMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useLogoutMutation,
   useResendOtpMutation,
   useGetBrandsQuery,
   useGetBrandByIdQuery,
+  useFollowBrandMutation,
+  useUnfollowBrandMutation,
+  useIsFollowingBrandQuery,
   useGetCategoriesQuery,
   useGetCategoryByIdQuery,
   useGetProductsQuery,
@@ -365,6 +441,7 @@ export const {
   useGetOccasionsByIdQuery,
   useGoogleMeQuery,
   useAddProductRatingMutation,
+  useOnlyForYouQuery,
   useContactUsMutation,
   useGetCartQuery,
   useAddToCartMutation,
@@ -381,4 +458,5 @@ export const {
   useRejectFriendMutation,
   useCancelFriendRequestMutation,
   useRemoveFriendMutation,
+  useSearchUsersQuery,
 } = apiSlice;

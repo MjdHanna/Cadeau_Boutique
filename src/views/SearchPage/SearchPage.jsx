@@ -8,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
 import ItemCard from "../../components/brands/ItemCard";
+import Loaderer from "../Loader/Loader";
 import { useTranslation } from "react-i18next";
 const SearchPage = () => {
   const { search } = useLocation();
@@ -30,7 +31,13 @@ const SearchPage = () => {
   });
 
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
-  if (isLoading) return <p className="text-center py-20">{t("Loading...")}</p>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loaderer />
+      </div>
+    );
+  }
   if (error)
     return (
       <p className="text-center py-20 text-red-500">{error?.data?.message}</p>
