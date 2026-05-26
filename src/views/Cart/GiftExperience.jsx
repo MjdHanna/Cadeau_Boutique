@@ -2,32 +2,13 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import RecipientSelector from "./RecipientSelector";
 import { useTranslation } from "react-i18next";
-const covers = [
-  {
-    id: 1,
-    title: "Luxury Black",
-    price: 8,
-    oldPrice: 12,
-    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383",
-  },
-  {
-    id: 2,
-    title: "Birthday Gold",
-    price: 5,
-    oldPrice: 9,
-    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0",
-  },
-  {
-    id: 3,
-    title: "Rose Romance",
-    price: 7,
-    oldPrice: 11,
-    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8",
-  },
-];
+import { useGetGiftWrappersQuery } from "../../redux/features/apiSlice";
+
 const GiftExperience = ({ giftData, setGiftData }) => {
   const { t, i18n } = useTranslation();
+  const { data: wrappersData } = useGetGiftWrappersQuery();
 
+  const covers = wrappersData?.data || [];
   const isRTL = i18n.language === "ar";
   return (
     <motion.div
@@ -157,7 +138,7 @@ const GiftExperience = ({ giftData, setGiftData }) => {
                         setGiftData((prev) => ({
                           ...prev,
                           coverId: cover.id,
-                          coverPrice: cover.price,
+                          coverPrice: Number(cover.price) || 0,
                         }))
                       }
                       className={`
@@ -171,21 +152,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
                   ${selected ? "border-primary shadow-xl" : "border-gray-100"}
                 `}
                     >
-                      <div
-                        className="
-                    absolute top-4 left-4
-                    z-10
-                    bg-red-500
-                    text-white
-                    text-xs
-                    font-bold
-                    px-3 py-1
-                    rounded-full
-                  "
-                      >
-                        SAVE ${cover.oldPrice - cover.price}
-                      </div>
-
                       {selected && (
                         <div
                           className="
@@ -204,8 +170,8 @@ const GiftExperience = ({ giftData, setGiftData }) => {
                       )}
 
                       <img
-                        src={cover.image}
-                        alt={cover.title}
+                        src={cover.img}
+                        alt={cover.name}
                         className="
                     h-64
                     w-full
@@ -214,15 +180,11 @@ const GiftExperience = ({ giftData, setGiftData }) => {
                       />
 
                       <div className="p-5">
-                        <h4 className="font-black text-lg">{cover.title}</h4>
+                        <h4 className="font-black text-lg">{cover.name}</h4>
 
                         <div className="flex items-center gap-3 mt-3">
                           <span className="text-2xl font-black text-primary">
                             ${cover.price}
-                          </span>
-
-                          <span className="line-through text-gray-400">
-                            ${cover.oldPrice}
                           </span>
                         </div>
                       </div>

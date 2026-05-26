@@ -1,8 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
+import {
+  useAddToCartMutation,
+  useRemoveFromCartMutation,
+} from "../../redux/features/apiSlice";
 const CartItem = ({ item }) => {
+  const [addToCart] = useAddToCartMutation();
+  const [removeFromCart] = useRemoveFromCartMutation();
   const { t, i18n } = useTranslation();
 
   const isRTL = i18n.language === "ar";
@@ -25,11 +30,33 @@ const CartItem = ({ item }) => {
             <p className="text-gray-500 mt-2">{t("Premium Gift Product")}</p>
 
             <div className="mt-5 inline-flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-2xl">
-              <button className="text-xl font-bold">-</button>
+              <button
+                className="text-xl font-bold"
+                onClick={() =>
+                  removeFromCart({
+                    productId: item.productId,
+                    variantId: item.variantId,
+                    quantity: 1,
+                  })
+                }
+              >
+                -
+              </button>
 
               <span>{item.quantity}</span>
 
-              <button className="text-xl font-bold">+</button>
+              <button
+                className="text-xl font-bold"
+                onClick={() =>
+                  addToCart({
+                    productId: item.productId,
+                    variantId: item.variantId,
+                    quantity: 1,
+                  })
+                }
+              >
+                +
+              </button>
             </div>
           </div>
 

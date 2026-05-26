@@ -318,5 +318,8 @@
   "Profile Image": "Profile Image",
   "Search Results": "Search Results",
   "Add Friend": "Add Friend",
-  "Cancel Request": "Cancel Request"
+  "Cancel Request": "Cancel Request",
+  "Order placed successfully": "Order placed successfully",
+  "Processing...": "Processing...",
+  "Recipient's ID": "Recipient's ID"
 }

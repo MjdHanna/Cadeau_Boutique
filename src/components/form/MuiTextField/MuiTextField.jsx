@@ -8,9 +8,16 @@ import { useField } from "formik";
 import { useSelector } from "react-redux";
 import { selectTranslate } from "../../../redux/features/translateSlice";
 
-const MuiTextField = ({ label, className = "", sx = {}, ...props }) => {
-  const [field, meta] = useField(props.name);
+const MuiTextField = ({
+  label,
+  className = "",
+  sx = {},
+  name,
+  formik = true,
+  ...props
+}) => {
   const lang = useSelector(selectTranslate);
+
   const isRTL = lang === "ar";
 
   const [showPassword, setShowPassword] = useState(false);
@@ -19,12 +26,16 @@ const MuiTextField = ({ label, className = "", sx = {}, ...props }) => {
     setShowPassword((prev) => !prev);
   };
 
+  const [field, meta] = formik
+    ? useField(name)
+    : [{}, { touched: false, error: "" }];
+
   return (
     <div className={`mb-4 ${className}`} dir={isRTL ? "rtl" : "ltr"}>
       <TextField
         fullWidth
         label={label}
-        {...field}
+        {...(formik ? field : {})}
         {...props}
         type={props.type === "password" && showPassword ? "text" : props.type}
         inputProps={{
@@ -52,7 +63,7 @@ const MuiTextField = ({ label, className = "", sx = {}, ...props }) => {
 
           "& .MuiOutlinedInput-root": {
             backgroundColor: "transparent !important",
-            borderRadius: "0.5rem",
+            borderRadius: "18px",
 
             "&.Mui-focused": {
               backgroundColor: "transparent !important",
@@ -63,16 +74,16 @@ const MuiTextField = ({ label, className = "", sx = {}, ...props }) => {
             },
 
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D9D9D9",
+              borderColor: "var(--primary)",
             },
           },
 
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#D9D9D9",
+            borderColor: "#E5E7EB",
           },
 
           "& label.Mui-focused": {
-            color: "#D9D9D9",
+            color: "var(--primary)",
           },
 
           "& .MuiInputBase-input": {

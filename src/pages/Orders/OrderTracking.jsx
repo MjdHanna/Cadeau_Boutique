@@ -15,7 +15,11 @@ const LoginRequired = lazy(
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 },
+  },
 };
 
 const statusColors = {
@@ -26,15 +30,19 @@ const statusColors = {
 
 const OrderTracking = () => {
   const { t, i18n } = useTranslation();
+
   const isRTL = i18n.language === "ar";
+
   const token = useSelector(selectToken);
 
   const { data, isLoading, isFetching, isError } = useGetOrdersQuery(
     undefined,
-    { skip: !token },
+    {
+      skip: !token,
+    },
   );
 
-  const [openOrderId, setOpenOrderId] = useState(null); // للتحكم في Accordion
+  const [openOrderId, setOpenOrderId] = useState(null);
 
   if (!token) {
     return (
@@ -71,10 +79,20 @@ const OrderTracking = () => {
   }
 
   const orders = data?.data || [];
+
   const hasOrders = orders.length > 0;
 
+  const recipientLabels = {
+    self: t("Myself"),
+    friend: t("Friend"),
+    manual: t("Manual Recipient"),
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-25">
+    <div
+      dir={isRTL ? "rtl" : "ltr"}
+      className="min-h-screen bg-gray-50 px-6 py-25"
+    >
       <motion.h1
         className="text-3xl font-bold text-center mb-10 text-gray-800"
         initial="hidden"
@@ -89,20 +107,58 @@ const OrderTracking = () => {
           {orders.map((order) => {
             const mappedOrder = {
               id: order.orderNumber,
+
               status: order.orderStatus,
+
               paymentStatus: order.paymentStatus,
+
+              recipientType: order.recipientType,
+
               shippingName: order.shippingName || "-",
+
+              shippingPhone:
+                order.shippingPhone ||
+                order.shipping_phone ||
+                order.phone ||
+                "-",
+
               shippingAddress: order.shippingAddress || "-",
+
+              deliveryDate:
+                order.date || order.delivery_date || order.shippingDate || null,
+
+              giftMessage: order.giftMessage || "",
+
+              couponCode: order.couponCode || "",
+
+              couponDiscount: Number(order.couponDiscount || 0),
+
+              giftWrapper: order.giftWrapper || null,
+
               total: Number(order.total) || 0,
+
+              subtotal: Number(order.subtotal || 0),
+
               date: order.date || null,
+
               items: Array.isArray(order.orderItems)
                 ? order.orderItems.map((item) => ({
                     productId: item.product_id,
+
                     variantId: item.variant_id,
-                    productName: item.name,
+
+                    productName:
+                      i18n.language === "ar"
+                        ? item.productNameArabic
+                        : item.productNameEnglish,
+
                     quantity: Number(item.quantity),
+
                     price: Number(item.price),
-                    total: Number(item.total),
+
+                    total:
+                      Number(item.total) ||
+                      Number(item.price || 0) * Number(item.quantity || 0),
                   }))
                 : [],
             };
@@ -115,22 +171,38 @@ const OrderTracking = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                dir={isRTL ? "rtl" : "ltr"}
-                className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden"
+                className="
+                  bg-white
+                  rounded-2xl
+                  shadow-md
+                  border
+                  border-gray-200
+                  overflow-hidden
+                "
               >
                 <div
-                  className="flex justify-between items-center p-6 cursor-pointer"
+                  className="
+                    flex
+                    justify-between
+                    items-center
+                    p-6
+                    cursor-pointer
+                  "
                   onClick={() => setOpenOrderId(isOpen ? null : mappedOrder.id)}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                     <h3 className="text-lg font-bold text-gray-800">
                       {t("Order")} #{mappedOrder.id}
                     </h3>
+
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium w-fit ${
-                        statusColors[mappedOrder.status] ||
-                        "bg-gray-100 text-gray-600"
-                      }`}
+                      className={`
+                        px-3 py-1 rounded-full text-xs font-medium w-fit
+                        ${
+                          statusColors[mappedOrder.status] ||
+                          "bg-gray-100 text-gray-600"
+                        }
+                      `}
                     >
                       {t(mappedOrder.status)}
                     </span>
@@ -142,16 +214,31 @@ const OrderTracking = () => {
                 </div>
 
                 {isOpen && (
-                  <div className="p-6 border-t border-gray-200 space-y-4 text-sm text-gray-700">
-                    <div className="space-y-1">
+                  <div className="p-6 border-t border-gray-200 space-y-6">
+                    <div className="space-y-2 text-sm text-gray-700">
+                      <p>
+                        <span className="font-medium">
+                          {t("Recipient's ID")}:
+                        </span>{" "}
+                        {recipientLabels[mappedOrder.recipientType] ||
+                          mappedOrder.recipientType}
+                      </p>
+
                       <p>
                         <span className="font-medium">{t("Name")}:</span>{" "}
                         {mappedOrder.shippingName}
                       </p>
+
+                      <p>
+                        <span className="font-medium">{t("Phone")}:</span>{" "}
+                        {mappedOrder.shippingPhone}
+                      </p>
+
                       <p>
                         <span className="font-medium">{t("Address")}:</span>{" "}
                         {mappedOrder.shippingAddress}
                       </p>
+
                       <p>
                         <span className="font-medium">{t("Order Date")}:</span>{" "}
                         {mappedOrder.date
@@ -160,30 +247,109 @@ const OrderTracking = () => {
                             )
                           : "-"}
                       </p>
+
+                      <p>
+                        <span className="font-medium">
+                          {t("Delivery Date")}:
+                        </span>{" "}
+                        {mappedOrder.deliveryDate
+                          ? new Date(
+                              mappedOrder.deliveryDate,
+                            ).toLocaleDateString(isRTL ? "ar-EG" : "en-US")
+                          : "-"}
+                      </p>
+
                       <p>
                         <span className="font-medium">{t("Payment")}:</span>{" "}
                         {t(mappedOrder.paymentStatus)}
                       </p>
                     </div>
+                    {mappedOrder.giftMessage && (
+                      <div
+                        className="
+                          bg-primary/5
+                          border border-primary/10
+                          rounded-2xl
+                          p-5
+                        "
+                      >
+                        <h4 className="font-bold text-lg mb-2">
+                          🎁 {t("Gift Message")}
+                        </h4>
 
+                        <p className="text-gray-700 italic leading-7">
+                          "{mappedOrder.giftMessage}"
+                        </p>
+                      </div>
+                    )}
+
+                    {/* COUPON */}
+
+                    {mappedOrder.couponCode && (
+                      <div
+                        className="
+                          bg-green-50
+                          border border-green-100
+                          rounded-2xl
+                          p-5
+                        "
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-bold text-green-700">
+                              🎟️ {t("Coupon Applied")}
+                            </h4>
+
+                            <p className="text-sm text-green-600 mt-1">
+                              {mappedOrder.couponCode}
+                            </p>
+                          </div>
+
+                          {mappedOrder.couponDiscount > 0 && (
+                            <div className="text-right">
+                              <p className="text-sm text-gray-500">
+                                {t("Discount")}
+                              </p>
+
+                              <p className="font-black text-green-700 text-lg">
+                                -${mappedOrder.couponDiscount.toFixed(2)}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                     <div>
-                      <h4 className="font-semibold mb-2">{t("Items")}</h4>
+                      <h4 className="font-semibold mb-4 text-lg">
+                        {t("Items")}
+                      </h4>
+
                       {mappedOrder.items.length > 0 ? (
-                        <ul className="space-y-2">
+                        <ul className="space-y-4">
                           {mappedOrder.items.map((item, index) => (
                             <li
                               key={index}
-                              className="flex justify-between items-center"
+                              className="
+                                flex
+                                justify-between
+                                items-center
+                                border
+                                border-gray-100
+                                rounded-2xl
+                                p-4
+                              "
                             >
                               <div>
-                                <p className="font-medium text-gray-800">
+                                <p className="font-bold text-gray-800">
                                   {item.productName}
                                 </p>
-                                <p className="text-gray-500">
+
+                                <p className="text-sm text-gray-500 mt-1">
                                   {t("Quantity")}: {item.quantity}
                                 </p>
                               </div>
-                              <p className="font-semibold text-gray-700">
+
+                              <p className="font-bold text-primary text-lg">
                                 ${item.total.toFixed(2)}
                               </p>
                             </li>
@@ -194,13 +360,30 @@ const OrderTracking = () => {
                       )}
                     </div>
 
-                    <div className="flex justify-between items-center border-t pt-4 mt-4">
-                      <span className="font-semibold text-lg">
-                        {t("Total")}
-                      </span>
-                      <span className="text-xl font-bold text-primary">
-                        ${mappedOrder.total.toFixed(2)}
-                      </span>
+                    <div className="border-t pt-5 space-y-3">
+                      {mappedOrder.subtotal > 0 && (
+                        <div className="flex justify-between text-gray-600">
+                          <span>{t("Subtotal")}</span>
+
+                          <span>${mappedOrder.subtotal.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                      {mappedOrder.couponDiscount > 0 && (
+                        <div className="flex justify-between text-green-600 font-semibold">
+                          <span>{t("Coupon Discount")}</span>
+
+                          <span>-${mappedOrder.couponDiscount.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                      <div className="flex justify-between items-center pt-3">
+                        <span className="font-black text-xl">{t("Total")}</span>
+
+                        <span className="text-2xl font-black text-primary">
+                          ${mappedOrder.total.toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 )}

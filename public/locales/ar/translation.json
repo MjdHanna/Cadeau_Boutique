@@ -319,5 +319,8 @@
   "Profile Image": "صورة الملف الشخصي",
   "Search Results": "نتائج البحث",
   "Add Friend": "إضافة صديق",
-  "Cancel Request": "إلغاء الطلب"
+  "Cancel Request": "إلغاء الطلب",
+  "Order placed successfully": "تم تقديم الطلب بنجاح",
+  "Processing...": "جار المعالجة...",
+  "Recipient's ID": "هوية  المستلم"
 }

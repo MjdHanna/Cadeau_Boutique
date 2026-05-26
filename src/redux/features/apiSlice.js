@@ -21,6 +21,7 @@ export const apiSlice = createApi({
         "getCart",
         "addToCart",
         "removeFromCart",
+        "getGiftWrappers",
         "getOrders",
         "checkout",
         "getFriends",
@@ -37,7 +38,6 @@ export const apiSlice = createApi({
         "isFollowingBrand",
         "onlyForYou",
       ];
-
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -297,28 +297,35 @@ export const apiSlice = createApi({
     }),
 
     addToCart: builder.mutation({
-      query: ({ productId, variantId, quantity }) => ({
+      query: (data) => ({
         url: "cart/add",
         method: "POST",
-        body: {
-          productId: Number(productId),
-          variantId: Number(variantId),
-          quantity: Number(quantity),
-        },
+        body: data,
       }),
       invalidatesTags: ["Cart"],
     }),
 
     removeFromCart: builder.mutation({
-      query: ({ productId, variantId }) => ({
+      query: (data) => ({
         url: "cart/remove",
         method: "DELETE",
-        body: {
-          productId: Number(productId),
-          variantId: Number(variantId),
-        },
+        body: data,
       }),
       invalidatesTags: ["Cart"],
+    }),
+
+    getGiftWrappers: builder.query({
+      query: () => ({
+        url: "gift-wrappers",
+        method: "GET",
+      }),
+    }),
+
+    getCoupons: builder.query({
+      query: () => ({
+        url: "coupons",
+        method: "GET",
+      }),
     }),
 
     // Orders
@@ -446,6 +453,8 @@ export const {
   useGetCartQuery,
   useAddToCartMutation,
   useRemoveFromCartMutation,
+  useGetGiftWrappersQuery,
+  useGetCouponsQuery,
   useGetFilteredProductsQuery,
   useGetOrdersQuery,
   useCheckoutMutation,

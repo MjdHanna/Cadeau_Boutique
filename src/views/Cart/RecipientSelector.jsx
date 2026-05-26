@@ -1,37 +1,47 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-const followers = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    username: "@sarahj",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    id: 2,
-    name: "Ahmed Ali",
-    username: "@ahmedali",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    id: 3,
-    name: "Emily Rose",
-    username: "@emilyrose",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-  },
-];
-
+import { useGetFriendsQuery } from "../../redux/features/apiSlice";
+import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
+import CustomPhoneField from "../../components/form/MuiPhoneField/CustomPhoneField";
 const RecipientSelector = ({ giftData, setGiftData }) => {
   const { t, i18n } = useTranslation();
 
   const isRTL = i18n.language === "ar";
+
+  const { data: friendsRes, isLoading } = useGetFriendsQuery();
+
+  const friends = useMemo(() => {
+    if (!Array.isArray(friendsRes?.data)) return [];
+
+    return friendsRes.data.map((item) => ({
+      id: item.id,
+
+      name: item.userName,
+
+      email: item.userEmail,
+
+      image:
+        item.userImg ||
+        item.userprofileImg ||
+        item.profile_img ||
+        "/placeholder.png",
+    }));
+  }, [friendsRes]);
+
+  const selectedFriend = friends.find(
+    (friend) => friend.id === giftData.friendId,
+  );
+
   const handleRecipientType = (type) => {
     setGiftData((prev) => ({
       ...prev,
+
       recipientType: type,
-      selectedFollower: null,
+
+      friendId: null,
+
       recipient: {
         name: "",
         phone: "",
@@ -40,16 +50,18 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
     }));
   };
 
-  const selectFollower = (friend) => {
+  const selectFriend = (friend) => {
     setGiftData((prev) => ({
       ...prev,
-      selectedFollower: friend,
+
+      friendId: friend.id,
     }));
   };
 
   const updateRecipientField = (field, value) => {
     setGiftData((prev) => ({
       ...prev,
+
       recipient: {
         ...prev.recipient,
         [field]: value,
@@ -59,6 +71,8 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
 
   return (
     <div className="mt-10">
+      {/* HEADER */}
+
       <div className="flex items-center justify-between mb-5">
         <div>
           <h3 className="text-2xl font-black">{t("Recipient")}</h3>
@@ -69,27 +83,32 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
         </div>
       </div>
 
-      {/* Recipient Types */}
+      {/* TYPES */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
           {
             id: "self",
-            title: "Myself",
-            description: "Send this order to your address",
-            emoji: "🙋‍♂️",
+
+            title: t("Myself"),
+
+            description: t("Send this order to your address"),
           },
+
           {
             id: "friend",
-            title: "Follower",
-            description: "Choose from your followers",
-            emoji: "👥",
+
+            title: t("Friend"),
+
+            description: t("Choose from your friends"),
           },
+
           {
-            id: "custom",
-            title: "Custom Person",
-            description: "Enter recipient details manually",
-            emoji: "🎯",
+            id: "manual",
+
+            title: t("Manual Recipient"),
+
+            description: t("Enter recipient details manually"),
           },
         ].map((type) => {
           const active = giftData.recipientType === type.id;
@@ -112,8 +131,6 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
                 }
               `}
             >
-              <div className="text-3xl">{type.emoji}</div>
-
               <h4 className="font-black text-lg mt-4">{type.title}</h4>
 
               <p className="text-sm text-gray-500 mt-2 leading-6">
@@ -123,172 +140,185 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
           );
         })}
       </div>
+      <AnimatePresence>
+        {giftData.recipientType === "friend" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-8 space-y-4"
+          >
+            <h4 className="font-black text-lg">{t("Choose Friend")}</h4>
 
-      {/* Followers List */}
-
-      {giftData.recipientType === "friend" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-8 space-y-4"
-        >
-          <h4 className="font-black text-lg">{t("Choose Follower")}</h4>
-
-          {followers.map((friend) => {
-            const selected = giftData.selectedFollower?.id === friend.id;
-
-            return (
-              <button
-                key={friend.id}
-                onClick={() => selectFollower(friend)}
-                className={`
-                  w-full
-                  flex
-                  items-center
-                  justify-between
-                  p-4
-                  rounded-[28px]
-                  border-2
-                  transition-all
-                  ${
-                    selected ? "border-primary bg-primary/5" : "border-gray-200"
-                  }
-                `}
+            {isLoading ? (
+              <div className="text-gray-500">{t("Loading friends...")}</div>
+            ) : friends.length === 0 ? (
+              <div
+                className="
+                  rounded-[24px]
+                  border
+                  border-dashed
+                  border-gray-300
+                  p-6
+                  text-center
+                  text-gray-500
+                  bg-gray-50
+                "
               >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={friend.image}
-                    alt={friend.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
+                {t("No friends found")}
+              </div>
+            ) : (
+              friends.map((friend) => {
+                const selected = giftData.friendId === friend.id;
 
-                  <div className="text-left">
-                    <h4 className="font-black">{friend.name}</h4>
-
-                    <p className="text-sm text-gray-500">{friend.username}</p>
-                  </div>
-                </div>
-
-                {selected && (
-                  <div
-                    className="w-7 h-7 rounded-full
-                    bg-primary text-white
-                    flex items-center justify-center"
+                return (
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    key={friend.id}
+                    onClick={() => selectFriend(friend)}
+                    className={`
+                      w-full
+                      flex
+                      items-center
+                      justify-between
+                      p-4
+                      rounded-[28px]
+                      border-2
+                      transition-all
+                      ${
+                        selected
+                          ? "border-primary bg-primary/5 shadow-md"
+                          : "border-gray-200 bg-white"
+                      }
+                    `}
                   >
-                    ✓
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </motion.div>
-      )}
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={friend.image}
+                        alt={friend.name}
+                        className="
+                          w-16 h-16
+                          rounded-full
+                          object-cover
+                          border
+                        "
+                      />
 
-      {/* Custom Recipient */}
+                      <div className={isRTL ? "text-right" : "text-left"}>
+                        <h4 className="font-black text-lg">{friend.name}</h4>
 
-      {giftData.recipientType === "custom" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-8 grid grid-cols-1 gap-4"
-        >
-          <input
-            type="text"
-            placeholder="Recipient Full Name"
-            value={giftData.recipient?.name || ""}
-            onChange={(e) => updateRecipientField("name", e.target.value)}
+                        <p className="text-sm text-gray-500">{friend.email}</p>
+                      </div>
+                    </div>
+
+                    {selected && (
+                      <div
+                        className="
+                          w-8 h-8
+                          rounded-full
+                          bg-primary
+                          text-white
+                          flex items-center justify-center
+                          font-black
+                        "
+                      >
+                        ✓
+                      </div>
+                    )}
+                  </motion.button>
+                );
+              })
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {giftData.recipientType === "manual" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-8 grid grid-cols-1 gap-4"
+          >
+            <MuiTextField
+              formik={false}
+              label={t("Recipient Full Name")}
+              value={giftData.recipient?.name || ""}
+              onChange={(e) => updateRecipientField("name", e.target.value)}
+            />
+
+            <MuiTextField
+              formik={false}
+              label={t("Recipient Address")}
+              multiline
+              rows={4}
+              value={giftData.recipient?.address || ""}
+              onChange={(e) => updateRecipientField("address", e.target.value)}
+            />
+            <CustomPhoneField
+              label={t("Phone Number")}
+              value={giftData.recipient?.phone || ""}
+              onChange={(value) => updateRecipientField("phone", value)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {((giftData.recipientType === "friend" && selectedFriend) ||
+          (giftData.recipientType === "manual" &&
+            giftData.recipient?.name)) && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             className="
-              w-full
-              rounded-[24px]
-              border
-              border-gray-200
-              p-4
-              focus:outline-none
-              focus:ring-2
-              focus:ring-primary
+              mt-8
+              rounded-[28px]
+              bg-gradient-to-r
+              from-primary/10
+              to-pink-100
+              p-5
             "
-          />
+          >
+            <h4 className="font-black text-lg mb-3">
+              {t("Gift Recipient ✨")}
+            </h4>
 
-          <input
-            type="text"
-            placeholder="Phone Number"
-            value={giftData.recipient?.phone || ""}
-            onChange={(e) => updateRecipientField("phone", e.target.value)}
-            className="
-              w-full
-              rounded-[24px]
-              border
-              border-gray-200
-              p-4
-              focus:outline-none
-              focus:ring-2
-              focus:ring-primary
-            "
-          />
+            {giftData.recipientType === "friend" && selectedFriend && (
+              <div className="flex items-center gap-4">
+                <img
+                  src={selectedFriend.image}
+                  alt={selectedFriend.name}
+                  className="w-14 h-14 rounded-full object-cover"
+                />
 
-          <textarea
-            rows={4}
-            placeholder="Recipient Address"
-            value={giftData.recipient?.address || ""}
-            onChange={(e) => updateRecipientField("address", e.target.value)}
-            className="
-              w-full
-              rounded-[24px]
-              border
-              border-gray-200
-              p-4
-              resize-none
-              focus:outline-none
-              focus:ring-2
-              focus:ring-primary
-            "
-          />
-        </motion.div>
-      )}
+                <div>
+                  <p className="font-bold">{selectedFriend.name}</p>
 
-      {/* Selected Recipient Preview */}
+                  <p className="text-sm text-gray-600">
+                    {selectedFriend.email}
+                  </p>
+                </div>
+              </div>
+            )}
 
-      {(giftData.recipientType === "friend" && giftData.selectedFollower) ||
-      (giftData.recipientType === "custom" && giftData.recipient?.name) ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="
-            mt-8
-            rounded-[28px]
-            bg-gradient-to-r
-            from-primary/10
-            to-pink-100
-            p-5
-          "
-        >
-          <h4 className="font-black text-lg mb-2">{t("Gift Recipient ✨")}</h4>
+            {giftData.recipientType === "manual" && (
+              <div className="space-y-1">
+                <p className="font-bold">{giftData.recipient.name}</p>
 
-          {giftData.recipientType === "friend" && (
-            <div>
-              <p className="font-bold">{giftData.selectedFollower.name}</p>
+                <p className="text-sm text-gray-600">
+                  {giftData.recipient.phone}
+                </p>
 
-              <p className="text-sm text-gray-600">
-                {giftData.selectedFollower.username}
-              </p>
-            </div>
-          )}
-
-          {giftData.recipientType === "custom" && (
-            <div className="space-y-1">
-              <p className="font-bold">{giftData.recipient.name}</p>
-
-              <p className="text-sm text-gray-600">
-                {giftData.recipient.phone}
-              </p>
-
-              <p className="text-sm text-gray-600">
-                {giftData.recipient.address}
-              </p>
-            </div>
-          )}
-        </motion.div>
-      ) : null}
+                <p className="text-sm text-gray-600">
+                  {giftData.recipient.address}
+                </p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
