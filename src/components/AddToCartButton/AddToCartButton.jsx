@@ -6,7 +6,7 @@ import { selectTranslate } from "../../redux/features/translateSlice";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
-const AddToCartButton = ({ productId, variantId }) => {
+const AddToCartButton = ({ productId, variantId, onSuccess }) => {
   const [addToCart, { isLoading }] = useAddToCartMutation();
   const lang = useSelector(selectTranslate);
   const token = useSelector(selectToken);
@@ -38,6 +38,7 @@ const AddToCartButton = ({ productId, variantId }) => {
       }).unwrap();
 
       toast.success(lang === "ar" ? "تمت الإضافة إلى السلة" : "Added to cart");
+      onSuccess?.();
     } catch (err) {
       toast.error(
         err?.data?.message ||

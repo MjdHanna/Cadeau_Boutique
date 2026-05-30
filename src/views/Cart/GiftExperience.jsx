@@ -210,7 +210,7 @@ const GiftExperience = ({ giftData, setGiftData }) => {
               <textarea
                 rows={6}
                 maxLength={250}
-                placeholder="Write something beautiful..."
+                placeholder={t("Write something beautiful...")}
                 value={giftData.message}
                 onChange={(e) =>
                   setGiftData((prev) => ({

@@ -37,6 +37,7 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import FilterSidebar from "./pages/FilterSidebar/FilterSidebar";
 import SearchLayout from "./pages/SearchLayout/SearchLayout";
 import Friends from "./pages/Friends/index";
+import FriendWishlist from "./views/FriendWishlist/FriendWishlist";
 
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
@@ -91,6 +92,7 @@ function App() {
         {/* User And Protected Pages*/}
         <Route path="/profile" element={<Profile />} />
         <Route path="/wishlist" element={<WishList />} />
+        <Route path="/friends/:id/wishlist" element={<FriendWishlist />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<OrderTracking />} />
         <Route path="/search" element={<SearchLayout />} />

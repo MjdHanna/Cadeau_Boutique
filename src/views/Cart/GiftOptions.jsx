@@ -68,7 +68,7 @@ const GiftOptions = ({ item, updateItem }) => {
 
         <textarea
           rows={4}
-          placeholder="Write your greeting message..."
+          placeholder={t("greetingMessagePlaceholder")}
           className="w-full rounded-2xl border p-4 resize-none
           focus:outline-none focus:ring-2 focus:ring-primary"
           onChange={(e) =>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -18,6 +18,10 @@ import { selectTranslate } from "../../redux/features/translateSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const giftFriend = location.state?.giftFriend;
   const { i18n, t } = useTranslation();
 
   const lang = useSelector(selectTranslate);
@@ -398,6 +402,15 @@ const ProductDetails = () => {
           <AddToCartButton
             productId={product.productId}
             variantId={selectedVariant}
+            onSuccess={() => {
+              if (giftFriend) {
+                navigate("/cart", {
+                  state: {
+                    giftFriend,
+                  },
+                });
+              }
+            }}
           />
 
           {/* Features */}

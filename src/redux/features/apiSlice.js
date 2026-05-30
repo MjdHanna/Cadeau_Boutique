@@ -37,6 +37,7 @@ export const apiSlice = createApi({
         "unfollowBrand",
         "isFollowingBrand",
         "onlyForYou",
+        "getFriendWishlist",
       ];
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -287,6 +288,12 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Wishlist"],
     }),
+    getFriendWishlist: builder.query({
+      query: (friendId) => ({
+        url: `friends/${friendId}/wishlist`,
+        method: "GET",
+      }),
+    }),
     // Cart
     getCart: builder.query({
       query: () => ({
@@ -444,6 +451,7 @@ export const {
   useGetWishlistQuery,
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
+  useGetFriendWishlistQuery,
   useGetOccasionsQuery,
   useGetOccasionsByIdQuery,
   useGoogleMeQuery,

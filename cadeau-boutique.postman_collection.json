@@ -66,7 +66,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"admin123@example.com\",\r\n    \"password\": \"Admin2002\"\r\n}"
+              "raw": "{\r\n    \"email\": \"sara@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8000/api/login",
@@ -415,7 +415,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|ZAHYdgs7jtGmwoFrPvtSslKR3iNQKPbTNbQk77N48cd9c56c",
+                  "value": "3|dmcqmtUJa6H74JiMKlOI7XxiHXLuJ8ss9eLB1ID3b3502c05",
                   "type": "string"
                 }
               ]
@@ -501,7 +501,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "value": "2|bIKv328MXICDBppclUaxB5dWvJoGu8GqW9t2dLe1efa39706",
                   "type": "string"
                 }
               ]
@@ -520,7 +520,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/5/follow",
+              "raw": "http://127.0.0.1:8000/api/brands/1/follow",
               "protocol": "http",
               "host": [
                 "127",
@@ -532,7 +532,7 @@
               "path": [
                 "api",
                 "brands",
-                "5",
+                "1",
                 "follow"
               ]
             }
@@ -3459,7 +3459,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|ZAHYdgs7jtGmwoFrPvtSslKR3iNQKPbTNbQk77N48cd9c56c",
+                  "value": "1|abux9JIJXH1aMSBc67o39xx702S45iKTakxwpAjRc38fab27",
                   "type": "string"
                 }
               ]
@@ -3473,7 +3473,7 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/12/wishlist",
+              "raw": "http://127.0.0.1:8000/api/friends/13/wishlist",
               "protocol": "http",
               "host": [
                 "127",
@@ -3485,7 +3485,7 @@
               "path": [
                 "api",
                 "friends",
-                "12",
+                "13",
                 "wishlist"
               ]
             }
@@ -3915,7 +3915,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9ozdUcRbLchZGHBFV9rhdb9LjXGUU6LnVVcFIfLWca438a1d",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
                   "type": "string"
                 }
               ]
@@ -3938,15 +3938,13 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/cart/add",
-              "protocol": "http",
+              "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
+              "protocol": "https",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "cdb-back",
+                "bw-businessworld",
+                "net"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "cart",
@@ -4070,7 +4068,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|1lnSoPZUR1TXNMZq55XHD8hxCKjB3XZ1ikE1PIMl2b4b4d1b",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
                   "type": "string"
                 }
               ]
@@ -4084,15 +4082,13 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/orders",
-              "protocol": "http",
+              "raw": "https://cdb-back.bw-businessworld.net/api/orders",
+              "protocol": "https",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "cdb-back",
+                "bw-businessworld",
+                "net"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "orders"
@@ -4109,7 +4105,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9ozdUcRbLchZGHBFV9rhdb9LjXGUU6LnVVcFIfLWca438a1d",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
                   "type": "string"
                 }
               ]
@@ -4124,7 +4120,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\",\r\n}",
+              "raw": "{\r\n  \"recipientType\": \"friend\",\r\n  \"friendId\": 13,\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4132,15 +4128,13 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/checkout",
-              "protocol": "http",
+              "raw": "https://cdb-back.bw-businessworld.net/api/checkout",
+              "protocol": "https",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "cdb-back",
+                "bw-businessworld",
+                "net"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "checkout"
@@ -4202,7 +4196,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|7hbCV9Id1RdvGzwgmR23lT6XG755fMOLAfqf42ddd43989e5",
+                  "value": "23|YAoOWWAGiUXa2ag6BDY2yrYqzgTXwCkrTiWrC5u0e3b83496",
                   "type": "string"
                 }
               ]
@@ -4225,7 +4219,7 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/admin/order/1/status",
+              "raw": "http://127.0.0.1:8000/api/admin/order/7/status",
               "protocol": "http",
               "host": [
                 "127",
@@ -4238,7 +4232,7 @@
                 "api",
                 "admin",
                 "order",
-                "1",
+                "7",
                 "status"
               ]
             }
@@ -5018,13 +5012,29 @@
         },
         {
           "name": "addFriend",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData.data && jsonData.data.id) {",
+                  "    pm.collectionVariables.set(\"friendRequestId\", jsonData.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|rGdrjFX785L97qMoPvBrJv0Um88MjS2pwrXAex4C30190a42",
+                  "value": "1|qBhuHG0dGjQE1p67OHWAb8XULvdEvCDD50WDCXtA69984aca",
                   "type": "string"
                 }
               ]
@@ -5043,19 +5053,17 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/13/request",
-              "protocol": "http",
+              "raw": "https://cdb-back.bw-businessworld.net/api/friends/12/request",
+              "protocol": "https",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "cdb-back",
+                "bw-businessworld",
+                "net"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "friends",
-                "13",
+                "12",
                 "request"
               ]
             }
@@ -5070,7 +5078,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|U1qT9mSqsN256okodE6rFqBrn4v4Qvf3ANZtJbI9b9d02e61",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
                   "type": "string"
                 }
               ]
@@ -5089,20 +5097,18 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/request/4/accept",
-              "protocol": "http",
+              "raw": "https://cdb-back.bw-businessworld.net/api/friends/request/1/accept",
+              "protocol": "https",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "cdb-back",
+                "bw-businessworld",
+                "net"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "friends",
                 "request",
-                "4",
+                "1",
                 "accept"
               ]
             }
@@ -5343,18 +5349,182 @@
       ]
     },
     {
+      "name": "GiftCard",
+      "item": [
+        {
+          "name": "getReceivedGiftCard",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://cdb-back.bw-businessworld.net/api/received-gift-card",
+              "protocol": "https",
+              "host": [
+                "cdb-back",
+                "bw-businessworld",
+                "net"
+              ],
+              "path": [
+                "api",
+                "received-gift-card"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getSendGiftCards",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|tHt0NtHa0Aj6WeUrZHc16mCpHtfiNbAnwgZAIopFd73bac52",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/sent-gift-card",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "sent-gift-card"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateGiftCard",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|qBhuHG0dGjQE1p67OHWAb8XULvdEvCDD50WDCXtA69984aca",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"receiverId\": 12,\r\n    \"budget\": 70.7,\r\n    \"message\": \"Happy Birthdat friendo\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"productId\": 3,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://cdb-back.bw-businessworld.net/api/create-gift-card",
+              "protocol": "https",
+              "host": [
+                "cdb-back",
+                "bw-businessworld",
+                "net"
+              ],
+              "path": [
+                "api",
+                "create-gift-card"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "redeemGift",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"variantId\":1,\r\n            \"quantity\":1\r\n        },\r\n        {\r\n            \"productId\": 2,\r\n            \"variantId\": 3,\r\n            \"quantity\":1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://cdb-back.bw-businessworld.net/api/redeem-gift-card/1",
+              "protocol": "https",
+              "host": [
+                "cdb-back",
+                "bw-businessworld",
+                "net"
+              ],
+              "path": [
+                "api",
+                "redeem-gift-card",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "test",
       "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "6|O9gHzISgs4kHNJVPwdJoMqIy8Dpp1F1CzT4Hn9cPac8bedbb",
-              "type": "string"
-            }
-          ]
-        },
         "method": "POST",
         "header": [
           {

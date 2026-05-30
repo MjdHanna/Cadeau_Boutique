@@ -59,6 +59,7 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
   };
 
   const updateRecipientField = (field, value) => {
+    console.log(field, value);
     setGiftData((prev) => ({
       ...prev,
 
@@ -71,7 +72,7 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
 
   return (
     <div className="mt-10">
-      {/* HEADER */}
+    
 
       <div className="flex items-center justify-between mb-5">
         <div>
@@ -83,7 +84,6 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
         </div>
       </div>
 
-      {/* TYPES */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
@@ -258,7 +258,7 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
             <CustomPhoneField
               label={t("Phone Number")}
               value={giftData.recipient?.phone || ""}
-              onChange={(value) => updateRecipientField("phone", value)}
+              onChange={(value) => updateRecipientField("phone", value || "")}
             />
           </motion.div>
         )}

@@ -105,6 +105,7 @@ const OrderTracking = () => {
       {hasOrders ? (
         <div className="max-w-5xl mx-auto space-y-4">
           {orders.map((order) => {
+            console.log(order);
             const mappedOrder = {
               id: order.orderNumber,
 

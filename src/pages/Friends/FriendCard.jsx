@@ -11,6 +11,7 @@ import {
 import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const FriendCard = ({
   user,
   type = "friend",
@@ -23,6 +24,8 @@ const FriendCard = ({
 }) => {
   const lang = useSelector(selectTranslate);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const getImageUrl = (path) => {
     if (!path || path === "null") {
       return `https://ui-avatars.com/api/?name=${user?.name || "User"}`;
@@ -204,28 +207,49 @@ const FriendCard = ({
           )}
 
           {type === "friend" && (
-            <button
-              disabled={loading}
-              onClick={() => onRemove(user?.id)}
-              className="
-            h-11 sm:h-12
-            px-4 sm:px-5
-            rounded-2xl
-            bg-red-50
-            hover:bg-red-500
-            hover:text-white
-            text-red-500
-            text-sm sm:text-base
-            font-bold
-            transition-all duration-300
-            flex items-center justify-center gap-2
-            w-full sm:w-auto
-          "
-            >
-              <HiOutlineTrash size={18} />
+            <>
+              <button
+                onClick={() => navigate(`/friends/${user.id}/wishlist`)}
+                className="
+        h-11 sm:h-12
+        px-4 sm:px-5
+        rounded-2xl
+        bg-primary
+        hover:opacity-90
+        text-white
+        text-sm sm:text-base
+        font-bold
+        transition-all duration-300
+        flex items-center justify-center gap-2
+        w-full sm:w-auto
+      "
+              >
+                🎁 {t("View Wishlist")}
+              </button>
 
-              {t("Remove")}
-            </button>
+              <button
+                disabled={loading}
+                onClick={() => onRemove(user?.id)}
+                className="
+        h-11 sm:h-12
+        px-4 sm:px-5
+        rounded-2xl
+        bg-red-50
+        hover:bg-red-500
+        hover:text-white
+        text-red-500
+        text-sm sm:text-base
+        font-bold
+        transition-all duration-300
+        flex items-center justify-center gap-2
+        w-full sm:w-auto
+      "
+              >
+                <HiOutlineTrash size={18} />
+
+                {t("Remove")}
+              </button>
+            </>
           )}
 
           {type === "request" && (
