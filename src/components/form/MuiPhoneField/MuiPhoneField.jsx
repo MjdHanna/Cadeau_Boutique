@@ -1,40 +1,30 @@
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useField, useFormikContext } from "formik";
 
-const CustomPhoneField = ({
-  label,
-  value,
-  onChange,
-  defaultCountry = "SY",
-}) => {
+const MuiPhoneField = ({ label, name, defaultCountry = "SY" }) => {
+  const [field, meta] = useField(name);
+  const { setFieldValue } = useFormikContext();
+
   return (
     <div>
       <label className="block mb-1 text-gray-700 font-medium">{label}</label>
 
-      <div
-        className="
-          border border-gray-300
-          rounded-2xl
-          px-4 py-3
-          bg-white
-          focus-within:ring-2
-          focus-within:ring-primary
-          transition
-        "
-      >
+      <div className="border border-gray-300 rounded-2xl px-4 py-3 bg-white focus-within:ring-2 focus-within:ring-primary">
         <PhoneInput
           international
           defaultCountry={defaultCountry}
-          withCountryCallingCode
-          value={value}
-          onChange={(value) => onChange(value || "")}
-          style={{
-            direction: "ltr",
-          }}
+          value={field.value}
+          onChange={(val) => setFieldValue(name, val || "")}
+          style={{ direction: "ltr" }}
         />
       </div>
+
+      {meta.touched && meta.error && (
+        <p className="text-red-500 text-sm mt-1">{meta.error}</p>
+      )}
     </div>
   );
 };
 
-export default CustomPhoneField;
+export default MuiPhoneField;

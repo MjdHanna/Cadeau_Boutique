@@ -1,18 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import EmptyCartImage from "../../assets/images/Cart/Frame.png";
 import CartItem from "./CartItem";
 import GiftExperience from "./GiftExperience";
 import OrderSummary from "./OrderSummary";
-
+import { selectToken } from "../../redux/features/authSlice";
 import { useGetCartQuery } from "../../redux/features/apiSlice";
 import Loader from "../Loader/Loader";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import LoginRequired from "../../components/LoginRequired/LoginRequired";
+import { useSelector } from "react-redux";
 const Cart = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const token = useSelector(selectToken);
   const isRTL = i18n.language === "ar";
   const { data: cartData, isLoading } = useGetCartQuery();
   console.log(cartData);
@@ -90,7 +93,17 @@ const Cart = () => {
       </div>
     );
   }
-
+  if (!token) {
+    return (
+      <Suspense fallback={<div className="text-center py-28">Loading...</div>}>
+        <LoginRequired
+          message={t("Please login to access your Cart")}
+          redirectTo="/login"
+          buttonText={t("Login")}
+        />
+      </Suspense>
+    );
+  }
   return (
     <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-[#f5f7fb]">
       <div className="max-w-7xl mx-auto px-4 py-26">

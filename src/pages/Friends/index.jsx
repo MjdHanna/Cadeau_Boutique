@@ -198,8 +198,6 @@ const Friends = () => {
       "
     >
       <div className="max-w-7xl mx-auto">
-        {/* HEADER */}
-
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 mb-10">
           <div>
             <h1 className="text-5xl font-black tracking-tight text-gray-900">
@@ -306,23 +304,6 @@ const Friends = () => {
               </div>
             </div>
           )}
-          {/* <div className="rounded-[30px] bg-white/80 backdrop-blur-xl p-6 border border-white/20">
-            <p className="text-gray-500">{t("Friends")}</p>
-
-            <h2 className="text-5xl font-black mt-3">{friends.length}</h2>
-          </div>
-
-          <div className="rounded-[30px] bg-white/80 backdrop-blur-xl p-6 border border-white/20">
-            <p className="text-gray-500">{t("Requests")}</p>
-
-            <h2 className="text-5xl font-black mt-3">{requests.length}</h2>
-          </div>
-
-          <div className="rounded-[30px] bg-white/80 backdrop-blur-xl p-6 border border-white/20">
-            <p className="text-gray-500">{t("Sent Requests")}</p>
-
-            <h2 className="text-5xl font-black mt-3">{sentRequests.length}</h2>
-          </div> */}
         </div>
 
         <div className="flex flex-wrap items-center gap-3 mb-10">

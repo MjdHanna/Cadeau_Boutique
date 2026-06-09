@@ -61,7 +61,6 @@ const FriendCard = ({
       w-full
     "
       >
-        {/* USER INFO */}
         <div
           className="
         flex items-center
@@ -131,7 +130,7 @@ const FriendCard = ({
               </span>
             </div>
 
-            {user?.birthDate && (
+            {/* {user?.birthDate && (
               <p
                 className="
         text-xs
@@ -142,11 +141,9 @@ const FriendCard = ({
               >
                 {user.birthDate}
               </p>
-            )}
+            )} */}
           </div>
         </div>
-
-        {/* ACTIONS */}
         <div
           className="
         flex flex-wrap

@@ -1,10 +1,13 @@
-import React, { memo, Suspense, lazy, useState } from "react";
+import React, { memo, Suspense, lazy, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 import { selectToken } from "../../redux/features/authSlice";
-import { useGetOrdersQuery } from "../../redux/features/apiSlice";
+import {
+  useGetOrdersQuery,
+  useGetOrderHistoryQuery,
+} from "../../redux/features/apiSlice";
 
 import EmptyState from "../../components/EmptyState/EmptyState";
 import emptyImage from "../../assets/images/Cart/Frame.png";
@@ -23,9 +26,9 @@ const fadeIn = {
 };
 
 const statusColors = {
-  pending: "bg-yellow-100 text-yellow-700",
-  completed: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
+  delivered: "bg-green-100 text-green-700",
+  processing: "bg-blue-100 text-blue-700",
+  shipped: "bg-purple-100 text-purple-700",
 };
 
 const OrderTracking = () => {
@@ -35,14 +38,40 @@ const OrderTracking = () => {
 
   const token = useSelector(selectToken);
 
-  const { data, isLoading, isFetching, isError } = useGetOrdersQuery(
-    undefined,
-    {
-      skip: !token,
-    },
-  );
-
   const [openOrderId, setOpenOrderId] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
+
+  const currentOrdersQuery = useGetOrdersQuery(undefined, {
+    skip: !token,
+  });
+
+  const historyOrdersQuery = useGetOrderHistoryQuery(undefined, {
+    skip: !token,
+  });
+
+  const currentOrders = currentOrdersQuery.data?.data || [];
+
+  const historyOrders = historyOrdersQuery.data?.data || [];
+  const orders = useMemo(() => {
+    return [...(showHistory ? historyOrders : currentOrders)].sort(
+      (a, b) => new Date(b.date) - new Date(a.date),
+    );
+  }, [showHistory, historyOrders, currentOrders]);
+  const isLoading =
+    currentOrdersQuery.isLoading || historyOrdersQuery.isLoading;
+
+  const isFetching =
+    currentOrdersQuery.isFetching || historyOrdersQuery.isFetching;
+
+  const isError = currentOrdersQuery.isError || historyOrdersQuery.isError;
+
+  const paymentStatusColors = {
+    paid: "bg-green-100 text-green-700",
+    pending: "bg-yellow-100 text-yellow-700",
+    failed: "bg-red-100 text-red-700",
+    cancelled: "bg-red-100 text-red-700",
+    completed: "bg-emerald-100 text-emerald-700",
+  };
 
   if (!token) {
     return (
@@ -78,8 +107,6 @@ const OrderTracking = () => {
     );
   }
 
-  const orders = data?.data || [];
-
   const hasOrders = orders.length > 0;
 
   const recipientLabels = {
@@ -101,11 +128,47 @@ const OrderTracking = () => {
       >
         {t("Order Tracking")}
       </motion.h1>
+      <div className="flex justify-center mb-8">
+        <div className="bg-white p-1 rounded-2xl shadow-md flex">
+          <button
+            onClick={() => {
+              setShowHistory(false);
+              setOpenOrderId(null);
+            }}
+            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              !showHistory
+                ? "bg-primary text-white shadow"
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            {t("Active Orders")}
+            <span className="ml-2 bg-white/20 px-2 py-0.5 rounded-full text-xs">
+              {currentOrders.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => {
+              setShowHistory(true);
+              setOpenOrderId(null);
+            }}
+            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              showHistory
+                ? "bg-primary text-white shadow"
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            {t("Order History")}
+            <span className="ml-2 bg-white/20 px-2 py-0.5 rounded-full text-xs">
+              {historyOrders.length}
+            </span>
+          </button>
+        </div>
+      </div>
 
       {hasOrders ? (
         <div className="max-w-5xl mx-auto space-y-4">
           {orders.map((order) => {
-            console.log(order);
             const mappedOrder = {
               id: order.orderNumber,
 
@@ -149,13 +212,18 @@ const OrderTracking = () => {
                     variantId: item.variant_id,
 
                     productName:
-                      i18n.language === "ar"
-                        ? item.productNameArabic
-                        : item.productNameEnglish,
+                      item.productNameArabic ||
+                      item.productNameEnglish ||
+                      item.name ||
+                      t("Unknown Product"),
 
-                    quantity: Number(item.quantity),
+                    sku: item.sku || "",
 
-                    price: Number(item.price),
+                    quantity: Number(item.quantity || 0),
+
+                    price: Number(item.price || 0),
+
+                    attributes: item.attributes || {},
 
                     total:
                       Number(item.total) ||
@@ -192,9 +260,15 @@ const OrderTracking = () => {
                   onClick={() => setOpenOrderId(isOpen ? null : mappedOrder.id)}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {t("Order")} #{mappedOrder.id}
-                    </h3>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">
+                        {t("Order")} #{mappedOrder.id}
+                      </h3>
+
+                      <p className="text-xs text-gray-500 mt-1">
+                        {mappedOrder.items.length} {t("Items")}
+                      </p>
+                    </div>
 
                     <span
                       className={`
@@ -260,10 +334,18 @@ const OrderTracking = () => {
                           : "-"}
                       </p>
 
-                      <p>
-                        <span className="font-medium">{t("Payment")}:</span>{" "}
-                        {t(mappedOrder.paymentStatus)}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{t("Payment")}:</span>
+
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            paymentStatusColors[mappedOrder.paymentStatus] ||
+                            "bg-gray-100 text-gray-600"
+                          }`}
+                        >
+                          {t(mappedOrder.paymentStatus)}
+                        </span>
+                      </div>
                     </div>
                     {mappedOrder.giftMessage && (
                       <div
@@ -283,9 +365,6 @@ const OrderTracking = () => {
                         </p>
                       </div>
                     )}
-
-                    {/* COUPON */}
-
                     {mappedOrder.couponCode && (
                       <div
                         className="
@@ -331,28 +410,63 @@ const OrderTracking = () => {
                             <li
                               key={index}
                               className="
-                                flex
-                                justify-between
-                                items-center
-                                border
-                                border-gray-100
-                                rounded-2xl
-                                p-4
-                              "
+    flex
+    justify-between
+    items-start
+    border
+    border-gray-100
+    rounded-2xl
+    p-4
+  "
                             >
-                              <div>
+                              <div className="flex-1">
                                 <p className="font-bold text-gray-800">
                                   {item.productName}
                                 </p>
 
+                                {item.sku && (
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    SKU: {item.sku}
+                                  </p>
+                                )}
+
                                 <p className="text-sm text-gray-500 mt-1">
                                   {t("Quantity")}: {item.quantity}
                                 </p>
+
+                                <p className="text-sm text-gray-500">
+                                  {t("Price")}: ${item.price.toFixed(2)}
+                                </p>
+
+                                {Object.keys(item.attributes || {}).length >
+                                  0 && (
+                                  <div className="mt-2 flex flex-wrap gap-2">
+                                    {Object.entries(item.attributes).map(
+                                      ([key, value]) => (
+                                        <span
+                                          key={key}
+                                          className="
+              px-2
+              py-1
+              text-xs
+              rounded-full
+              bg-gray-100
+              text-gray-600
+            "
+                                        >
+                                          {key}: {value}
+                                        </span>
+                                      ),
+                                    )}
+                                  </div>
+                                )}
                               </div>
 
-                              <p className="font-bold text-primary text-lg">
-                                ${item.total.toFixed(2)}
-                              </p>
+                              <div className="text-right">
+                                <p className="font-bold text-primary text-lg">
+                                  ${item.total.toFixed(2)}
+                                </p>
+                              </div>
                             </li>
                           ))}
                         </ul>

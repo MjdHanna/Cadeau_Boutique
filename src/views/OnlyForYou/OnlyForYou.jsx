@@ -4,10 +4,21 @@ import { useTranslation } from "react-i18next";
 import { useOnlyForYouQuery } from "../../redux/features/apiSlice";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/features/authSlice";
 const OnlyForYou = () => {
-  const { data, isLoading, error } = useOnlyForYouQuery();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+
+  const token = useSelector(selectToken);
+
+  const { data, isLoading, error } = useOnlyForYouQuery(undefined, {
+    skip: !token,
+  });
+
+  if (!token) {
+    return null;
+  }
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -29,7 +40,7 @@ const OnlyForYou = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-28">
       <div className="text-center mb-14">
-        <h1 className="mb-12">{t("Only For You")}</h1>
+        <h1 className="text-4xl font-bold mb-10">{t("Only For You")}</h1>
 
         <p className="text-gray-500 mt-4 text-lg max-w-2xl mx-auto">
           {t(
@@ -81,12 +92,8 @@ const OnlyForYou = () => {
 
               <div className="p-5">
                 <h2 className="text-lg font-bold text-gray-800 line-clamp-1">
-                  {item.name}
+                  {i18n.language === "ar" ? item.nameAr : item.nameEn}
                 </h2>
-
-                <p className="text-gray-500 text-sm mt-2 line-clamp-2">
-                  {item.description}
-                </p>
 
                 <div className="flex items-center justify-between mt-5">
                   <span className="text-xl font-extrabold text-primary">

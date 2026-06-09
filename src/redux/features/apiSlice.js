@@ -23,6 +23,7 @@ export const apiSlice = createApi({
         "removeFromCart",
         "getGiftWrappers",
         "getOrders",
+        "getOrderHistory",
         "checkout",
         "getFriends",
         "getPendingRequests",
@@ -38,6 +39,10 @@ export const apiSlice = createApi({
         "isFollowingBrand",
         "onlyForYou",
         "getFriendWishlist",
+        "getReceivedGiftCards",
+        "getSentGiftCards",
+        "createGiftCard",
+        "redeemGiftCard",
       ];
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -48,7 +53,15 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Wishlist", "Cart", "Orders", "Friends", "Brands"],
+  tagTypes: [
+    "Auth",
+    "Wishlist",
+    "Cart",
+    "Orders",
+    "Friends",
+    "Brands",
+    "GiftCards",
+  ],
   endpoints: (builder) => ({
     // Auth
     register: builder.mutation({
@@ -344,6 +357,14 @@ export const apiSlice = createApi({
       providesTags: ["Orders"],
     }),
 
+    getOrderHistory: builder.query({
+      query: () => ({
+        url: "orders/history",
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+    }),
+
     checkout: builder.mutation({
       query: (data) => ({
         url: "checkout",
@@ -423,6 +444,38 @@ export const apiSlice = createApi({
       }),
       providesTags: ["Friends"],
     }),
+
+    // Gift-Card
+    getReceivedGiftCards: builder.query({
+      query: () => ({
+        url: "received-gift-card",
+        method: "GET",
+      }),
+      providesTags: ["GiftCards"],
+    }),
+    getSentGiftCards: builder.query({
+      query: () => ({
+        url: "sent-gift-card",
+        method: "GET",
+      }),
+      providesTags: ["GiftCards"],
+    }),
+    createGiftCard: builder.mutation({
+      query: (data) => ({
+        url: "create-gift-card",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["GiftCards"],
+    }),
+    redeemGiftCard: builder.mutation({
+      query: ({ id, items }) => ({
+        url: `redeem-gift-card/${id}`,
+        method: "POST",
+        body: { items },
+      }),
+      invalidatesTags: ["GiftCards", "Orders"],
+    }),
   }),
 });
 
@@ -465,6 +518,7 @@ export const {
   useGetCouponsQuery,
   useGetFilteredProductsQuery,
   useGetOrdersQuery,
+  useGetOrderHistoryQuery,
   useCheckoutMutation,
   useGetVendorByIdQuery,
   useGetFriendsQuery,
@@ -476,4 +530,8 @@ export const {
   useCancelFriendRequestMutation,
   useRemoveFriendMutation,
   useSearchUsersQuery,
+  useGetReceivedGiftCardsQuery,
+  useGetSentGiftCardsQuery,
+  useCreateGiftCardMutation,
+  useRedeemGiftCardMutation,
 } = apiSlice;

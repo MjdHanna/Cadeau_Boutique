@@ -13,7 +13,6 @@ const OccasionSlider = () => {
   const { i18n, t } = useTranslation();
   const { data, isLoading, error } = useGetOccasionsQuery();
 
-  /* ================= Occasions ================= */
   const occasions = useMemo(() => {
     if (!data?.data) return [];
     return data.data.map((o) => ({

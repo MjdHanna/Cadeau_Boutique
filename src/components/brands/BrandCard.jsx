@@ -1,3 +1,5 @@
+import React, { memo } from "react";
+
 const BrandCard = ({ brand, onClick }) => {
   return (
     <div
@@ -7,6 +9,7 @@ const BrandCard = ({ brand, onClick }) => {
       <img
         src={brand.brandLogo}
         alt={brand.brandName}
+        loading="lazy"
         className="h-32 mx-auto object-contain"
       />
       <h3 className="mt-4 font-bold text-lg">{brand.brandName}</h3>
@@ -15,4 +18,4 @@ const BrandCard = ({ brand, onClick }) => {
   );
 };
 
-export default BrandCard;
+export default memo(BrandCard);

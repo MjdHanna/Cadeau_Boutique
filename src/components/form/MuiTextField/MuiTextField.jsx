@@ -17,84 +17,43 @@ const MuiTextField = ({
   ...props
 }) => {
   const lang = useSelector(selectTranslate);
-
   const isRTL = lang === "ar";
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleTogglePassword = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const togglePassword = () => setShowPassword((p) => !p);
 
-  const [field, meta] = formik
-    ? useField(name)
-    : [{}, { touched: false, error: "" }];
+  // ✅ SAFE FORM HANDLING
+  const formikField = formik && name ? useField(name) : null;
+
+  const field = formikField ? formikField[0] : {};
+  const meta = formikField ? formikField[1] : {};
 
   return (
     <div className={`mb-4 ${className}`} dir={isRTL ? "rtl" : "ltr"}>
       <TextField
         fullWidth
         label={label}
-        {...(formik ? field : {})}
+        {...(formik && name ? field : {})}
         {...props}
         type={props.type === "password" && showPassword ? "text" : props.type}
-        inputProps={{
-          style: { textAlign: isRTL ? "right" : "left" },
-          dir: isRTL ? "rtl" : "ltr",
-          placeholder: props.placeholder,
-        }}
-        FormHelperTextProps={{
-          sx: { textAlign: isRTL ? "right" : "left" },
-        }}
-        error={Boolean(meta.touched && meta.error)}
-        helperText={meta.touched && meta.error ? meta.error : ""}
         InputProps={{
           endAdornment:
             props.type === "password" ? (
               <InputAdornment position="end">
-                <IconButton onClick={handleTogglePassword} edge="end">
+                <IconButton onClick={togglePassword}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ) : null,
         }}
+        error={Boolean(meta?.touched && meta?.error)}
+        helperText={meta?.touched && meta?.error ? meta.error : ""}
         sx={{
           direction: isRTL ? "rtl" : "ltr",
-
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "transparent !important",
             borderRadius: "18px",
-
-            "&.Mui-focused": {
-              backgroundColor: "transparent !important",
-            },
-
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D9D9D9",
-            },
-
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "var(--primary)",
-            },
           },
-
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#E5E7EB",
-          },
-
-          "& label.Mui-focused": {
-            color: "var(--primary)",
-          },
-
-          "& .MuiInputBase-input": {
-            textAlign: isRTL ? "right" : "left",
-            backgroundColor: "transparent !important",
-          },
-
-          "& .MuiFormHelperText-root": {
-            textAlign: isRTL ? "right" : "left",
-          },
-
           ...sx,
         }}
       />

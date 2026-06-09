@@ -12,6 +12,11 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
 
   const { data: friendsRes, isLoading } = useGetFriendsQuery();
 
+  const getAvatar = (name = "User") => {
+    const initial = name?.charAt(0)?.toUpperCase() || "U";
+
+    return `https://ui-avatars.com/api/?name=${initial}&background=random&color=fff&size=128`;
+  };
   const friends = useMemo(() => {
     if (!Array.isArray(friendsRes?.data)) return [];
 
@@ -22,11 +27,7 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
 
       email: item.userEmail,
 
-      image:
-        item.userImg ||
-        item.userprofileImg ||
-        item.profile_img ||
-        "/placeholder.png",
+      image: item.userImg || item.userprofileImg || item.profile_img || null,
     }));
   }, [friendsRes]);
 
@@ -72,8 +73,6 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
 
   return (
     <div className="mt-10">
-    
-
       <div className="flex items-center justify-between mb-5">
         <div>
           <h3 className="text-2xl font-black">{t("Recipient")}</h3>
@@ -83,7 +82,6 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
           </p>
         </div>
       </div>
-
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
@@ -194,16 +192,14 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
                   >
                     <div className="flex items-center gap-4">
                       <img
-                        src={friend.image}
+                        src={friend.image || getAvatar(friend.name)}
                         alt={friend.name}
-                        className="
-                          w-16 h-16
-                          rounded-full
-                          object-cover
-                          border
-                        "
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = getAvatar(friend.name);
+                        }}
+                        className="w-14 h-14 rounded-full object-cover"
                       />
-
                       <div className={isRTL ? "text-right" : "text-left"}>
                         <h4 className="font-black text-lg">{friend.name}</h4>
 
@@ -288,7 +284,7 @@ const RecipientSelector = ({ giftData, setGiftData }) => {
             {giftData.recipientType === "friend" && selectedFriend && (
               <div className="flex items-center gap-4">
                 <img
-                  src={selectedFriend.image}
+                  src={selectedFriend.image || getAvatar(selectedFriend.name)}
                   alt={selectedFriend.name}
                   className="w-14 h-14 rounded-full object-cover"
                 />

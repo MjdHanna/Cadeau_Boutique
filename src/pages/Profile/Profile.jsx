@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, memo, useState } from "react";
+import React, { Suspense, lazy, memo, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectToken } from "../../redux/features/authSlice";
@@ -47,29 +47,33 @@ const Profile = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [formValues, setFormValues] = useState(null);
-  // const [profileImg, setProfileImg] = useState(null);
-
   const isRTL = lang === "ar";
-
-  const profileInitialValues = {
-    name: user?.name || "",
-    email: user?.email || "",
-    phone_number: user?.phone_number || "",
-    gender: user?.gender || "",
-    birthDate: user?.birth_date || "",
-    address: user?.address || "",
-    bio: user?.bio || "",
-    profileImg: null,
-  };
-  const profileValidationSchema = Yup.object({
-    name: Yup.string().required(t("Name is required")),
-    email: Yup.string()
-      .email(t("Invalid email format"))
-      .required(t("Email is required")),
-    phone_number: Yup.string().required(t("Phone number is required")),
-    gender: Yup.string().required(t("Gender is required")),
-    birthDate: Yup.string().required(t("Birth date is required")),
-  });
+  const profileInitialValues = useMemo(
+    () => ({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone_number: user?.phone_number || "",
+      gender: user?.gender || "",
+      birthDate: user?.birth_date || "",
+      address: user?.address || "",
+      bio: user?.bio || "",
+      profileImg: null,
+    }),
+    [user],
+  );
+  const profileValidationSchema = useMemo(
+    () =>
+      Yup.object({
+        name: Yup.string().required(t("Name is required")),
+        email: Yup.string()
+          .email(t("Invalid email format"))
+          .required(t("Email is required")),
+        phone_number: Yup.string().required(t("Phone number is required")),
+        gender: Yup.string().required(t("Gender is required")),
+        birthDate: Yup.string().required(t("Birth date is required")),
+      }),
+    [t],
+  );
 
   const handleProfileUpdate = async (values) => {
     try {
@@ -83,7 +87,6 @@ const Profile = () => {
       toast.error(error?.data?.message || t("Update failed"));
     }
   };
-  console.log(user);
   const deleteInitialValues = { email: "", password: "" };
 
   const deleteValidationSchema = Yup.object({
@@ -148,11 +151,12 @@ const Profile = () => {
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="relative">
                 <img
-                  src={
-                    getImageUrl(user?.profile_img) ||
-                    `https://ui-avatars.com/api/?name=${user.name}`
-                  }
+                  src={getImageUrl(user?.profile_img)}
                   alt="profile"
+                  width="96"
+                  height="96"
+                  loading="eager"
+                  decoding="async"
                   className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
                 />
 

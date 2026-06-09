@@ -16,16 +16,14 @@ const LatestProducts = () => {
   const isRTL = i18n.language === "ar";
   const token = useSelector(selectToken);
 
-  // ===== Fetch latest products =====
+
   const { data, isLoading, error } = useGetLatestProductsQuery();
 
-  // ===== Fetch wishlist if user logged in =====
   const { data: wishlistData } = useGetWishlistQuery(undefined, {
     skip: !token,
   });
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
 
-  // ===== Normalize products =====
   const products = useMemo(() => {
     if (!data?.data) return [];
     return data.data.map((p) => ({
