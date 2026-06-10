@@ -79,7 +79,7 @@ const Footer = () => {
           </motion.div>
         </Suspense>
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-700 mt-10 pt-5 text-center text-gray-500 text-sm">
+      <div className="border-t border-gray-200  mt-10 pt-5 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} {t("All Rights Reserved.")}
       </div>
     </footer>

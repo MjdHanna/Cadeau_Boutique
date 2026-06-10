@@ -335,11 +335,11 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl p-8 mx-4 sm:mx-10 md:hidden"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white rounded-t-3xl shadow-2xl p-8 mx-4 sm:mx-10 md:hidden"
           >
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-red-500 transition"
+              className="absolute top-4 right-4 text-gray-600 hover:text-red-500 transition"
             >
               <HiX size={30} />
             </button>
@@ -356,7 +356,7 @@ const Navbar = () => {
                   key={label}
                   to={path}
                   onClick={() => setIsOpen(false)}
-                  className="text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-primary transition"
+                  className="text-lg font-medium text-gray-700  hover:text-primary transition"
                 >
                   <div className="flex items-center gap-3">
                     <span>{t(label)}</span>
@@ -364,14 +364,14 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <div className="border-t border-gray-300 dark:border-gray-700 w-full my-4" />
+              <div className="border-t border-gray-300  w-full my-4" />
 
               {user ? (
                 <>
                   <Link
                     onClick={() => setIsOpen(false)}
                     to="/profile"
-                    className="text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-primary transition"
+                    className="text-lg font-medium text-gray-700  hover:text-primary transition"
                   >
                     {t("Profile")}
                   </Link>

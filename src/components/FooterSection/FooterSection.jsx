@@ -2,7 +2,7 @@ import React from "react";
 const FooterSection = React.memo(({ title, links }) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">
+      <h3 className="text-lg font-semibold mb-3 text-gray-900">
         {title}
       </h3>
       <ul className="space-y-2">
@@ -10,7 +10,7 @@ const FooterSection = React.memo(({ title, links }) => {
           <li key={index}>
             <a
               href={link.href}
-              className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors duration-200"
+              className="text-gray-600  hover:text-primary transition-colors duration-200"
             >
               {link.label}
             </a>

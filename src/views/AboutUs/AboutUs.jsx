@@ -2,8 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-const TeamSection = lazy(() =>
-  import("../../components/TeamSection/TeamSection")
+const TeamSection = lazy(
+  () => import("../../components/TeamSection/TeamSection"),
 );
 
 const fadeIn = {
@@ -34,10 +34,10 @@ const AboutUs = () => {
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-          className="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
+          className="text-gray-600  text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
         >
           {t(
-            "We are a creative platform specialized in organizing and designing gifts for special occasions. Our goal is to make every moment unforgettable."
+            "We are a creative platform specialized in organizing and designing gifts for special occasions. Our goal is to make every moment unforgettable.",
           )}
         </motion.p>
 

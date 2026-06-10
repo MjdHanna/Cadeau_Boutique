@@ -27,7 +27,7 @@ const FooterSocials = React.memo(({ isRTL = false }) => {
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-200 text-xl"
+            className="text-gray-600  hover:text-primary transition-colors duration-200 text-xl"
           >
             {s.icon}
           </a>

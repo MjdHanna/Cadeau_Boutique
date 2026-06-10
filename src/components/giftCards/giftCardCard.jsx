@@ -9,7 +9,7 @@ const GiftCardCard = ({ card, received = false }) => {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className="rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 shadow-sm"
+      className="rounded-3xl bg-white border-gray-200 p-6 shadow-sm"
     >
       <div className="flex items-center gap-3">
         {received ? (
@@ -20,7 +20,7 @@ const GiftCardCard = ({ card, received = false }) => {
               className="w-12 h-12 rounded-full object-cover border"
             />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
               <HiGift className="text-xl text-primary" />
             </div>
           )
@@ -31,7 +31,7 @@ const GiftCardCard = ({ card, received = false }) => {
             className="w-12 h-12 rounded-full object-cover border"
           />
         ) : (
-          <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-gray-200  flex items-center justify-center">
             <HiGift className="text-xl text-primary" />
           </div>
         )}
@@ -48,7 +48,7 @@ const GiftCardCard = ({ card, received = false }) => {
       </div>
 
       {card?.message && (
-        <p className="text-gray-500 mt-3 italic">"{card.message}"</p>
+        <p className="text-gray-500 mt-3 italic">{card.message}</p>
       )}
 
       <div className="mt-4">
@@ -59,14 +59,12 @@ const GiftCardCard = ({ card, received = false }) => {
 
       {card?.items?.length > 0 && (
         <div className="mt-5 space-y-4">
-          <h4 className="font-semibold text-gray-700 dark:text-gray-200">
-            {t("Gift Items")}
-          </h4>
+          <h4 className="font-semibold text-gray-700 ">{t("Gift Items")}</h4>
 
           {card.items.map((item) => (
             <div
               key={item.productId}
-              className="border border-gray-200 dark:border-gray-700 rounded-xl p-3"
+              className="border border-gray-200  rounded-xl p-3"
             >
               <div className="flex gap-3">
                 <img
@@ -85,7 +83,7 @@ const GiftCardCard = ({ card, received = false }) => {
               </div>
 
               {item.variants?.length > 0 && (
-                <div className="mt-2 text-xs text-gray-600 dark:text-gray-300">
+                <div className="mt-2 text-xs text-gray-600">
                   {item.variants.map((v) => (
                     <div key={v.variantId} className="flex flex-wrap gap-2">
                       <span>💰 {v.price}$</span>
