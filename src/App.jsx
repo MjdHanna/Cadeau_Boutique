@@ -87,7 +87,7 @@ const ReceivedGiftCards = lazy(
 const RedeemGiftCard = lazy(() => import("./pages/GiftCards/RedeemGiftCard"));
 
 const NotFoundPage = lazy(() => import("./views/Error/Error"));
-
+import SplashScreen from "./components/SplashScreen/SplashScreen";
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const token = useSelector(selectToken);
@@ -122,13 +122,21 @@ function App() {
     size: "",
     name: "",
   });
+  const [showSplash, setShowSplash] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <div>
       {isLoading && <Loader />}
 
       <Toaster />
-
+      <SplashScreen isVisible={showSplash} />
       <Navbar />
 
       <ScrollToTop />
