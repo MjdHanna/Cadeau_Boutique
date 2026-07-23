@@ -10,6 +10,7 @@ export const apiSlice = createApi({
         "getProfile",
         "deleteProfileImg",
         "getUser",
+        "getMyFollowedBrands",
         "editProfile",
         "logout",
         "getWishlist",
@@ -43,6 +44,7 @@ export const apiSlice = createApi({
         "getSentGiftCards",
         "createGiftCard",
         "redeemGiftCard",
+        "getCoupons",
       ];
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -63,7 +65,6 @@ export const apiSlice = createApi({
     "GiftCards",
   ],
   endpoints: (builder) => ({
-    // Auth
     register: builder.mutation({
       query: (userData) => ({
         url: "register",
@@ -72,6 +73,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Auth"],
     }),
+    
     login: builder.mutation({
       query: (credentials) => ({
         url: "login",
@@ -169,6 +171,13 @@ export const apiSlice = createApi({
           console.error(e);
         }
       },
+    }),
+    getMyFollowedBrands: builder.query({
+      query: () => ({
+        url: "Brands/my-follows",
+        method: "GET",
+      }),
+      providesTags: ["Brands"],
     }),
 
     // Reset Flow
@@ -487,6 +496,7 @@ export const {
   useGetUserQuery,
   useEditProfileMutation,
   useDeleteProfileImgMutation,
+  useGetMyFollowedBrandsQuery,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useLogoutMutation,

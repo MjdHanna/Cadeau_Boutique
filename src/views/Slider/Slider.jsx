@@ -34,6 +34,13 @@ const Slider = () => {
     navigate(`/categories/${cat.categoryId}`);
   };
 
+  if (error) {
+    return (
+      <p className="text-center my-20 text-red-500">
+        {t("Failed to load categories")}
+      </p>
+    );
+  }
   if (isLoading) {
     return (
       <div className="py-8">
@@ -43,14 +50,6 @@ const Slider = () => {
           </div>
         </div>
       </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <p className="text-center my-20 text-red-500">
-        {t("Failed to load categories")}
-      </p>
     );
   }
 

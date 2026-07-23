@@ -38,11 +38,13 @@ const CreateGiftCard = () => {
 
   const products = useMemo(() => productsData?.data ?? [], [productsData]);
 
-  const addProduct = useCallback((product) => {
+  const toggleProduct = useCallback((product) => {
     setSelectedItems((prev) => {
       const exists = prev.some((item) => item.productId === product.productId);
-      if (exists) return prev;
 
+      if (exists) {
+        return prev.filter((item) => item.productId !== product.productId);
+      }
       return [
         ...prev,
         {
@@ -214,18 +216,13 @@ const CreateGiftCard = () => {
                 </p>
 
                 <button
-                  onClick={() => addProduct(product)}
-                  disabled={isSelected}
+                  onClick={() => toggleProduct(product)}
                   className={`
-                    w-full mt-5 py-3 rounded-2xl font-bold transition
-                    ${
-                      isSelected
-                        ? "bg-green-500 text-white"
-                        : "bg-primary text-white"
-                    }
-                  `}
+    w-full mt-5 py-3 rounded-2xl font-bold transition
+    ${isSelected ? "bg-red-500 text-white" : "bg-primary text-white"}
+  `}
                 >
-                  {isSelected ? `✓ ${t("Added")}` : `+ ${t("Add")}`}
+                  {isSelected ? `✓ ${t("Remove")}` : `+ ${t("Add")}`}
                 </button>
               </div>
             </div>

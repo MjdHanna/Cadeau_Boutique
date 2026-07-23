@@ -144,7 +144,6 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
@@ -152,7 +151,6 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-reset-code" element={<VerifyResetCode />} />
           <Route path="/auth/google/callback" element={<GoogleCallback />} />
-
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/friends/:id/wishlist" element={<FriendWishlist />} />
@@ -161,25 +159,18 @@ function App() {
           <Route path="/search" element={<SearchLayout />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/notifications" element={<Notifications />} />
-
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<AboutUs />} />
-
           <Route path="/gift-cards" element={<GiftCardsHome />} />
           <Route path="/gift-cards/create" element={<CreateGiftCard />} />
           <Route path="/gift-cards/sent" element={<SentGiftCards />} />
           <Route path="/gift-cards/received" element={<ReceivedGiftCards />} />
           <Route path="/gift-cards/redeem/:id" element={<RedeemGiftCard />} />
-
           <Route path="/categories" element={<CategoriesList />} />
           <Route path="/categories/:id" element={<CategoryDetails />} />
-
           <Route path="/brands/:id" element={<BrandDetails />} />
-
           <Route path="/occasions/:id" element={<OccasionDetails />} />
-
           <Route path="/products/:id" element={<ProductDetails />} />
-
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

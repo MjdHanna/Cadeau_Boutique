@@ -31,7 +31,9 @@ const MuiTextField = lazy(
 const LoginRequired = lazy(
   () => import("../../components/LoginRequired/LoginRequired"),
 );
-
+const FollowedBrands = lazy(
+  () => import("../../components/FollowedBrand/FollowedBrands"),
+);
 const Profile = () => {
   const token = useSelector(selectToken);
   const lang = useSelector(selectTranslate);
@@ -193,6 +195,9 @@ const Profile = () => {
               </div>
             </div>
           ) : null}
+          <Suspense fallback={<CircularProgress size={24} />}>
+            <FollowedBrands />
+          </Suspense>
         </div>
 
         <div className="flex-1 space-y-6">

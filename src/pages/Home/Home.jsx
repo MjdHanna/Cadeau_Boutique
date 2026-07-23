@@ -5,6 +5,7 @@ import LatestProducts from "../../views/LatestProducts/LatestProducts";
 import Brands from "../../views/Brands/Brands";
 import OccasionSlider from "../../views/OccasionSlider/OccasionSlider";
 import OnlyForYou from "../../views/OnlyForYou/OnlyForYou";
+import DownloadApp from "../../views/DownloadApp/DownloadApp";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
 import GiftCardsHome from "../GiftCards/GiftCardsHome";
@@ -23,6 +24,7 @@ const Home = () => {
       <OnlyForYou />
       <LatestProducts />
       <Brands />
+      {/* <DownloadApp /> */}
     </div>
   );
 };

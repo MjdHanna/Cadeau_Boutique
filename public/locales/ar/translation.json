@@ -1,6 +1,5 @@
 {
   "Home": "الرئيسية",
-
   "Search With Items": "البحث من خلال العناصر",
   "Wishlist": "قائمة الاشياء المفضلة",
   "Trackorder": "تتبع الطلب",
@@ -11,11 +10,11 @@
   "Phone Number": "رقم الهاتف",
   "Password": "كلمة المرور",
   "Forgot Password?": "نسيت كلمة المرور؟",
-  "Continue with Google": "تسجيل الدخول عبر جوجل",
-  "Continue with Facebook": "تسجيل الدخول عبر فيسبوك",
   "Don't have an account?": "ليس لديك حساب؟",
   "Create one": "إنشاء حساب",
   "Full Name": "الاسم الكامل",
+  "Continue with Google": "تسجيل الدخول عبر جوجل",
+  "Continue with Facebook": "تسجيل الدخول عبر فيسبوك",
   "Email Address": "البريد الإلكتروني",
   "Gender": "الجنس",
   "Select gender": "اختر الجنس",
@@ -398,5 +397,7 @@
   "Redeeming...": "جارٍ الاسترداد...",
   "Active Orders": "الطلبات النشطة",
   "Order History": "الطلبات الموجودة سابقا",
-  "Share Happiness With Every Gift": "شارك السعادة مع كل هدية"
+  "Share Happiness With Every Gift": "شارك السعادة مع كل هدية",
+  "You are not following any brands yet": "أنت لا تتابع أي علامات تجارية بعد.",
+  "Followed Brands": "العلامات التجارية المُتابَعَة"
 }
