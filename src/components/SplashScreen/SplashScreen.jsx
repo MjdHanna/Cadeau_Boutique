@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const SplashScreen = ({ isVisible }) => {
   const { t, i18n } = useTranslation();
-  const title = "Bella Regalo";
+  const title = "Wishly";
 
   return (
     <AnimatePresence>
@@ -90,7 +90,7 @@ const SplashScreen = ({ isVisible }) => {
                     delay: index * 0.08,
                     duration: 0.4,
                   }}
-                  className="text-3xl md:text-4xl font-bold text-gray-900 "
+                  className="text-3xl md:text-4xl font-bold text-primary "
                 >
                   {char === " " ? "\u00A0" : char}
                 </motion.span>
@@ -109,6 +109,20 @@ const SplashScreen = ({ isVisible }) => {
               className="mt-3 text-sm md:text-base tracking-wider text-gray-500 "
             >
               {t("Share Happiness With Every Gift")}
+            </motion.p>
+            <motion.p
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                delay: 1.2,
+              }}
+              className="mt-3 text-sm md:text-base tracking-wider text-gray-500 "
+            >
+              {t("Where the wish begins... and the smile is complete.")}
             </motion.p>
             <div className="mt-8 h-[4px] w-[220px] bg-gray-200  rounded-full overflow-hidden">
               <motion.div
