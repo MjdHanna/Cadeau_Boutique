@@ -16,7 +16,7 @@ import { selectTranslate } from "../../redux/features/translateSlice";
 
 import MuiTextField from "../../components/form/MuiTextField/MuiTextField";
 import AuthButton from "../../components/AuthButton/AuthButton";
-import p1 from "../../assets/images/authentication/p1.png";
+import p1 from "../../assets/images/NavBar/a_logo_for_a_gift_app_named_bella_regalo_keep_the_exact_icon_from.png";
 
 const VerifyEmail = () => {
   const { t } = useTranslation();

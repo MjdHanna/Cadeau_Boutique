@@ -14,13 +14,13 @@ const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
     try {
       let payload = {
         recipientType: giftData.recipientType,
-
         deliveryDate: giftData.deliveryDate || null,
-
-        giftWrapperId: giftData.enabled ? giftData.coverId : null,
+        giftWrapperId:
+          giftData.enabled && giftData.coverId
+            ? String(giftData.coverId)
+            : null,
 
         giftMessage: giftData.message || null,
-
         couponCode: giftData.couponCode || null,
       };
 
@@ -29,21 +29,17 @@ const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
       }
 
       if (giftData.recipientType === "manual") {
-        payload.shippingName = giftData.recipient.name || "";
-
-        payload.shippingPhone = giftData.recipient.phone || "";
-
-        payload.shippingAddress = giftData.recipient.address || "";
+        payload.shippingName = giftData.recipient?.name || "";
+        payload.shippingPhone = giftData.recipient?.phone || "";
+        payload.shippingAddress = giftData.recipient?.address || "";
       }
 
       console.log("CHECKOUT PAYLOAD => ", payload);
 
       await checkout(payload).unwrap();
-
       onOrderSuccess?.();
     } catch (error) {
       console.log(error);
-
       toast.error(error?.data?.message || t("Something went wrong"), {
         position: "top-center",
       });

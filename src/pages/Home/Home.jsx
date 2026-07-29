@@ -24,7 +24,7 @@ const Home = () => {
       <OnlyForYou />
       <LatestProducts />
       <Brands />
-      {/* <DownloadApp /> */}
+      <DownloadApp />
     </div>
   );
 };

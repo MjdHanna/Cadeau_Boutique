@@ -9,6 +9,7 @@ import Footer from "./Sharid/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import { Toaster } from "react-hot-toast";
+import { useGetUserQuery } from "./redux/features/apiSlice";
 import { setCredentials, selectToken } from "./redux/features/authSlice";
 import { selectTranslate } from "./redux/features/translateSlice";
 import i18n from "./i18n";
@@ -91,6 +92,9 @@ import SplashScreen from "./components/SplashScreen/SplashScreen";
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const token = useSelector(selectToken);
+  const { data: user } = useGetUserQuery(undefined, {
+    skip: !token,
+  });
   const language = useSelector(selectTranslate);
 
   const dispatch = useDispatch();

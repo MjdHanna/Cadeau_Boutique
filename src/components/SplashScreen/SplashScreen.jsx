@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 
 const SplashScreen = ({ isVisible }) => {
   const { t, i18n } = useTranslation();
-  const title = "Wishly";
-
   return (
     <AnimatePresence>
       {isVisible && (
@@ -61,7 +59,7 @@ const SplashScreen = ({ isVisible }) => {
             >
               <motion.img
                 src={logo}
-                alt="Bella Regalo"
+                alt="Wishly"
                 className="w-40 h-40 object-contain"
                 animate={{
                   y: [0, -8, 0],
@@ -74,28 +72,6 @@ const SplashScreen = ({ isVisible }) => {
               />
             </motion.div>
 
-            <div className="flex mt-4 overflow-hidden" dir="ltr">
-              {title.split("").map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{
-                    opacity: 0,
-                    y: 40,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    delay: index * 0.08,
-                    duration: 0.4,
-                  }}
-                  className="text-3xl md:text-4xl font-bold text-primary "
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
-            </div>
             <motion.p
               initial={{
                 opacity: 0,
