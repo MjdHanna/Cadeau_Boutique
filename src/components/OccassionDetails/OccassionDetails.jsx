@@ -28,8 +28,6 @@ const OccasionDetails = () => {
 
   const wishlistItems = wishlistData?.data?.wishlistItems || [];
   const payload = data?.data;
-
-  /* ================= Occasion ================= */
   const occasion = useMemo(() => {
     if (!payload?.occasion) return null;
     const o = payload.occasion;
@@ -45,7 +43,6 @@ const OccasionDetails = () => {
     };
   }, [payload, i18n.language]);
 
-  /* ================= Products ================= */
   const products = useMemo(() => {
     if (!payload?.products) return [];
     return payload.products.map((p) => ({
@@ -58,12 +55,10 @@ const OccasionDetails = () => {
           : p.productDescriptionEnglish,
     }));
   }, [payload, i18n.language]);
-
-  /* ================= States ================= */
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loaderer />
+        <Loader />
       </div>
     );
   }
@@ -78,7 +73,7 @@ const OccasionDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-28" dir={isRTL ? "rtl" : "ltr"}>
-      {/* ===== Occasion Header ===== */}
+
       <div className="bg-white rounded-2xl p-6 shadow mb-10">
         <h1 className="text-3xl font-bold">{occasion.name}</h1>
         {occasion.description && (
@@ -86,7 +81,6 @@ const OccasionDetails = () => {
         )}
       </div>
 
-      {/* ===== Products ===== */}
       <h3 className="text-xl font-semibold mb-6">{t("Products")}</h3>
 
       {products.length === 0 ? (
