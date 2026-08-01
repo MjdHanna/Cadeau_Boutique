@@ -50,65 +50,67 @@ const FriendWishlist = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           className="
-            relative overflow-hidden
-            rounded-[40px]
-            bg-white/70
-            backdrop-blur-xl
-            border border-white/20
-            shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-            p-8 md:p-12
-            mb-12
-          "
+    relative overflow-hidden
+    rounded-3xl sm:rounded-[40px]
+    bg-white/70
+    backdrop-blur-xl
+    border border-white/20
+    shadow-[0_20px_80px_rgba(0,0,0,0.08)]
+    p-5 sm:p-8 md:p-12
+    mb-8 sm:mb-12
+  "
         >
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-            <div className="flex items-center gap-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-10">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start lg:items-center text-center sm:text-start gap-4 sm:gap-6">
               <img
                 src={profileImage}
                 alt={friend?.name}
                 className="
-                  w-28 h-28
-                  rounded-[32px]
-                  object-cover
-                  border-4 border-white
-                  shadow-xl
-                "
+          w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
+          rounded-2xl sm:rounded-[32px]
+          object-cover
+          border-2 sm:border-4 border-white
+          shadow-xl
+          shrink-0
+        "
               />
 
-              <div>
-                <h1 className="text-5xl font-black text-gray-900">
+              <div className="flex flex-col items-center sm:items-start">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 leading-tight">
                   {friend?.name}
                 </h1>
 
-                <p className="text-gray-500 mt-3 text-lg max-w-xl">
+                <p className="text-gray-500 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg max-w-xl">
                   {t("Send a thoughtful gift from their wishlist")} 🎁
                 </p>
 
-                <div className="flex items-center gap-3 mt-5">
+                <div className="flex items-center gap-3 mt-4 sm:mt-5">
                   <div
                     className="
-                      px-4 py-2
-                      rounded-2xl
-                      bg-primary/10
-                      text-primary
-                      font-bold
-                    "
+              px-3 py-1.5 sm:px-4 sm:py-2
+              rounded-xl sm:rounded-2xl
+              bg-primary/10
+              text-primary
+              text-xs sm:text-sm md:text-base
+              font-bold
+            "
                   >
                     {wishlist.length} {t("Wishlist Items")}
                   </div>
                 </div>
               </div>
             </div>
-
             <div
               className="
-                hidden lg:flex
-                w-32 h-32
-                rounded-full
-                bg-primary/10
-                items-center justify-center
-              "
+        hidden lg:flex
+        w-28 h-28 md:w-32 md:h-32
+        rounded-full
+        bg-primary/10
+        items-center justify-center
+        shrink-0
+      "
             >
-              <HiOutlineGift className="text-primary" size={60} />
+              <HiOutlineGift className="text-primary" size={50} />
             </div>
           </div>
         </motion.div>
