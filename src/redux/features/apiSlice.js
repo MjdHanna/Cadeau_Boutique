@@ -523,6 +523,7 @@ export const {
   useResetPasswordMutation,
   useLogoutMutation,
   useResendOtpMutation,
+  useGetFilteredProductsQuery,
   useGetBrandsQuery,
   useGetBrandByIdQuery,
   useFollowBrandMutation,
