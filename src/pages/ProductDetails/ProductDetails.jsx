@@ -40,17 +40,16 @@ const ProductDetails = () => {
 
   const [userRating, setUserRating] = useState(0);
   const [review, setReview] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
 
   const [addRating, { isLoading: ratingLoading }] =
     useAddProductRatingMutation();
 
-  // sync language
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
 
-  // auto select variant if only one
   const variants = useMemo(() => {
     return Array.isArray(product?.variants) ? product.variants : [];
   }, [product]);
@@ -60,15 +59,15 @@ const ProductDetails = () => {
       setSelectedVariant(variants[0].variantId);
     }
   }, [variants]);
-
-  // rating init
   useEffect(() => {
     if (product?.userRating) {
       setUserRating(product.userRating);
     }
+    if (product?.userReview) {
+      setReview(product.userReview);
+    }
   }, [product]);
 
-  // localized product
   const localized = useMemo(() => {
     if (!product) return null;
 
@@ -78,43 +77,42 @@ const ProductDetails = () => {
 
     return {
       name: isRTL ? product.productNameArabic : product.productNameEnglish,
-
       description: isRTL
         ? product.productDescriptionArabic
         : product.productDescriptionEnglish,
-
       features: featuresRaw || {},
-
       price: product.price,
-
       images: Array.isArray(product.images) ? product.images : [],
-
       variants,
     };
   }, [product, isRTL, variants]);
 
-  // rate handler
-  const handleRate = async (value) => {
+  const handleSubmitRating = async () => {
     if (!token) {
       toast.error(t("Please login to rate this product"));
       return;
     }
 
-    const finalRating = value === userRating ? null : value;
+    if (!userRating) {
+      toast.error(
+        lang === "ar"
+          ? "يرجى تحديد عدد النجوم أولاً"
+          : "Please select a star rating first",
+      );
+      return;
+    }
 
     try {
       await addRating({
         productId: id,
-        rating: finalRating,
-        review,
+        rating: userRating,
+        review: review.trim() || null,
+        image: imageFile,
       }).unwrap();
 
-      setUserRating(finalRating || 0);
-      setReview("");
+      setImageFile(null);
 
-      toast.success(
-        finalRating ? t("Thanks for your rating ❤️") : t("Rating removed"),
-      );
+      toast.success(t("Thanks for your rating ❤️"));
     } catch (err) {
       toast.error(err?.data?.message || t("Something went wrong"));
     }
@@ -138,7 +136,7 @@ const ProductDetails = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-24" dir={isRTL ? "rtl" : "ltr"}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Images */}
+
         <div className="space-y-4">
           {localized.images.length > 0 ? (
             <img
@@ -166,7 +164,6 @@ const ProductDetails = () => {
           )}
         </div>
 
-        {/* Details */}
         <div>
           <h1 className="text-4xl font-bold">{localized.name}</h1>
 
@@ -180,32 +177,99 @@ const ProductDetails = () => {
             </p>
           )}
 
-          {/* Rating */}
-          <div className="mt-6">
-            <p className="font-medium mb-2">
-              {lang === "ar" ? "قيّم هذا المنتج" : "Rate this product"}
-            </p>
-
-            <StarRating
-              onRate={handleRate}
-              disabled={ratingLoading}
-              value={userRating}
-            />
-
+          <div className="mt-8 p-6 rounded-3xl bg-slate-50/80 backdrop-blur-sm shadow-sm space-y-5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-gray-800">
+                {lang === "ar" ? "شارِكنا رأيك" : "Rate this product"}
+              </h3>
+              <span className="text-xs text-gray-400">
+                {lang === "ar" ? "تجربتك تهمنا" : "Your feedback matters"}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 bg-white p-3 rounded-2xl w-fit shadow-xs">
+              <StarRating
+                onRate={(val) => setUserRating(val)}
+                disabled={ratingLoading}
+                value={userRating}
+              />
+            </div>
             <textarea
               value={review}
               onChange={(e) => setReview(e.target.value)}
               rows={3}
               placeholder={
                 lang === "ar"
-                  ? "اكتب تعليقك هنا (اختياري)"
-                  : "Write your review here (optional)"
+                  ? "اكتب تعليقك هنا حول المنتج..."
+                  : "Write your review here..."
               }
-              className="w-full mt-4 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-2xl p-4 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/40 transition shadow-xs text-gray-700 placeholder-gray-400 resize-none"
             />
-          </div>
+            <div className="space-y-2">
+              {!imageFile ? (
+                <label className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-white hover:bg-gray-100/80 rounded-2xl cursor-pointer transition text-xs font-semibold text-gray-600 shadow-xs border-0">
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>
+                    {lang === "ar"
+                      ? "إضافة صورة للتقييم"
+                      : "Attach a Review Photo"}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files[0] || null)}
+                    className="hidden"
+                  />
+                </label>
+              ) : (
+                <div className="flex items-center justify-between p-2.5 bg-white rounded-2xl shadow-xs">
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Preview"
+                      className="w-10 h-10 object-cover rounded-xl"
+                    />
+                    <span className="text-xs font-medium text-gray-700 truncate max-w-[180px]">
+                      {imageFile.name}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setImageFile(null)}
+                    className="p-1.5 text-red-500 hover:bg-red-50 rounded-xl transition text-xs font-semibold"
+                  >
+                    {lang === "ar" ? "إزالة" : "Remove"}
+                  </button>
+                </div>
+              )}
+            </div>
 
-          {/* Variants */}
+            <button
+              type="button"
+              onClick={handleSubmitRating}
+              disabled={ratingLoading}
+              className="w-full py-3 px-6 bg-primary text-white font-bold text-sm rounded-2xl shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.99] transition disabled:opacity-50"
+            >
+              {ratingLoading
+                ? lang === "ar"
+                  ? "جاري الإرسال..."
+                  : "Submitting..."
+                : lang === "ar"
+                  ? "إرسال التقييم"
+                  : "Submit Rating"}
+            </button>
+          </div>
           {localized.variants.length > 0 && (
             <div className="mt-6">
               <h3 className="font-semibold mb-2">{t("Options")}</h3>
@@ -241,44 +305,11 @@ const ProductDetails = () => {
               </div>
             </div>
           )}
-          {/* Vendor Info */}
-
           {vendor && (
-            <div
-              className="
-      mt-10
-      rounded-3xl
-      border border-gray-200
-      bg-white
-      shadow-sm
-      overflow-hidden
-    "
-            >
-              {/* HEADER */}
-
-              <div
-                className="
-        p-6
-        border-b border-gray-100
-        flex flex-col sm:flex-row
-        sm:items-center
-        justify-between
-        gap-5
-      "
-              >
+            <div className="mt-10 rounded-3xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                 <div className="flex items-center gap-4">
-                  {/* LOGO */}
-
-                  <div
-                    className="
-            w-20 h-20
-            rounded-2xl
-            overflow-hidden
-            bg-gray-100
-            flex items-center justify-center
-            border
-          "
-                  >
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 flex items-center justify-center border">
                     {vendor.shopLogo ? (
                       <img
                         src={vendor.shopLogo}
@@ -289,8 +320,6 @@ const ProductDetails = () => {
                       <span className="text-3xl">🏪</span>
                     )}
                   </div>
-
-                  {/* INFO */}
 
                   <div>
                     <h3 className="text-2xl font-black">
@@ -306,35 +335,14 @@ const ProductDetails = () => {
 
                     <div className="flex items-center gap-3 mt-3 text-sm text-gray-500">
                       <span>📞 {vendor.shopPhoneNumber}</span>
-
                       <span>•</span>
-
                       <span>
                         {vendor.products?.length || 0} {t("Products")}
                       </span>
                     </div>
                   </div>
                 </div>
-
-                {/* BUTTON */}
-
-                {/* <button
-                  className="
-          px-6 py-3
-          rounded-2xl
-          bg-primary
-          text-white
-          font-bold
-          hover:opacity-90
-          transition
-        "
-                >
-                  {t("Visit Store")}
-                </button> */}
               </div>
-
-              {/* MORE PRODUCTS */}
-
               {vendor.products?.length > 0 && (
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-5">
@@ -354,24 +362,12 @@ const ProductDetails = () => {
                       .map((item) => (
                         <div
                           key={item.productId}
-                          className="
-                  flex gap-4
-                  rounded-2xl
-                  border border-gray-100
-                  p-3
-                  hover:shadow-md
-                  transition
-                "
+                          className="flex gap-4 rounded-2xl border border-gray-100 p-3 hover:shadow-md transition"
                         >
                           <img
                             src={item.productImage}
                             alt={item.productNameEnglish}
-                            className="
-                    w-24 h-24
-                    rounded-xl
-                    object-cover
-                    bg-gray-100
-                  "
+                            className="w-24 h-24 rounded-xl object-cover bg-gray-100"
                           />
 
                           <div className="flex-1">
@@ -398,22 +394,17 @@ const ProductDetails = () => {
               )}
             </div>
           )}
-          {/* Add to cart */}
           <AddToCartButton
             productId={product.productId}
             variantId={selectedVariant}
             onSuccess={() => {
               if (giftFriend) {
                 navigate("/cart", {
-                  state: {
-                    giftFriend,
-                  },
+                  state: { giftFriend },
                 });
               }
             }}
           />
-
-          {/* Features */}
           {localized.features && (
             <ul className="mt-8 space-y-3">
               {Object.entries(localized.features).map(([key, value]) => (

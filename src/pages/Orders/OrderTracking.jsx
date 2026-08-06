@@ -1,5 +1,5 @@
 import React, { memo, Suspense, lazy, useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
@@ -7,6 +7,7 @@ import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetOrdersQuery,
   useGetOrderHistoryQuery,
+  useCancelOrderMutation,
 } from "../../redux/features/apiSlice";
 
 import EmptyState from "../../components/EmptyState/EmptyState";
@@ -29,17 +30,22 @@ const statusColors = {
   delivered: "bg-green-100 text-green-700",
   processing: "bg-blue-100 text-blue-700",
   shipped: "bg-purple-100 text-purple-700",
+  cancelled: "bg-red-100 text-red-700",
+  canceled: "bg-red-100 text-red-700",
 };
 
 const OrderTracking = () => {
   const { t, i18n } = useTranslation();
-
   const isRTL = i18n.language === "ar";
-
   const token = useSelector(selectToken);
 
   const [openOrderId, setOpenOrderId] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
+
+  // حالة التحكم بظهور نافذة تأكيد الإلغاء
+  const [orderToCancel, setOrderToCancel] = useState(null);
+
+  const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
 
   const currentOrdersQuery = useGetOrdersQuery(undefined, {
     skip: !token,
@@ -50,19 +56,18 @@ const OrderTracking = () => {
   });
 
   const currentOrders = currentOrdersQuery.data?.data || [];
-
   const historyOrders = historyOrdersQuery.data?.data || [];
+
   const orders = useMemo(() => {
     return [...(showHistory ? historyOrders : currentOrders)].sort(
       (a, b) => new Date(b.date) - new Date(a.date),
     );
   }, [showHistory, historyOrders, currentOrders]);
+
   const isLoading =
     currentOrdersQuery.isLoading || historyOrdersQuery.isLoading;
-
   const isFetching =
     currentOrdersQuery.isFetching || historyOrdersQuery.isFetching;
-
   const isError = currentOrdersQuery.isError || historyOrdersQuery.isError;
 
   const paymentStatusColors = {
@@ -71,6 +76,31 @@ const OrderTracking = () => {
     failed: "bg-red-100 text-red-700",
     cancelled: "bg-red-100 text-red-700",
     completed: "bg-emerald-100 text-emerald-700",
+  };
+
+  const recipientLabels = {
+    self: t("Myself"),
+    friend: t("Friend"),
+    manual: t("Manual Recipient"),
+  };
+
+  // فتح النافذة المنبثقة
+  const handleOpenCancelModal = (orderId, e) => {
+    e.stopPropagation();
+    setOrderToCancel(orderId);
+  };
+
+  // تنفيذ عملية الإلغاء الفعلية
+  const handleConfirmCancel = async () => {
+    if (!orderToCancel) return;
+    try {
+      await cancelOrder(orderToCancel).unwrap();
+      currentOrdersQuery.refetch(); // إعادة جلب قائمة الطلبات النشطة
+      setOrderToCancel(null);
+    } catch (err) {
+      console.error("Failed to cancel order: ", err);
+      alert(err?.data?.message || t("Failed to cancel order"));
+    }
   };
 
   if (!token) {
@@ -109,16 +139,10 @@ const OrderTracking = () => {
 
   const hasOrders = orders.length > 0;
 
-  const recipientLabels = {
-    self: t("Myself"),
-    friend: t("Friend"),
-    manual: t("Manual Recipient"),
-  };
-
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
-      className="min-h-screen bg-gray-50 px-6 py-25"
+      className="min-h-screen bg-gray-50 px-6 py-25 relative"
     >
       <motion.h1
         className="text-3xl font-bold text-center mb-10 text-gray-800"
@@ -128,6 +152,7 @@ const OrderTracking = () => {
       >
         {t("Order Tracking")}
       </motion.h1>
+
       <div className="flex justify-center mb-8">
         <div className="bg-white p-1 rounded-2xl shadow-md flex">
           <button
@@ -170,61 +195,40 @@ const OrderTracking = () => {
         <div className="max-w-5xl mx-auto space-y-4">
           {orders.map((order) => {
             const mappedOrder = {
-              id: order.orderNumber,
-
-              status: order.orderStatus,
-
+              id: order.id || order.orderNumber,
+              orderNumber: order.orderNumber || order.id,
+              status: order.orderStatus || order.status,
               paymentStatus: order.paymentStatus,
-
               recipientType: order.recipientType,
-
               shippingName: order.shippingName || "-",
-
               shippingPhone:
                 order.shippingPhone ||
                 order.shipping_phone ||
                 order.phone ||
                 "-",
-
               shippingAddress: order.shippingAddress || "-",
-
               deliveryDate:
                 order.date || order.delivery_date || order.shippingDate || null,
-
               giftMessage: order.giftMessage || "",
-
               couponCode: order.couponCode || "",
-
               couponDiscount: Number(order.couponDiscount || 0),
-
               giftWrapper: order.giftWrapper || null,
-
               total: Number(order.total) || 0,
-
               subtotal: Number(order.subtotal || 0),
-
               date: order.date || null,
-
               items: Array.isArray(order.orderItems)
                 ? order.orderItems.map((item) => ({
                     productId: item.product_id,
-
                     variantId: item.variant_id,
-
                     productName:
                       item.productNameArabic ||
                       item.productNameEnglish ||
                       item.name ||
                       t("Unknown Product"),
-
                     sku: item.sku || "",
-
                     quantity: Number(item.quantity || 0),
-
                     price: Number(item.price || 0),
-
                     attributes: item.attributes || {},
-
                     total:
                       Number(item.total) ||
                       Number(item.price || 0) * Number(item.quantity || 0),
@@ -234,50 +238,43 @@ const OrderTracking = () => {
 
             const isOpen = openOrderId === mappedOrder.id;
 
+            // تحويل الحالة للحروف الصغيرة لمنع مشاكل المطابقة
+            const currentStatus = (mappedOrder.status || "").toLowerCase();
+
+            // التحقق من إمكانية الإلغاء
+            const canCancel =
+              !showHistory &&
+              !["cancelled", "canceled", "delivered", "shipped"].includes(
+                currentStatus,
+              );
+
             return (
               <motion.div
                 key={mappedOrder.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="
-                  bg-white
-                  rounded-2xl
-                  shadow-md
-                  border
-                  border-gray-200
-                  overflow-hidden
-                "
+                className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden"
               >
                 <div
-                  className="
-                    flex
-                    justify-between
-                    items-center
-                    p-6
-                    cursor-pointer
-                  "
+                  className="flex justify-between items-center p-6 cursor-pointer"
                   onClick={() => setOpenOrderId(isOpen ? null : mappedOrder.id)}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                     <div>
                       <h3 className="text-lg font-bold text-gray-800">
-                        {t("Order")} #{mappedOrder.id}
+                        {t("Order")} #{mappedOrder.orderNumber}
                       </h3>
-
                       <p className="text-xs text-gray-500 mt-1">
                         {mappedOrder.items.length} {t("Items")}
                       </p>
                     </div>
 
                     <span
-                      className={`
-                        px-3 py-1 rounded-full text-xs font-medium w-fit
-                        ${
-                          statusColors[mappedOrder.status] ||
-                          "bg-gray-100 text-gray-600"
-                        }
-                      `}
+                      className={`px-3 py-1 rounded-full text-xs font-medium w-fit ${
+                        statusColors[currentStatus] ||
+                        "bg-gray-100 text-gray-600"
+                      }`}
                     >
                       {t(mappedOrder.status)}
                     </span>
@@ -336,7 +333,6 @@ const OrderTracking = () => {
 
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{t("Payment")}:</span>
-
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             paymentStatusColors[mappedOrder.paymentStatus] ||
@@ -347,50 +343,34 @@ const OrderTracking = () => {
                         </span>
                       </div>
                     </div>
+
                     {mappedOrder.giftMessage && (
-                      <div
-                        className="
-                          bg-primary/5
-                          border border-primary/10
-                          rounded-2xl
-                          p-5
-                        "
-                      >
+                      <div className="bg-primary/5 border border-primary/10 rounded-2xl p-5">
                         <h4 className="font-bold text-lg mb-2">
                           🎁 {t("Gift Message")}
                         </h4>
-
                         <p className="text-gray-700 italic leading-7">
                           "{mappedOrder.giftMessage}"
                         </p>
                       </div>
                     )}
+
                     {mappedOrder.couponCode && (
-                      <div
-                        className="
-                          bg-green-50
-                          border border-green-100
-                          rounded-2xl
-                          p-5
-                        "
-                      >
+                      <div className="bg-green-50 border border-green-100 rounded-2xl p-5">
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-bold text-green-700">
                               🎟️ {t("Coupon Applied")}
                             </h4>
-
                             <p className="text-sm text-green-600 mt-1">
                               {mappedOrder.couponCode}
                             </p>
                           </div>
-
                           {mappedOrder.couponDiscount > 0 && (
                             <div className="text-right">
                               <p className="text-sm text-gray-500">
                                 {t("Discount")}
                               </p>
-
                               <p className="font-black text-green-700 text-lg">
                                 -${mappedOrder.couponDiscount.toFixed(2)}
                               </p>
@@ -399,45 +379,33 @@ const OrderTracking = () => {
                         </div>
                       </div>
                     )}
+
                     <div>
                       <h4 className="font-semibold mb-4 text-lg">
                         {t("Items")}
                       </h4>
-
                       {mappedOrder.items.length > 0 ? (
                         <ul className="space-y-4">
                           {mappedOrder.items.map((item, index) => (
                             <li
                               key={index}
-                              className="
-    flex
-    justify-between
-    items-start
-    border
-    border-gray-100
-    rounded-2xl
-    p-4
-  "
+                              className="flex justify-between items-start border border-gray-100 rounded-2xl p-4"
                             >
                               <div className="flex-1">
                                 <p className="font-bold text-gray-800">
                                   {item.productName}
                                 </p>
-
                                 {item.sku && (
                                   <p className="text-xs text-gray-500 mt-1">
                                     SKU: {item.sku}
                                   </p>
                                 )}
-
                                 <p className="text-sm text-gray-500 mt-1">
                                   {t("Quantity")}: {item.quantity}
                                 </p>
-
                                 <p className="text-sm text-gray-500">
                                   {t("Price")}: ${item.price.toFixed(2)}
                                 </p>
-
                                 {Object.keys(item.attributes || {}).length >
                                   0 && (
                                   <div className="mt-2 flex flex-wrap gap-2">
@@ -445,14 +413,7 @@ const OrderTracking = () => {
                                       ([key, value]) => (
                                         <span
                                           key={key}
-                                          className="
-              px-2
-              py-1
-              text-xs
-              rounded-full
-              bg-gray-100
-              text-gray-600
-            "
+                                          className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600"
                                         >
                                           {key}: {value}
                                         </span>
@@ -461,7 +422,6 @@ const OrderTracking = () => {
                                   </div>
                                 )}
                               </div>
-
                               <div className="text-right">
                                 <p className="font-bold text-primary text-lg">
                                   ${item.total.toFixed(2)}
@@ -479,7 +439,6 @@ const OrderTracking = () => {
                       {mappedOrder.subtotal > 0 && (
                         <div className="flex justify-between text-gray-600">
                           <span>{t("Subtotal")}</span>
-
                           <span>${mappedOrder.subtotal.toFixed(2)}</span>
                         </div>
                       )}
@@ -487,19 +446,35 @@ const OrderTracking = () => {
                       {mappedOrder.couponDiscount > 0 && (
                         <div className="flex justify-between text-green-600 font-semibold">
                           <span>{t("Coupon Discount")}</span>
-
                           <span>-${mappedOrder.couponDiscount.toFixed(2)}</span>
                         </div>
                       )}
 
                       <div className="flex justify-between items-center pt-3">
                         <span className="font-black text-xl">{t("Total")}</span>
-
                         <span className="text-2xl font-black text-primary">
                           ${mappedOrder.total.toFixed(2)}
                         </span>
                       </div>
                     </div>
+
+                    {canCancel && (
+                      <div className="border-t pt-4 flex justify-end">
+                        <button
+                          disabled={isCancelling}
+                          onClick={(e) =>
+                            handleOpenCancelModal(mappedOrder.id, e)
+                          }
+                          className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors disabled:opacity-50 flex items-center gap-2"
+                        >
+                          {isCancelling ? (
+                            <span className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <span>{t("Cancel Order")}</span>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </motion.div>
@@ -513,6 +488,55 @@ const OrderTracking = () => {
           descriptionKey={t("You haven't placed any orders yet.")}
         />
       )}
+      <AnimatePresence>
+        {orderToCancel && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center space-y-6"
+            >
+              <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                ⚠️
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {t("Cancel Order")}
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  {t("Are you sure you want to cancel this order?")}
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setOrderToCancel(null)}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50"
+                >
+                  {t("Cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmCancel}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
+                >
+                  {isCancelling ? (
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <span>{t("Confirm")}</span>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "./authSlice";
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -25,6 +26,7 @@ export const apiSlice = createApi({
         "getGiftWrappers",
         "getOrders",
         "getOrderHistory",
+        "cancelOrder",
         "checkout",
         "getFriends",
         "getPendingRequests",
@@ -73,7 +75,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Auth"],
     }),
-    
+
     login: builder.mutation({
       query: (credentials) => ({
         url: "login",
@@ -143,9 +145,7 @@ export const apiSlice = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-
           const updatedUser = data?.data || data?.user || data;
-
           dispatch(setUser(updatedUser));
         } catch (e) {
           console.error(e);
@@ -163,9 +163,7 @@ export const apiSlice = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-
           const updatedUser = data?.data || data?.user || data;
-
           dispatch(setUser(updatedUser));
         } catch (e) {
           console.error(e);
@@ -210,7 +208,7 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
-    // Filteeeer
+    // Filter
     getFilteredProducts: builder.query({
       query: (filters) => {
         const params = new URLSearchParams();
@@ -277,15 +275,19 @@ export const apiSlice = createApi({
     }),
     // Rating
     addProductRating: builder.mutation({
-      query: ({ productId, rating, review }) => ({
-        url: "rating",
-        method: "POST",
-        body: {
-          productId: Number(productId),
-          rating: Number(rating),
-          review: review || null,
-        },
-      }),
+      query: ({ productId, rating, review, image }) => {
+        const formData = new FormData();
+        formData.append("productId", productId);
+        formData.append("rating", rating);
+        if (review) formData.append("review", review);
+        if (image) formData.append("image", image);
+        return {
+          url: "/rating",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Product"],
     }),
 
     // Wishlist
@@ -315,6 +317,13 @@ export const apiSlice = createApi({
         url: `friends/${friendId}/wishlist`,
         method: "GET",
       }),
+    }),
+    getPeopleYouMayKnow: builder.query({
+      query: () => ({
+        url: "/friends/peopleYouMayKnow",
+        method: "GET",
+      }),
+      providesTags: ["Friends", "Requests"],
     }),
     // Cart
     getCart: builder.query({
@@ -374,6 +383,14 @@ export const apiSlice = createApi({
       providesTags: ["Orders"],
     }),
 
+    cancelOrder: builder.mutation({
+      query: () => ({
+        url: `orders/5/cancel`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Orders"],
+    }),
+
     checkout: builder.mutation({
       query: (data) => ({
         url: "checkout",
@@ -382,6 +399,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Cart", "Orders"],
     }),
+
     // Friends
     getFriends: builder.query({
       query: () => ({
@@ -446,6 +464,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Friends"],
     }),
+
     searchUsers: builder.query({
       query: (name) => ({
         url: `users/filter?name=${name}`,
@@ -462,6 +481,7 @@ export const apiSlice = createApi({
       }),
       providesTags: ["GiftCards"],
     }),
+
     getSentGiftCards: builder.query({
       query: () => ({
         url: "sent-gift-card",
@@ -469,6 +489,7 @@ export const apiSlice = createApi({
       }),
       providesTags: ["GiftCards"],
     }),
+
     createGiftCard: builder.mutation({
       query: (data) => ({
         url: "create-gift-card",
@@ -477,6 +498,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["GiftCards"],
     }),
+
     redeemGiftCard: builder.mutation({
       query: ({ id, items }) => ({
         url: `redeem-gift-card/${id}`,
@@ -511,6 +533,7 @@ export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
   useGetLatestProductsQuery,
+  useGetVendorByIdQuery,
   useGetWishlistQuery,
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
@@ -526,11 +549,10 @@ export const {
   useRemoveFromCartMutation,
   useGetGiftWrappersQuery,
   useGetCouponsQuery,
-  useGetFilteredProductsQuery,
   useGetOrdersQuery,
   useGetOrderHistoryQuery,
+  useCancelOrderMutation,
   useCheckoutMutation,
-  useGetVendorByIdQuery,
   useGetFriendsQuery,
   useGetPendingRequestsQuery,
   useGetSentRequestsQuery,
@@ -539,6 +561,7 @@ export const {
   useRejectFriendMutation,
   useCancelFriendRequestMutation,
   useRemoveFriendMutation,
+  useGetPeopleYouMayKnowQuery,
   useSearchUsersQuery,
   useGetReceivedGiftCardsQuery,
   useGetSentGiftCardsQuery,

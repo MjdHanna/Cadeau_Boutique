@@ -1,14 +1,12 @@
 import React, { lazy, Suspense, useMemo, useState, useEffect } from "react";
-
 import { motion, AnimatePresence } from "framer-motion";
-
 import {
   HiOutlineSearch,
   HiOutlineUsers,
   HiOutlineUserAdd,
   HiOutlinePaperAirplane,
+  HiOutlineSparkles,
 } from "react-icons/hi";
-import { selectTranslate } from "../../redux/features/translateSlice";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
@@ -18,6 +16,7 @@ import {
   useGetFriendsQuery,
   useGetPendingRequestsQuery,
   useGetSentRequestsQuery,
+  useGetPeopleYouMayKnowQuery,
   useAcceptFriendMutation,
   useRejectFriendMutation,
   useCancelFriendRequestMutation,
@@ -27,7 +26,6 @@ import {
 } from "../../redux/features/apiSlice";
 
 import FriendCard from "./FriendCard";
-import RequestCard from "./RequestCard";
 import EmptyState from "./EmptyState";
 import FriendsSkeleton from "./FriendsSkeleton";
 
@@ -40,6 +38,11 @@ const tabs = [
     id: "friends",
     label: "Friends",
     icon: HiOutlineUsers,
+  },
+  {
+    id: "suggestions",
+    label: "People You May Know",
+    icon: HiOutlineSparkles,
   },
   {
     id: "requests",
@@ -55,11 +58,9 @@ const tabs = [
 
 const Friends = () => {
   const token = useSelector(selectToken);
-
   const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState("friends");
-
   const [search, setSearch] = useState("");
   const [localSearchUsers, setLocalSearchUsers] = useState([]);
 
@@ -77,13 +78,11 @@ const Friends = () => {
       id: item.id,
       name: item.userName,
       email: item.userEmail,
-
       image:
         item.userprofileImg ||
         item.userImg ||
         item.profileImg ||
         item.profile_img,
-
       requestSent: item.requestSent,
       requestId: item.requestId,
     }));
@@ -92,14 +91,21 @@ const Friends = () => {
   useEffect(() => {
     if (searchedUsers.length > 0) {
       setLocalSearchUsers(searchedUsers);
+    } else {
+      setLocalSearchUsers([]);
     }
   }, [searchedUsers]);
+
   const { data: friendsRes, isLoading: friendsLoading } = useGetFriendsQuery(
     undefined,
     {
       skip: !token,
     },
   );
+  const { data: suggestionsRes, isLoading: suggestionsLoading } =
+    useGetPeopleYouMayKnowQuery(undefined, {
+      skip: !token,
+    });
 
   const { data: requestsRes, isLoading: requestsLoading } =
     useGetPendingRequestsQuery(undefined, {
@@ -112,16 +118,14 @@ const Friends = () => {
       skip: !token,
     },
   );
-  const [addFriend, { isLoading: addLoading }] = useAddFriendMutation();
+
+  const [addFriend] = useAddFriendMutation();
   const [acceptFriend, { isLoading: acceptLoading }] =
     useAcceptFriendMutation();
-
   const [rejectFriend, { isLoading: rejectLoading }] =
     useRejectFriendMutation();
-
   const [cancelRequest, { isLoading: cancelLoading }] =
     useCancelFriendRequestMutation();
-
   const [removeFriend, { isLoading: removeLoading }] =
     useRemoveFriendMutation();
 
@@ -137,6 +141,20 @@ const Friends = () => {
     }));
   }, [friendsRes]);
 
+  const suggestedUsers = useMemo(() => {
+    if (!Array.isArray(suggestionsRes?.data)) return [];
+
+    return suggestionsRes.data.map((item) => ({
+      id: item.id,
+      name: item.userName || item.name,
+      email: item.userEmail || item.email,
+      image: item.userImg || item.profileImg,
+      mutualFriendsCount:
+        item.mutualFriendsCount || item.mutual_friends_count || 0,
+      requestSent: item.requestSent || false,
+    }));
+  }, [suggestionsRes]);
+
   const requests = useMemo(() => {
     if (!Array.isArray(requestsRes?.data)) return [];
 
@@ -149,22 +167,20 @@ const Friends = () => {
       reqStatus: item.reqStatus,
     }));
   }, [requestsRes]);
-  console.log(requestsRes?.data);
-  console.log(sentRes?.data);
+
   const sentRequests = useMemo(() => {
     if (!Array.isArray(sentRes?.data)) return [];
 
     return sentRes.data.map((item) => ({
       id: item.id,
       receiverId: item.receiverId,
-
       name: item.receiverName,
       email: item.receiverEmail,
       image: item.receiverProfilImg,
-
       reqStatus: item.reqStatus,
     }));
   }, [sentRes]);
+
   const filterUsers = (users) => {
     return users.filter((user) =>
       user?.name?.toLowerCase()?.includes(search.toLowerCase()),
@@ -183,27 +199,17 @@ const Friends = () => {
     );
   }
 
-  const loading = friendsLoading || requestsLoading || sentLoading;
+  const loading =
+    friendsLoading || requestsLoading || sentLoading || suggestionsLoading;
 
   return (
-    <div
-      className="
-        min-h-screen
-        bg-gradient-to-br
-        from-[#f8fafc]
-        via-[#f4f7fb]
-        to-[#eef2ff]
-        py-28
-        px-4
-      "
-    >
+    <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#f4f7fb] to-[#eef2ff] py-28 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 mb-10">
           <div>
             <h1 className="text-5xl font-black tracking-tight text-gray-900">
               {t("Friends")}
             </h1>
-
             <p className="text-gray-500 mt-3 text-lg">
               {t("Manage your friendships and requests")}
             </p>
@@ -211,36 +217,18 @@ const Friends = () => {
 
           <div className="relative w-full xl:w-[340px]">
             <HiOutlineSearch
-              className="
-                absolute
-                left-5 top-1/2 -translate-y-1/2
-                text-gray-400
-              "
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
               size={20}
             />
-
             <input
               type="text"
               placeholder={t("Search users...")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="
-                h-14
-                w-full
-                rounded-[24px]
-                border border-white/20
-                bg-white/80
-                backdrop-blur-xl
-                pl-14 pr-5
-                outline-none
-                shadow-sm
-                focus:ring-2
-                focus:ring-primary/20
-              "
+              className="h-14 w-full rounded-[24px] border border-white/20 bg-white/80 backdrop-blur-xl pl-14 pr-5 outline-none shadow-sm focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
-
         <div className="mb-10">
           {search.trim().length >= 2 && (
             <div className="w-full">
@@ -249,11 +237,8 @@ const Friends = () => {
               <div className="w-full space-y-4">
                 {searchLoading ? (
                   <FriendsSkeleton />
-                ) : searchedUsers.length > 0 ? (
-                  (localSearchUsers.length > 0
-                    ? localSearchUsers
-                    : searchedUsers
-                  ).map((user) => (
+                ) : localSearchUsers.length > 0 ? (
+                  localSearchUsers.map((user) => (
                     <FriendCard
                       key={user.id}
                       user={user}
@@ -262,7 +247,6 @@ const Friends = () => {
                       onAdd={async (id) => {
                         try {
                           const res = await addFriend(id).unwrap();
-
                           setLocalSearchUsers((prev) =>
                             prev.map((u) =>
                               u.id === id
@@ -275,13 +259,12 @@ const Friends = () => {
                             ),
                           );
                         } catch (err) {
-                          console.log(err);
+                          console.error(err);
                         }
                       }}
                       onCancel={async (userId) => {
                         try {
                           await cancelRequest(userId).unwrap();
-
                           setLocalSearchUsers((prev) =>
                             prev.map((u) =>
                               u.id === userId
@@ -290,7 +273,7 @@ const Friends = () => {
                             ),
                           );
                         } catch (err) {
-                          console.log(err);
+                          console.error(err);
                         }
                       }}
                     />
@@ -305,7 +288,6 @@ const Friends = () => {
             </div>
           )}
         </div>
-
         <div className="flex flex-wrap items-center gap-3 mb-10">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -314,27 +296,18 @@ const Friends = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`
-                  h-14 px-6
-                  rounded-[22px]
-                  font-bold
-                  flex items-center gap-3
-                  transition-all duration-300
-                  ${
-                    activeTab === tab.id
-                      ? "bg-primary text-white shadow-lg"
-                      : "bg-white/70 text-gray-600 hover:bg-white"
-                  }
-                `}
+                className={`h-14 px-6 rounded-[22px] font-bold flex items-center gap-3 transition-all duration-300 ${
+                  activeTab === tab.id
+                    ? "bg-primary text-white shadow-lg"
+                    : "bg-white/70 text-gray-600 hover:bg-white"
+                }`}
               >
                 <Icon size={20} />
-
                 {t(tab.label)}
               </button>
             );
           })}
         </div>
-
         {loading ? (
           <FriendsSkeleton />
         ) : (
@@ -354,11 +327,12 @@ const Friends = () => {
                         key={friend.id}
                         user={friend}
                         type="friend"
+                        loading={removeLoading}
                         onRemove={async (id) => {
                           try {
                             await removeFriend(id).unwrap();
                           } catch (err) {
-                            console.log(err);
+                            console.error(err);
                           }
                         }}
                       />
@@ -371,29 +345,61 @@ const Friends = () => {
                   )}
                 </>
               )}
-
+              {activeTab === "suggestions" && (
+                <>
+                  {filterUsers(suggestedUsers).length > 0 ? (
+                    filterUsers(suggestedUsers).map((user) => (
+                      <FriendCard
+                        key={user.id}
+                        user={user}
+                        type="suggestion"
+                        onAdd={async (id) => {
+                          try {
+                            await addFriend(id).unwrap();
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                        onCancel={async (id) => {
+                          try {
+                            await cancelRequest(id).unwrap();
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                      />
+                    ))
+                  ) : (
+                    <EmptyState
+                      title={t("No Suggestions Available")}
+                      description={t(
+                        "Check back later for new friend suggestions.",
+                      )}
+                    />
+                  )}
+                </>
+              )}
               {activeTab === "requests" && (
                 <>
                   {filterUsers(requests).length > 0 ? (
                     filterUsers(requests).map((request) => (
-                      <RequestCard
+                      <FriendCard
                         key={request.id}
                         user={request}
                         type="request"
-                        t={t}
                         loading={acceptLoading || rejectLoading}
                         onAccept={async (id) => {
                           try {
                             await acceptFriend(id).unwrap();
                           } catch (err) {
-                            console.log(err);
+                            console.error(err);
                           }
                         }}
                         onReject={async (id) => {
                           try {
                             await rejectFriend(id).unwrap();
                           } catch (err) {
-                            console.log(err);
+                            console.error(err);
                           }
                         }}
                       />
@@ -406,22 +412,20 @@ const Friends = () => {
                   )}
                 </>
               )}
-
               {activeTab === "sent" && (
                 <>
                   {filterUsers(sentRequests).length > 0 ? (
                     filterUsers(sentRequests).map((request) => (
-                      <RequestCard
+                      <FriendCard
                         key={request.id}
                         user={request}
                         type="sent"
-                        t={t}
                         loading={cancelLoading}
                         onCancel={async (id) => {
                           try {
                             await cancelRequest(id).unwrap();
                           } catch (err) {
-                            console.log(err);
+                            console.error(err);
                           }
                         }}
                       />

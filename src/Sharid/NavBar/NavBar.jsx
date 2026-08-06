@@ -260,7 +260,7 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/login"
-                    className="px-5 py-2 rounded-lg text-sm bg-secondary text-white shadow-lg transition"
+                    className="px-5 py-2 rounded-lg text-sm bg-third text-white shadow-lg transition"
                   >
                     {t("Login")}
                   </Link>
@@ -396,7 +396,7 @@ const Navbar = () => {
                 <>
                   <Link
                     onClick={() => setIsOpen(false)}
-                    className="w-full py-2 rounded-lg bg-secondary text-white font-medium text-center hover:bg-secondary/90 transition"
+                    className="w-full py-2 rounded-lg bg-third text-white font-medium text-center hover:bg-secondary/90 transition"
                     to="/login"
                   >
                     {t("Login")}

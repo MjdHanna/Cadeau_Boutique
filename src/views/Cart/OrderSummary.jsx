@@ -3,35 +3,41 @@ import { useTranslation } from "react-i18next";
 import { useCheckoutMutation } from "../../redux/features/apiSlice";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate(); 
 
   const isRTL = i18n.language === "ar";
 
   const [checkout, { isLoading }] = useCheckoutMutation();
+
   const handleCheckout = async () => {
     try {
       let payload = {
-        recipientType: giftData.recipientType,
+        recipientType: giftData.recipientType || "self",
         deliveryDate: giftData.deliveryDate || null,
         giftWrapperId:
           giftData.enabled && giftData.coverId
             ? String(giftData.coverId)
             : null,
-
         giftMessage: giftData.message || null,
         couponCode: giftData.couponCode || null,
       };
 
       if (giftData.recipientType === "friend") {
         payload.friendId = giftData.friendId;
-      }
-
-      if (giftData.recipientType === "manual") {
+      } else if (giftData.recipientType === "manual") {
         payload.shippingName = giftData.recipient?.name || "";
         payload.shippingPhone = giftData.recipient?.phone || "";
         payload.shippingAddress = giftData.recipient?.address || "";
+      } else {
+        if (giftData.recipient?.address) {
+          payload.shippingName = giftData.recipient?.name || "";
+          payload.shippingPhone = giftData.recipient?.phone || "";
+          payload.shippingAddress = giftData.recipient?.address || "";
+        }
       }
 
       console.log("CHECKOUT PAYLOAD => ", payload);
@@ -40,9 +46,47 @@ const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
       onOrderSuccess?.();
     } catch (error) {
       console.log(error);
-      toast.error(error?.data?.message || t("Something went wrong"), {
-        position: "top-center",
-      });
+      const errorMessage = error?.data?.message || "";
+      if (
+        errorMessage.toLowerCase().includes("shipping data is incomplete") ||
+        error?.status === 422
+      ) {
+        toast(
+          (tObj) => (
+            <div className="flex flex-col gap-2 text-center items-center">
+              <span className="text-sm font-medium">
+                {t(
+                  "The address details in your account are incomplete. Please add the address to complete the order.",
+                )}
+              </span>
+              <button
+                onClick={() => {
+                  toast.dismiss(tObj.id); 
+                  navigate("/profile");
+                }}
+                className="mt-1 bg-primary text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-md"
+              >
+                {t("Go to profile")}
+              </button>
+            </div>
+          ),
+          {
+            position: "top-center",
+            duration: 6000,
+            icon: "⚠️",
+            style: {
+              borderRadius: "16px",
+              background: "#333",
+              color: "#fff",
+              padding: "16px",
+            },
+          },
+        );
+      } else {
+        toast.error(errorMessage || t("Something went wrong"), {
+          position: "top-center",
+        });
+      }
     }
   };
 

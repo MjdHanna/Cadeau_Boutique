@@ -31,17 +31,11 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/register",
-              "protocol": "http",
+              "raw": "{{localhost}}/register",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "register"
               ]
             }
@@ -66,20 +60,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"sara@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
+              "raw": "{\r\n    \"email\": \"admin123@example.com\",\r\n    \"password\": \"Admin2002\"\r\n}"
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/login",
-              "protocol": "http",
+              "raw": "{{localhost}}/login",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "login"
               ]
             }
@@ -112,17 +100,11 @@
               "raw": "{\r\n  \"userId\": 12,\r\n  \"otp\": \"481216\"\r\n}"
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/email-verification",
-              "protocol": "http",
+              "raw": "{{localhost}}/email-verification",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "email-verification"
               ]
             }
@@ -224,17 +206,11 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/reset-password",
-              "protocol": "http",
+              "raw": "{{localhost}}/reset-password",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "reset-password"
               ]
             }
@@ -323,7 +299,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|WiVrDssvCGkCiNIpLykZbKs6ZcDTUUZi2Q9Gysa4ca717b62",
+                  "value": "{{auth_secret_0vyy}}",
                   "type": "string"
                 }
               ]
@@ -390,17 +366,11 @@
               ]
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/account-edit",
-              "protocol": "http",
+              "raw": "{{localhost}}/account-edit",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "account-edit"
               ]
             }
@@ -415,7 +385,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|dmcqmtUJa6H74JiMKlOI7XxiHXLuJ8ss9eLB1ID3b3502c05",
+                  "value": "{{auth_secret_0own}}",
                   "type": "string"
                 }
               ]
@@ -429,18 +399,39 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/account-remove-profile-img",
-              "protocol": "http",
+              "raw": "{{localhost}}/account-remove-profile-img",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "account-remove-profile-img"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}/user",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "user"
               ]
             }
           },
@@ -475,17 +466,11 @@
               "raw": ""
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/1",
-              "protocol": "http",
+              "raw": "{{localhost}}/brands/1",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "brands",
                 "1"
               ]
@@ -501,7 +486,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|bIKv328MXICDBppclUaxB5dWvJoGu8GqW9t2dLe1efa39706",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -520,19 +505,13 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/1/follow",
-              "protocol": "http",
+              "raw": "{{localhost}}/brands/5/follow",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "brands",
-                "1",
+                "5",
                 "follow"
               ]
             }
@@ -547,7 +526,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|KvMBvbkFgCifEmVULPyqQ8Ziq2cTx0ERket3EzSZb2f1f7d1",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -561,17 +540,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/1/unfollow",
-              "protocol": "http",
+              "raw": "{{localhost}}/brands/1/unfollow",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "brands",
                 "1",
                 "unfollow"
@@ -602,22 +575,63 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/brands/2/is-following",
-              "protocol": "http",
+              "raw": "{{localhost}}/brands/2/is-following",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "brands",
                 "2",
                 "is-following"
               ]
             }
+          },
+          "response": []
+        },
+        {
+          "name": "myFollows",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/Brands/my-follows",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "Brands",
+                "my-follows"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
           },
           "response": []
         }
@@ -638,17 +652,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/occasions/2",
-              "protocol": "http",
+              "raw": "{{localhost}}/occasions/2",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "occasions",
                 "2"
               ]
@@ -662,17 +670,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/special-occasion",
-              "protocol": "http",
+              "raw": "{{localhost}}/special-occasion",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "special-occasion"
               ]
             }
@@ -696,17 +698,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/categories/2",
-              "protocol": "http",
+              "raw": "{{localhost}}/categories/2",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "categories",
                 "2"
               ]
@@ -750,17 +746,11 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/vendor/apply",
-              "protocol": "http",
+              "raw": "{{localhost}}/vendor/apply",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "vendor",
                 "apply"
               ]
@@ -803,17 +793,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-categories",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-categories",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-categories"
                   ]
@@ -829,7 +813,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -885,17 +869,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/add-category",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/add-category",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "add-category"
                   ]
@@ -968,17 +946,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-category/2",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/edit-category/2",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "edit-category",
                     "2"
@@ -995,7 +967,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "1|2GqpzlIejGvI1i8Rb2G2t3YQJXNHHWBYD25TIVlI37a0a751",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1054,17 +1026,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/delete-category/25",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/delete-category/25",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "delete-category",
                     "25"
@@ -1112,17 +1078,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-brands/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-brands/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-brands",
                     "1"
@@ -1193,17 +1153,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/add-brand",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/add-brand",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "add-brand"
                   ]
@@ -1219,7 +1173,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|OuVKpH593kKFJCSy8xinnSqp8H3rMI8afZKeMe7pe111c5fc",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1276,17 +1230,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-brand/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/edit-brand/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "edit-brand",
                     "1"
@@ -1303,7 +1251,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "1|97W1GgV9Khn7X62maGfyfcgk4T60njxGf542F9Wy03ada4c4",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1326,17 +1274,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/delete-brand/12",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/delete-brand/12",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "delete-brand",
                     "12"
@@ -1366,17 +1308,11 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-occasions/9",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-occasions/9",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-occasions",
                     "9"
@@ -1447,17 +1383,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/add-occasion",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/add-occasion",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "add-occasion"
                   ]
@@ -1473,7 +1403,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "4|35ZVNi9B0XE2BImQegozm6fIsgl9tkVZiXRB6N8p70021857",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1530,17 +1460,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-occasion/4",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/edit-occasion/4",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "edit-occasion",
                     "4"
@@ -1576,17 +1500,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/delete-occasion/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/delete-occasion/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "delete-occasion",
                     "1"
@@ -1616,17 +1534,11 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-messages",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-messages",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-messages"
                   ]
@@ -1642,7 +1554,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|RcBQZTj3O9CFRCDMZfM6GFa6LzgfnVeM9GIdnkRD1d37670d",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1650,17 +1562,11 @@
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-message/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-message/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-message",
                     "1"
@@ -1713,17 +1619,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-users/7",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-users/7",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-users",
                     "7"
@@ -1752,17 +1652,11 @@
                   "raw": ""
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-user/11",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-user/11",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-user",
                     "11"
@@ -1848,17 +1742,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-user/7",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/edit-user/7",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "edit-user",
                     "7"
@@ -1880,7 +1768,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|oXv7dgu1eJFe87z8l9lVefykhqlxSzJlLfgmt5zcf6f44695",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1894,17 +1782,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-vendors",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-vendors",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-vendors"
                   ]
@@ -1920,7 +1802,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "4|35ZVNi9B0XE2BImQegozm6fIsgl9tkVZiXRB6N8p70021857",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1943,17 +1825,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-vendor/2",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-vendor/2",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-vendor",
                     "2"
@@ -1970,7 +1846,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|oXv7dgu1eJFe87z8l9lVefykhqlxSzJlLfgmt5zcf6f44695",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -1989,17 +1865,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/vendors/pending",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/vendors/pending",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "vendors",
                     "pending"
@@ -2016,7 +1886,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|2Y7HM4ZtTawMABjuK2e335v2kNc6wXf7zNnTlqDEa16d34ce",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2035,17 +1905,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/vendors/3/approve",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/vendors/3/approve",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "vendors",
                     "3",
@@ -2082,17 +1946,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/vendors/3/reject",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/vendors/3/reject",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "vendors",
                     "3",
@@ -2118,7 +1976,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|cda9dVOjEu5bqZhzLFey6ppNezQuKGEv8PGjndU3abcd8c51",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2141,17 +1999,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-orders",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-orders",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-orders"
                   ]
@@ -2167,7 +2019,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|lM4jKZOtfD4MBSVEoLjnU2Owd41eJUN6AfLuN7cZ10895b8f",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2186,17 +2038,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-order/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-order/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-order",
                     "1"
@@ -2213,7 +2059,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|Bn9vpzHnMTNr2YrB34uqqn3qcdxZR5OroJvgFjTwf83aab42",
+                      "value": "3|PAzMi8213MNTsorpjLE9f9lnbMWjn4egpVbjp13m8033c534",
                       "type": "string"
                     }
                   ]
@@ -2264,20 +2110,14 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/edit-order/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/edit-order/5",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "edit-order",
-                    "1"
+                    "5"
                   ]
                 }
               },
@@ -2322,17 +2162,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/statistics",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/statistics",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "statistics"
                   ]
@@ -2356,7 +2190,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2379,17 +2213,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-products/4",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-products/4",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-products",
                     "4"
@@ -2406,7 +2234,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "19|H7Cr3YHsEANJ4kqoDngnLOYMJtsSb58PcsZkX7VQc7fcb4e4",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2598,17 +2426,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-add-products",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-add-products",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-add-products"
                   ]
@@ -2624,7 +2446,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "1|DUuFrbpVvwWONRKDw8WxoHMeUDwz12RYY5OztISQ4a15e5b9",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2819,17 +2641,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-edit-product/4",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-edit-product/4",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-edit-product",
                     "4"
@@ -2846,7 +2662,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "2|SJvbzShgjA7sm9QtnK7X8hju4DQ8srRdtovDW3pd811b8e6d",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2869,17 +2685,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-product/1",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-product/1",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-product",
                     "1"
@@ -2896,7 +2706,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "5|dLJKzQ3X9NjFxfT9dF2MrKfV9NQsZNrQC2wsZf9z0e397ba6",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2915,17 +2725,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-pending-products",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-pending-products",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-pending-products"
                   ]
@@ -2941,7 +2745,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "5|dLJKzQ3X9NjFxfT9dF2MrKfV9NQsZNrQC2wsZf9z0e397ba6",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -2960,17 +2764,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-product/5/approve",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-product/5/approve",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-product",
                     "5",
@@ -2988,7 +2786,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "4|k6Y4x1cfsZ4p4QRcFprex2b2zohF9CvoGxI2atoL4f04eb0d",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -3007,17 +2805,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-product/9/reject",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-product/9/reject",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-product",
                     "9",
@@ -3043,7 +2835,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -3066,17 +2858,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-drivers",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-drivers",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-drivers"
                   ]
@@ -3092,7 +2878,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "3|ZfIbMFLmN3EUyhFgk98mXLUcNqUxwMPI0Pt7TJT654e6b48b",
+                      "value": "",
                       "type": "string"
                     }
                   ]
@@ -3146,17 +2932,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-create-driver",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-create-driver",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-create-driver"
                   ]
@@ -3228,17 +3008,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-edit-driver/17",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-edit-driver/17",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-edit-driver",
                     "17"
@@ -3278,17 +3052,11 @@
                   "formdata": []
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/admin/admin-delete-driver/17",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/admin/admin-delete-driver/17",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "admin",
                     "admin-delete-driver",
                     "17"
@@ -3312,7 +3080,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|mIBrDEMSwZhan6NG5jq19MOHY5EXCxQcEpznMBNP0609bc8e",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -3331,17 +3099,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/wishlist",
-              "protocol": "http",
+              "raw": "{{localhost}}/wishlist",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "wishlist"
               ]
             }
@@ -3384,17 +3146,11 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/wishlist/add",
-              "protocol": "http",
+              "raw": "{{localhost}}/wishlist/add",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "wishlist",
                 "add"
               ]
@@ -3433,17 +3189,11 @@
               "raw": "{\r\n    \"productId\": 4\r\n}"
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/wishlist/remove",
-              "protocol": "http",
+              "raw": "{{localhost}}/wishlist/remove",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "wishlist",
                 "remove"
               ]
@@ -3473,17 +3223,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/13/wishlist",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/13/wishlist",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "13",
                 "wishlist"
@@ -3514,19 +3258,13 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/",
-              "protocol": "http",
+              "raw": "{{localhost}}/products/1",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "products",
-                ""
+                "1"
               ]
             }
           },
@@ -3540,7 +3278,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|U6XaLWNoCfOCueN9sRBH3NnaRT9CY402a2vkWlxf06dd0aa5",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -3559,21 +3297,41 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"productId\": 4,\r\n    \"rating\": 5,\r\n    \"review\": \"testttt\"\r\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "productId",
+                  "type": "text",
+                  "uuid": "5cd7c5e2-eb98-4d2f-841a-000ccd71c4ca",
+                  "value": "4"
+                },
+                {
+                  "key": "rating",
+                  "type": "text",
+                  "uuid": "f4129609-66ae-460e-96c6-7761be40cc78",
+                  "value": "2.4"
+                },
+                {
+                  "key": "review",
+                  "type": "text",
+                  "uuid": "6db2da13-6805-4f3d-b3d5-842fb63f6242",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "0134b388-0310-451c-9699-85044a2fa2c1",
+                  "src": "/C:/Users/karam/Downloads/house.png"
+                }
+              ]
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/rating",
-              "protocol": "http",
+              "raw": "{{localhost}}/rating",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "rating"
               ]
             }
@@ -3597,17 +3355,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products/filter?categoryId=11&brandId=10&occasionId=2&minPrice=10&maxPrice=40&color=Blue&storage=&name=cake&size=M",
-              "protocol": "http",
+              "raw": "{{localhost}}/products/filter?categoryId=11&brandId=10&occasionId=2&minPrice=10&maxPrice=40&color=Blue&storage=&name=cake&size=M",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "products",
                 "filter"
               ],
@@ -3665,17 +3417,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/latest-products",
-              "protocol": "http",
+              "raw": "{{localhost}}/latest-products",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "latest-products"
               ]
             }
@@ -3694,17 +3440,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products-by-vendor/1",
-              "protocol": "http",
+              "raw": "{{localhost}}/products-by-vendor/1",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "products-by-vendor",
                 "1"
               ]
@@ -3724,17 +3464,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/vendors",
-              "protocol": "http",
+              "raw": "{{localhost}}/vendors",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "vendors"
               ]
             }
@@ -3763,17 +3497,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/only-for-you",
-              "protocol": "http",
+              "raw": "{{localhost}}/only-for-you",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "only-for-you"
               ]
             }
@@ -3802,17 +3530,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/products-from-followed-brands",
-              "protocol": "http",
+              "raw": "{{localhost}}/products-from-followed-brands",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "products-from-followed-brands"
               ]
             }
@@ -3827,7 +3549,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9ozdUcRbLchZGHBFV9rhdb9LjXGUU6LnVVcFIfLWca438a1d",
+                  "value": "2|v0gcs7FFedfSLA0gkVbrvJdUUniXL8kSjPmm3Zx6d9347fba",
                   "type": "string"
                 }
               ]
@@ -3841,18 +3563,46 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/coupons",
-              "protocol": "http",
+              "raw": "{{localhost}}/coupons",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "coupons"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "isRatedProduct",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|4Agkht9HqtxbEZ940KJMtPFSBTbhs33GaFnKiKdV680d2eb6",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "appilcation/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/is-rated/4",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "is-rated",
+                "4"
               ]
             }
           },
@@ -3890,17 +3640,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/cart",
-              "protocol": "http",
+              "raw": "{{localhost}}/cart",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "cart"
               ]
             }
@@ -3915,7 +3659,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
                   "type": "string"
                 }
               ]
@@ -3938,15 +3682,11 @@
               }
             },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/cart/add",
-              "protocol": "https",
+              "raw": "{{localhost}}/cart/add",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "cart",
                 "add"
               ]
@@ -3990,17 +3730,11 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/cart/remove",
-              "protocol": "http",
+              "raw": "{{localhost}}/cart/remove",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "cart",
                 "remove"
               ]
@@ -4068,7 +3802,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
                   "type": "string"
                 }
               ]
@@ -4082,15 +3816,11 @@
               }
             ],
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/orders",
-              "protocol": "https",
+              "raw": "{{localhost}}/orders",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "orders"
               ]
             }
@@ -4105,7 +3835,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
                   "type": "string"
                 }
               ]
@@ -4120,7 +3850,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"recipientType\": \"friend\",\r\n  \"friendId\": 13,\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\"\r\n}",
+              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4128,15 +3858,11 @@
               }
             },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/checkout",
-              "protocol": "https",
+              "raw": "{{localhost}}/checkout",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "checkout"
               ]
             }
@@ -4151,7 +3877,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|x6t52oGv8U5vZDZUBkJjB9zV6OOjqSGmRqJjnoci63c34ed3",
+                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
                   "type": "string"
                 }
               ]
@@ -4170,17 +3896,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/orders/history",
-              "protocol": "http",
+              "raw": "{{localhost}}/orders/history",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "orders",
                 "history"
               ]
@@ -4189,51 +3909,40 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "cancelOrder",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "23|YAoOWWAGiUXa2ag6BDY2yrYqzgTXwCkrTiWrC5u0e3b83496",
+                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
                   "type": "string"
                 }
               ]
             },
-            "method": "PATCH",
+            "method": "POST",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json",
                 "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"status\": \"delivered\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/admin/order/7/status",
-              "protocol": "http",
+              "raw": "{{localhost}}/orders/2/cancel",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
-                "admin",
-                "order",
-                "7",
-                "status"
+                "orders",
+                "2",
+                "cancel"
               ]
             }
           },
@@ -4274,17 +3983,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/vendor/products",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/vendor/products",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "vendor",
                     "products"
                   ]
@@ -4496,17 +4199,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/vendor/add-products",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/vendor/add-products",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "vendor",
                     "add-products"
                   ]
@@ -4714,17 +4411,11 @@
                   ]
                 },
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/vendor/edit-product/5",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/vendor/edit-product/5",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "vendor",
                     "edit-product",
                     "5"
@@ -4760,17 +4451,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://127.0.0.1:8000/api/vendor/delete-product/4",
-                  "protocol": "http",
+                  "raw": "{{localhost}}/vendor/delete-product/4",
                   "host": [
-                    "127",
-                    "0",
-                    "0",
-                    "1"
+                    "{{localhost}}"
                   ],
-                  "port": "8000",
                   "path": [
-                    "api",
                     "vendor",
                     "delete-product",
                     "4"
@@ -4808,17 +4493,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/vendor/statistics",
-              "protocol": "http",
+              "raw": "{{localhost}}/vendor/statistics",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "vendor",
                 "statistics"
               ]
@@ -4853,17 +4532,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/vendor/orders",
-              "protocol": "http",
+              "raw": "{{localhost}}/vendor/orders",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "vendor",
                 "orders"
               ]
@@ -4903,17 +4576,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends"
               ]
             }
@@ -4928,7 +4595,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|W3lH7f6cmllOEMVh7lo6BDAYci2PUq0xEAX16bmd2a1829b0",
+                  "value": "{{auth_secret_0d8t}}",
                   "type": "string"
                 }
               ]
@@ -4947,17 +4614,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/incoming-requests",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/incoming-requests",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "incoming-requests"
               ]
@@ -4992,17 +4653,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/sent-requests",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/sent-requests",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "sent-requests"
               ]
@@ -5017,10 +4672,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "const jsonData = pm.response.json();",
-                  "if (pm.response.code === 201 && jsonData.data && jsonData.data.id) {",
-                  "    pm.collectionVariables.set(\"friendRequestId\", jsonData.data.id);",
-                  "}"
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -5034,7 +4686,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|qBhuHG0dGjQE1p67OHWAb8XULvdEvCDD50WDCXtA69984aca",
+                  "value": "1|EIEAxJiIb94DIC1qEU7qy0Sx1ZKwpAFGEUFSK8pDdda12655",
                   "type": "string"
                 }
               ]
@@ -5052,18 +4704,23 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/friends/12/request",
-              "protocol": "https",
+              "raw": "{{localhost}}/friends/11/request",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "friends",
-                "12",
+                "11",
                 "request"
               ]
             }
@@ -5078,7 +4735,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
                   "type": "string"
                 }
               ]
@@ -5097,15 +4754,11 @@
               }
             ],
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/friends/request/1/accept",
-              "protocol": "https",
+              "raw": "{{localhost}}/friends/request/1/accept",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "friends",
                 "request",
                 "1",
@@ -5142,17 +4795,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/request/1/reject",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/request/1/reject",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "request",
                 "1",
@@ -5189,17 +4836,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/13/cancel",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/13/cancel",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "13",
                 "cancel"
@@ -5235,17 +4876,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/friends/13",
-              "protocol": "http",
+              "raw": "{{localhost}}/friends/13",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "friends",
                 "13"
               ]
@@ -5261,7 +4896,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "36|PNNO1WXWy1x5n9Yi5foe67gjbFRrh6UuT866bUhEdd20a0ad",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -5275,15 +4910,11 @@
               }
             ],
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/users/filter?name=rice",
-              "protocol": "https",
+              "raw": "{{localhost}}/users/filter?name=rice",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "users",
                 "filter"
               ],
@@ -5292,6 +4923,34 @@
                   "key": "name",
                   "value": "rice"
                 }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "peopleYouMayKnow",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "3|1AYPkdUkRakAfrFWTEGkkSldNELbNUWkGpVgV8xQ11b215c6",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}/friends/peopleYouMayKnow",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "friends",
+                "peopleYouMayKnow"
               ]
             }
           },
@@ -5329,17 +4988,11 @@
               }
             ],
             "url": {
-              "raw": "http://127.0.0.1:8000/api/gift-wrappers",
-              "protocol": "http",
+              "raw": "{{localhost}}/gift-wrappers",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "gift-wrappers"
               ]
             }
@@ -5353,13 +5006,16 @@
       "item": [
         {
           "name": "getReceivedGiftCard",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
                   "type": "string"
                 }
               ]
@@ -5372,16 +5028,21 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/received-gift-card",
-              "protocol": "https",
+              "raw": "{{localhost}}/received-gift-card",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "received-gift-card"
               ]
             }
@@ -5390,13 +5051,16 @@
         },
         {
           "name": "getSendGiftCards",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|tHt0NtHa0Aj6WeUrZHc16mCpHtfiNbAnwgZAIopFd73bac52",
+                  "value": "2|mfVkobDDy7etoJdxvgOHIqmEC47WsHN2rWqhScZh23eb6dc7",
                   "type": "string"
                 }
               ]
@@ -5409,18 +5073,21 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reciverId\": 13,\r\n    \"budget\": 7000,\r\n    \"items\": [\r\n        {\r\n            \"productId\":3,\r\n            \"quantity\":2\r\n        },\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "http://127.0.0.1:8000/api/sent-gift-card",
-              "protocol": "http",
+              "raw": "{{localhost}}/sent-gift-card",
               "host": [
-                "127",
-                "0",
-                "0",
-                "1"
+                "{{localhost}}"
               ],
-              "port": "8000",
               "path": [
-                "api",
                 "sent-gift-card"
               ]
             }
@@ -5435,7 +5102,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|qBhuHG0dGjQE1p67OHWAb8XULvdEvCDD50WDCXtA69984aca",
+                  "value": "1|EIEAxJiIb94DIC1qEU7qy0Sx1ZKwpAFGEUFSK8pDdda12655",
                   "type": "string"
                 }
               ]
@@ -5450,7 +5117,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"receiverId\": 12,\r\n    \"budget\": 70.7,\r\n    \"message\": \"Happy Birthdat friendo\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"productId\": 3,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+              "raw": "{\r\n    \"budget\": 7000,\r\n    \"recipientType\": \"friend\",\r\n    \"receiverId\": 11\r\n    /* \"deliveryDate\": \"2026-08-09\",\r\n    \"shippingName\": \"LanaDelRay\",\r\n    \"shippingAddress\": \"West Coast\",\r\n    \"shippingPhone\": \"123456\",\r\n    \"message\": \"Wish you well\" */\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5458,15 +5125,11 @@
               }
             },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/create-gift-card",
-              "protocol": "https",
+              "raw": "{{localhost}}/create-gift-card",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "create-gift-card"
               ]
             }
@@ -5481,7 +5144,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|qSW343XD4vbdFTixzaPjijHbxlkliK4fknbpABAb59734ca3",
+                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
                   "type": "string"
                 }
               ]
@@ -5496,7 +5159,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"items\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"variantId\":1,\r\n            \"quantity\":1\r\n        },\r\n        {\r\n            \"productId\": 2,\r\n            \"variantId\": 3,\r\n            \"quantity\":1\r\n        }\r\n    ]\r\n}",
+              "raw": "{\r\n    \"giftCode\": \"GIFT-MIFMXV4L\",\r\n    \"deliveryDate\": \"2026-08-09\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"variantId\":3,\r\n            \"quantity\":5\r\n        },\r\n        {\r\n            \"productId\": 1,\r\n            \"variantId\":1,\r\n            \"quantity\":1\r\n        }\r\n    ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5504,17 +5167,136 @@
               }
             },
             "url": {
-              "raw": "https://cdb-back.bw-businessworld.net/api/redeem-gift-card/1",
-              "protocol": "https",
+              "raw": "{{localhost}}/redeem-gift-card/1",
               "host": [
-                "cdb-back",
-                "bw-businessworld",
-                "net"
+                "{{localhost}}"
               ],
               "path": [
-                "api",
                 "redeem-gift-card",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Drivers",
+      "item": [
+        {
+          "name": "getPendingOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/driver/deliveries",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "deliveries"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "acceptOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/driver/accept-order/1",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "accept-order",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCurrentOrders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/driver/current-orders",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "current-orders"
               ]
             }
           },
@@ -5556,6 +5338,28 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "auth_secret_0vyy",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_0own",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_0d8t",
+      "secret": true
     }
   ]
 }

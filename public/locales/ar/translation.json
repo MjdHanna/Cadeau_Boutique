@@ -405,5 +405,13 @@
   "Mobile Experience": "تجربة الهاتف المحمول",
   "Get Wishly": "احصل على Wishly",
   "Scan the QR code to instantly download the app and experience premium gifting at your fingertips. Available for iOS and Android.": "امسح رمز الاستجابة السريعة (QR code) لتحميل التطبيق فوراً والاستمتاع بتجربة هدايا مميزة في متناول يدك. متاح لنظامي iOS وAndroid.",
-  "Point your phone camera at the code to download instantly.": "وجّه كاميرا هاتفك نحو الرمز للتنزيل فوراً."
+  "Point your phone camera at the code to download instantly.": "وجّه كاميرا هاتفك نحو الرمز للتنزيل فوراً.",
+  "Cancel Order": "إلغاء الطلب",
+  "Are you sure you want to cancel this order?": "هل أنت متأكد من أنك تريد إلغاء هذا الطلب؟",
+  "Confirm": "تأكيد",
+  "The address details in your account are incomplete. Please add the address to complete the order.": "بيانات العنوان غير مكتملة في حسابك. يرجى إضافة العنوان لإكمال الطلب.",
+  "Go to profile": "الانتقال للملف الشخصي",
+  "People You May Know": "أصدقاء قد تعرفهم",
+  "No Suggestions Available": "لا توجد اقتراحات متاحة",
+  "Check back later for new friend suggestions.": "عُد لاحقاً للاطلاع على اقتراحات جديدة للأصدقاء."
 }
