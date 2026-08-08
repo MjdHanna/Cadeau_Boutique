@@ -1,79 +1,117 @@
 import React, { useMemo, useState, lazy, Suspense } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import EmptyCartImage from "../../assets/images/Cart/Frame.png";
 import CartItem from "./CartItem";
 import GiftExperience from "./GiftExperience";
 import OrderSummary from "./OrderSummary";
 import { selectToken } from "../../redux/features/authSlice";
-import { useGetCartQuery } from "../../redux/features/apiSlice";
+import {
+  useGetCartQuery,
+  useGetCouponsQuery,
+} from "../../redux/features/apiSlice";
 import Loader from "../Loader/Loader";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import LoginRequired from "../../components/LoginRequired/LoginRequired";
 import { useSelector } from "react-redux";
+
 const Cart = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
   const isRTL = i18n.language === "ar";
-  const { data: cartData, isLoading } = useGetCartQuery();
-  console.log(cartData);
+
+  const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
+  const { data: couponsData } = useGetCouponsQuery(undefined, { skip: !token });
+
+  const availableCoupons = couponsData?.data || [];
+
   const cartItems = useMemo(() => {
     return (
       cartData?.data?.cartItems?.map((item) => ({
         cartItemId: item.cartItemId,
-
         productId: item.productId,
-
         variantId: item.variantId || null,
         productName:
           i18n.language === "ar"
             ? item.productNameArabic
             : item.productNameEnglish,
-
         image: item.productImage,
-
         quantity: Number(item.quantity),
-
         totalPrice: Number(item.totalPrice),
       })) || []
     );
   }, [cartData, i18n.language]);
+
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponInput, setCouponInput] = useState("");
+
   const [giftData, setGiftData] = useState({
     enabled: true,
-
     coverId: null,
-
     coverPrice: 0,
-
     message: "",
-
     recipientType: "self",
-
     friendId: null,
-
-    couponCode: "",
-
     recipient: {
       name: "",
       phone: "",
       address: "",
     },
-
     deliveryDate: "",
   });
+  const { itemsSubtotal, wrapPrice, discountAmount, finalTotal } =
+    useMemo(() => {
+      const subtotal = cartItems.reduce(
+        (sum, item) => sum + Number(item.totalPrice || 0),
+        0,
+      );
 
-  const total = useMemo(() => {
-    const itemsTotal = cartItems.reduce(
-      (sum, item) => sum + Number(item.totalPrice || 0),
-      0,
+      const wrap = giftData.enabled ? Number(giftData.coverPrice || 0) : 0;
+
+      let discount = 0;
+      if (appliedCoupon) {
+        const couponVal = Number(appliedCoupon.value || 0);
+        if (appliedCoupon.type === "percent") {
+          discount = (subtotal * couponVal) / 100;
+        } else {
+          discount = couponVal;
+        }
+      }
+
+      const calculatedTotal = Math.max(0, subtotal + wrap - discount);
+
+      return {
+        itemsSubtotal: subtotal,
+        wrapPrice: wrap,
+        discountAmount: discount,
+        finalTotal: calculatedTotal,
+      };
+    }, [cartItems, giftData.coverPrice, giftData.enabled, appliedCoupon]);
+
+  const handleApplyCouponCode = (codeToApply) => {
+    const targetCode = (codeToApply || couponInput).trim();
+    if (!targetCode) return;
+
+    const found = availableCoupons.find(
+      (c) => c.code.toLowerCase() === targetCode.toLowerCase(),
     );
 
-    const wrapPrice = giftData.enabled ? Number(giftData.coverPrice || 0) : 0;
+    if (found) {
+      setAppliedCoupon(found);
+      setCouponInput(found.code);
+      toast.success(t("Coupon applied successfully!"));
+    } else {
+      toast.error(t("Invalid coupon code"));
+    }
+  };
 
-    return itemsTotal + wrapPrice;
-  }, [cartItems, giftData.coverPrice, giftData.enabled]);
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    toast.success(t("Coupon removed"));
+  };
 
   const handleOrderSuccess = () => {
     toast.success(t("Order placed successfully"), {
@@ -86,13 +124,14 @@ const Cart = () => {
     }, 1500);
   };
 
-  if (isLoading) {
+  if (isCartLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader />
       </div>
     );
   }
+
   if (!token) {
     return (
       <Suspense fallback={<div className="text-center py-28">Loading...</div>}>
@@ -104,6 +143,7 @@ const Cart = () => {
       </Suspense>
     );
   }
+
   return (
     <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-[#f5f7fb]">
       <div className="max-w-7xl mx-auto px-4 py-26">
@@ -112,24 +152,12 @@ const Cart = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="
-      xl:col-span-3
-      flex
-      flex-col
-      items-center
-      justify-center
-      text-center
-      py-20
-    "
+              className="xl:col-span-3 flex flex-col items-center justify-center text-center py-20"
             >
               <img
                 src={EmptyCartImage}
                 alt="Empty Cart"
-                className="
-        w-[260px]
-        md:w-[340px]
-        object-contain
-      "
+                className="w-[260px] md:w-[340px] object-contain"
               />
 
               <h2 className="mt-8 text-3xl font-black text-gray-800">
@@ -146,12 +174,121 @@ const Cart = () => {
                 {cartItems.map((item) => (
                   <CartItem key={item.cartItemId} item={item} />
                 ))}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5 text-[#7e2553]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      />
+                    </svg>
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {t("Have a Promo Code?")}
+                    </h3>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      placeholder={t("Enter promo code")}
+                      disabled={!!appliedCoupon}
+                      className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary transition-all text-sm uppercase tracking-wide disabled:bg-gray-50"
+                    />
+                    {appliedCoupon ? (
+                      <button
+                        onClick={handleRemoveCoupon}
+                        className="px-5 py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors text-sm"
+                      >
+                        {t("Remove")}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleApplyCouponCode()}
+                        className="px-6 py-3 rounded-xl bg-primary text-white font-semibold hover:opacity-90 transition-opacity text-sm"
+                      >
+                        {t("Apply")}
+                      </button>
+                    )}
+                  </div>
+
+                  {availableCoupons.length > 0 && !appliedCoupon && (
+                    <div className="pt-2">
+                      <p className="text-xs text-gray-500 mb-2 font-medium">
+                        {t("Available Coupons:")}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {availableCoupons.map((coupon) => (
+                          <button
+                            key={coupon.id}
+                            onClick={() => handleApplyCouponCode(coupon.code)}
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-dashed border-primary/40 bg-primary/5 text-primary text-xs font-bold hover:bg-primary/10 transition-colors"
+                          >
+                            <svg
+                              className="w-3.5 h-3.5 text-[#7e2553]"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                              />
+                            </svg>
+                            <span>{coupon.code}</span>
+                            <span className="bg-primary text-white px-1.5 py-0.5 rounded text-[10px]">
+                              {coupon.type === "percent"
+                                ? `${coupon.value}% OFF`
+                                : `$${coupon.value} OFF`}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <AnimatePresence>
+                    {appliedCoupon && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-sm flex justify-between items-center"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🎉</span>
+                          <span>
+                            {t("Coupon")} <strong>{appliedCoupon.code}</strong>{" "}
+                            {t("applied!")}
+                          </span>
+                        </div>
+                        <span className="font-bold text-emerald-800">
+                          -${discountAmount.toFixed(2)}
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <GiftExperience giftData={giftData} setGiftData={setGiftData} />
               </div>
 
               <OrderSummary
-                total={total}
+                subtotal={itemsSubtotal}
+                wrapPrice={wrapPrice}
+                discountAmount={discountAmount}
+                total={finalTotal}
+                appliedCoupon={appliedCoupon}
                 items={cartItems}
                 giftData={giftData}
                 onOrderSuccess={handleOrderSuccess}

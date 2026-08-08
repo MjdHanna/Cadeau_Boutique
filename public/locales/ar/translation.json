@@ -413,5 +413,11 @@
   "Go to profile": "الانتقال للملف الشخصي",
   "People You May Know": "أصدقاء قد تعرفهم",
   "No Suggestions Available": "لا توجد اقتراحات متاحة",
-  "Check back later for new friend suggestions.": "عُد لاحقاً للاطلاع على اقتراحات جديدة للأصدقاء."
+  "Check back later for new friend suggestions.": "عُد لاحقاً للاطلاع على اقتراحات جديدة للأصدقاء.",
+  "Have a Promo Code?": "هل لديك رمز ترويجي؟",
+  "Apply": "تأكيد العملية",
+  "Available Coupons:": "القسائم المتاحة:",
+  "Enter promo code": "أدخل الرمز الترويجي",
+  "Coupon applied successfully!": "تم تطبيق القسيمة بنجاح!",
+  "Invalid coupon code": "رمز القسيمة غير صالح"
 }

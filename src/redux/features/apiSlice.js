@@ -358,12 +358,12 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
-
     getCoupons: builder.query({
       query: () => ({
         url: "coupons",
         method: "GET",
       }),
+      providesTags: ["Coupons"],
     }),
 
     // Orders
@@ -384,8 +384,8 @@ export const apiSlice = createApi({
     }),
 
     cancelOrder: builder.mutation({
-      query: () => ({
-        url: `orders/5/cancel`,
+      query: (id) => ({
+        url: `orders/${id}/cancel`,
         method: "POST",
       }),
       invalidatesTags: ["Orders"],
@@ -494,16 +494,16 @@ export const apiSlice = createApi({
       query: (data) => ({
         url: "create-gift-card",
         method: "POST",
-        body: data,
+        body: data, // سيتم تمرير receiverId, budget, recipientType, items هنا
       }),
       invalidatesTags: ["GiftCards"],
     }),
 
     redeemGiftCard: builder.mutation({
-      query: ({ id, items }) => ({
+      query: ({ id, ...bodyData }) => ({
         url: `redeem-gift-card/${id}`,
         method: "POST",
-        body: { items },
+        body: bodyData, // تمرير items وأي بيانات أخرى مثل giftCode
       }),
       invalidatesTags: ["GiftCards", "Orders"],
     }),

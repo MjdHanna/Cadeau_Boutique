@@ -42,7 +42,6 @@ const OrderTracking = () => {
   const [openOrderId, setOpenOrderId] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
 
-  // حالة التحكم بظهور نافذة تأكيد الإلغاء
   const [orderToCancel, setOrderToCancel] = useState(null);
 
   const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
@@ -84,21 +83,21 @@ const OrderTracking = () => {
     manual: t("Manual Recipient"),
   };
 
-  // فتح النافذة المنبثقة
   const handleOpenCancelModal = (orderId, e) => {
     e.stopPropagation();
+    if (orderId === undefined || orderId === null) {
+      alert("Error");
+    }
+
     setOrderToCancel(orderId);
   };
-
-  // تنفيذ عملية الإلغاء الفعلية
   const handleConfirmCancel = async () => {
     if (!orderToCancel) return;
     try {
       await cancelOrder(orderToCancel).unwrap();
-      currentOrdersQuery.refetch(); // إعادة جلب قائمة الطلبات النشطة
+      currentOrdersQuery.refetch();
       setOrderToCancel(null);
     } catch (err) {
-      console.error("Failed to cancel order: ", err);
       alert(err?.data?.message || t("Failed to cancel order"));
     }
   };
@@ -193,9 +192,9 @@ const OrderTracking = () => {
 
       {hasOrders ? (
         <div className="max-w-5xl mx-auto space-y-4">
-          {orders.map((order) => {
+          {orders.map((order, index) => {
             const mappedOrder = {
-              id: order.id || order.orderNumber,
+              id: order.orderId,
               orderNumber: order.orderNumber || order.id,
               status: order.orderStatus || order.status,
               paymentStatus: order.paymentStatus,
@@ -210,8 +209,6 @@ const OrderTracking = () => {
               deliveryDate:
                 order.date || order.delivery_date || order.shippingDate || null,
               giftMessage: order.giftMessage || "",
-              couponCode: order.couponCode || "",
-              couponDiscount: Number(order.couponDiscount || 0),
               giftWrapper: order.giftWrapper || null,
               total: Number(order.total) || 0,
               subtotal: Number(order.subtotal || 0),
@@ -237,11 +234,8 @@ const OrderTracking = () => {
             };
 
             const isOpen = openOrderId === mappedOrder.id;
-
-            // تحويل الحالة للحروف الصغيرة لمنع مشاكل المطابقة
             const currentStatus = (mappedOrder.status || "").toLowerCase();
 
-            // التحقق من إمكانية الإلغاء
             const canCancel =
               !showHistory &&
               !["cancelled", "canceled", "delivered", "shipped"].includes(
@@ -250,7 +244,7 @@ const OrderTracking = () => {
 
             return (
               <motion.div
-                key={mappedOrder.id}
+                key={mappedOrder.id || mappedOrder.orderNumber || index}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
@@ -355,31 +349,6 @@ const OrderTracking = () => {
                       </div>
                     )}
 
-                    {mappedOrder.couponCode && (
-                      <div className="bg-green-50 border border-green-100 rounded-2xl p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-bold text-green-700">
-                              🎟️ {t("Coupon Applied")}
-                            </h4>
-                            <p className="text-sm text-green-600 mt-1">
-                              {mappedOrder.couponCode}
-                            </p>
-                          </div>
-                          {mappedOrder.couponDiscount > 0 && (
-                            <div className="text-right">
-                              <p className="text-sm text-gray-500">
-                                {t("Discount")}
-                              </p>
-                              <p className="font-black text-green-700 text-lg">
-                                -${mappedOrder.couponDiscount.toFixed(2)}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
                     <div>
                       <h4 className="font-semibold mb-4 text-lg">
                         {t("Items")}
@@ -388,7 +357,7 @@ const OrderTracking = () => {
                         <ul className="space-y-4">
                           {mappedOrder.items.map((item, index) => (
                             <li
-                              key={index}
+                              key={item.variantId || item.productId || index}
                               className="flex justify-between items-start border border-gray-100 rounded-2xl p-4"
                             >
                               <div className="flex-1">
@@ -443,14 +412,7 @@ const OrderTracking = () => {
                         </div>
                       )}
 
-                      {mappedOrder.couponDiscount > 0 && (
-                        <div className="flex justify-between text-green-600 font-semibold">
-                          <span>{t("Coupon Discount")}</span>
-                          <span>-${mappedOrder.couponDiscount.toFixed(2)}</span>
-                        </div>
-                      )}
-
-                      <div className="flex justify-between items-center pt-3">
+                      <div className="flex justify-between items-center pt-3 border-t border-gray-100">
                         <span className="font-black text-xl">{t("Total")}</span>
                         <span className="text-2xl font-black text-primary">
                           ${mappedOrder.total.toFixed(2)}
@@ -488,8 +450,9 @@ const OrderTracking = () => {
           descriptionKey={t("You haven't placed any orders yet.")}
         />
       )}
+
       <AnimatePresence>
-        {orderToCancel && (
+        {orderToCancel !== null && orderToCancel !== undefined && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"admin123@example.com\",\r\n    \"password\": \"Admin2002\"\r\n}"
+              "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
             },
             "url": {
               "raw": "{{localhost}}/login",
@@ -4686,7 +4686,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|EIEAxJiIb94DIC1qEU7qy0Sx1ZKwpAFGEUFSK8pDdda12655",
+                  "value": "1|avIAbqh3dsuBG7bBrd0HnkzKZpTa60gaqOqpgymN38a755b9",
                   "type": "string"
                 }
               ]
@@ -4714,13 +4714,13 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/friends/11/request",
+              "raw": "{{localhost}}/friends/15/request",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "friends",
-                "11",
+                "15",
                 "request"
               ]
             }
@@ -4735,7 +4735,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
+                  "value": "2|C66JmT9cljshK2yu1rVeIGFVGK1synSETxOaafVo1f0cb359",
                   "type": "string"
                 }
               ]
@@ -4930,19 +4930,42 @@
         },
         {
           "name": "peopleYouMayKnow",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|1AYPkdUkRakAfrFWTEGkkSldNELbNUWkGpVgV8xQ11b215c6",
+                  "value": "3|uIRjcckqroAKXzu98DPNt651vFqfUwNH19odhpr417f8a9da",
                   "type": "string"
                 }
               ]
             },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{localhost}}/friends/peopleYouMayKnow",
               "host": [
@@ -5102,7 +5125,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|EIEAxJiIb94DIC1qEU7qy0Sx1ZKwpAFGEUFSK8pDdda12655",
+                  "value": "2|C66JmT9cljshK2yu1rVeIGFVGK1synSETxOaafVo1f0cb359",
                   "type": "string"
                 }
               ]
@@ -5117,7 +5140,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"budget\": 7000,\r\n    \"recipientType\": \"friend\",\r\n    \"receiverId\": 11\r\n    /* \"deliveryDate\": \"2026-08-09\",\r\n    \"shippingName\": \"LanaDelRay\",\r\n    \"shippingAddress\": \"West Coast\",\r\n    \"shippingPhone\": \"123456\",\r\n    \"message\": \"Wish you well\" */\r\n}",
+              "raw": "{\r\n    \"budget\": 7000,\r\n    \"recipientType\": \"friend\",//manual\r\n    \"receiverId\": 11,\r\n    \"brands\": [\r\n        {\"brandId\": 1},\r\n        {\"brandId\": 2},\r\n        {\"brandId\": 3}\r\n    ]\r\n    /* \"deliveryDate\": \"2026-08-09\",\r\n    \"shippingName\": \"LanaDelRay\",\r\n    \"shippingAddress\": \"West Coast\",\r\n    \"shippingPhone\": \"123456\",\r\n    \"message\": \"Wish you well\" */\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5174,6 +5197,45 @@
               "path": [
                 "redeem-gift-card",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getReceivedGiftCardId",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|avIAbqh3dsuBG7bBrd0HnkzKZpTa60gaqOqpgymN38a755b9",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/received-gift-card/3",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "received-gift-card",
+                "3"
               ]
             }
           },
@@ -5307,6 +5369,16 @@
     {
       "name": "test",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "39|CH4MgNkkX3ntoaDlC16DdrOi7z8AU2yDqAgQsIIa646f5993",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
         "header": [
           {
@@ -5324,7 +5396,7 @@
           }
         },
         "url": {
-          "raw": "https://cdb-back.bw-businessworld.net/api/login",
+          "raw": "https://cdb-back.bw-businessworld.net/api/create-gift-card",
           "protocol": "https",
           "host": [
             "cdb-back",
@@ -5333,7 +5405,7 @@
           ],
           "path": [
             "api",
-            "login"
+            "create-gift-card"
           ]
         }
       },
@@ -5348,18 +5420,28 @@
       "response": []
     }
   ],
-  "variable": [
+  "event": [
     {
-      "key": "auth_secret_0vyy",
-      "secret": true
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     },
     {
-      "key": "auth_secret_0own",
-      "secret": true
-    },
-    {
-      "key": "auth_secret_0d8t",
-      "secret": true
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ]
 }
