@@ -50,8 +50,8 @@ const CreateGiftCard = () => {
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!receiverId || !budget || selectedBrands.size === 0) {
-      toast.warning(t("Please fill all fields and select at least one brand"));
+    if (!receiverId || !budget) {
+      toast.warning(t("Please fill the friend and budget fields"));
       return;
     }
 
@@ -61,6 +61,7 @@ const CreateGiftCard = () => {
         budget: Number(budget),
         recipientType: "friend",
         message,
+
         brands: Array.from(selectedBrands).map((id) => ({
           brandId: Number(id),
         })),
@@ -111,7 +112,7 @@ const CreateGiftCard = () => {
           {t("Create Gift Card")}
         </h1>
         <p className="text-gray-500 mt-2">
-          {t("Choose your friend's favorite brands and set a budget")}
+          {t("Set a budget and optionally choose favorite brands")}
         </p>
       </motion.div>
 
@@ -163,7 +164,7 @@ const CreateGiftCard = () => {
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-black text-gray-800">
-          {t("Select Brands")}
+          {t("Select Brands (Optional)")}
         </h2>
         <span className="bg-gray-100 text-gray-600 px-4 py-1.5 rounded-full text-sm font-bold">
           {selectedBrands.size} {t("Selected")}
@@ -177,7 +178,6 @@ const CreateGiftCard = () => {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
           {brands.map((brand) => {
-            // تم التعديل هنا ليكون brandId بدلاً من id
             const isSelected = selectedBrands.has(brand.brandId);
 
             return (
@@ -194,7 +194,6 @@ const CreateGiftCard = () => {
                   }
                 `}
               >
-                {/* علامة التحديد (Checkmark) */}
                 {isSelected && (
                   <div className="absolute top-3 right-3 z-20 bg-primary text-white rounded-full p-1.5 shadow-md">
                     <svg
@@ -213,7 +212,6 @@ const CreateGiftCard = () => {
                   </div>
                 )}
 
-                {/* صورة الغلاف */}
                 <div className="h-28 w-full bg-gray-100 relative">
                   <img
                     src={brand.brandCoverImg}
@@ -221,11 +219,9 @@ const CreateGiftCard = () => {
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
-                  {/* تدرج لوني خفيف فوق الغلاف لجمالية أكثر */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                 </div>
 
-                {/* لوجو البراند (دائري فوق الغلاف) */}
                 <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10">
                   <div className="w-20 h-20 bg-white rounded-full p-1 shadow-md">
                     <img
@@ -237,7 +233,6 @@ const CreateGiftCard = () => {
                   </div>
                 </div>
 
-                {/* النصوص (الاسم والوصف) */}
                 <div className="pt-12 pb-5 px-4 text-center">
                   <h3
                     className={`font-black text-lg truncate ${isSelected ? "text-primary" : "text-gray-900"}`}
@@ -258,7 +253,7 @@ const CreateGiftCard = () => {
 
       <button
         onClick={handleSubmit}
-        disabled={isLoading || selectedBrands.size === 0}
+        disabled={isLoading}
         className="w-full py-5 rounded-3xl bg-primary text-white font-black text-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
       >
         {isLoading ? (

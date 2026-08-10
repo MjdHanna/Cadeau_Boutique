@@ -45,7 +45,6 @@ const GiftProductCard = memo(
       );
     }
 
-   
     if (!product) return null;
 
     const isSelected = !!selected;
@@ -265,6 +264,11 @@ const RedeemGiftCard = () => {
   const [productsMap, setProductsMap] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
 
+  // State لتخزين تاريخ التوصيل (القيمة الافتراضية هي تاريخ اليوم)
+  const [deliveryDate, setDeliveryDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+
   useEffect(() => {
     if (!giftCard) return;
     setSelectedItems([]);
@@ -293,10 +297,11 @@ const RedeemGiftCard = () => {
       return { ...prev, [product.productId]: product };
     });
   }, []);
+
   const totalSelectedPrice = useMemo(() => {
     return selectedItems.reduce((sum, item) => {
       const product = productsMap[item.productId];
-      if (!product) return sum; 
+      if (!product) return sum;
 
       const variants = product.variants || [];
       const selectedVariant = variants.find(
@@ -319,9 +324,11 @@ const RedeemGiftCard = () => {
 
   const canRedeem = useMemo(() => {
     if (!selectedItems.length) return false;
+    if (!deliveryDate) return false; // يجب اختيار التاريخ
+
     const hasMissingVariant = selectedItems.some((item) => {
       const product = productsMap[item.productId];
-      if (!product) return true; 
+      if (!product) return true;
       const variants = product.variants || [];
       return (
         variants.length > 1 && (!item.variantId || item.variantId === "null")
@@ -332,7 +339,8 @@ const RedeemGiftCard = () => {
     if (totalSelectedPrice > budget) return false;
 
     return true;
-  }, [selectedItems, totalSelectedPrice, budget, productsMap]);
+  }, [selectedItems, totalSelectedPrice, budget, productsMap, deliveryDate]);
+
   const handleVariantSelect = useCallback((productId, variantId) => {
     setSelectedItems((prev) => {
       const exists = prev.find(
@@ -403,9 +411,9 @@ const RedeemGiftCard = () => {
 
     try {
       const payload = {
-        id, 
+        id,
         giftCode: giftCode,
-        deliveryDate: new Date().toISOString().split("T")[0],
+        deliveryDate: deliveryDate, // تمرير التاريخ المختار من قبل المستخدم
         items: selectedItems.map((item) => {
           const payloadItem = {
             productId: Number(item.productId),
@@ -427,7 +435,16 @@ const RedeemGiftCard = () => {
     } catch (error) {
       toast.error(error?.data?.message || t("Failed to redeem gift card"));
     }
-  }, [id, giftCard, selectedItems, canRedeem, redeemGiftCard, navigate, t]);
+  }, [
+    id,
+    giftCard,
+    selectedItems,
+    canRedeem,
+    redeemGiftCard,
+    navigate,
+    t,
+    deliveryDate,
+  ]);
 
   if (!token) {
     return (
@@ -476,6 +493,9 @@ const RedeemGiftCard = () => {
       </div>
     );
   }
+
+  // الحصول على تاريخ اليوم لتعيينه كحد أدنى (لمنع اختيار تواريخ سابقة)
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div
@@ -609,6 +629,31 @@ const RedeemGiftCard = () => {
           )}
         </motion.div>
       )}
+
+      {/* حقل اختيار تاريخ التوصيل الأنيق */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-3xl p-6 mb-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6"
+      >
+        <div className="text-center sm:text-start">
+          <h3 className="text-xl font-black text-gray-800">
+            {t("Delivery Date")}
+          </h3>
+          <p className="text-sm text-gray-500 mt-1">
+            {t("When would you like to receive your gift?")}
+          </p>
+        </div>
+        <div className="w-full sm:w-auto">
+          <input
+            type="date"
+            min={today}
+            value={deliveryDate}
+            onChange={(e) => setDeliveryDate(e.target.value)}
+            className="w-full sm:w-auto bg-gray-50 border-2 border-gray-200 text-gray-800 text-lg font-bold rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all cursor-pointer"
+          />
+        </div>
+      </motion.div>
 
       <button
         onClick={handleRedeem}
