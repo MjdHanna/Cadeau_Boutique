@@ -43,6 +43,7 @@ export const apiSlice = createApi({
         "onlyForYou",
         "getFriendWishlist",
         "getReceivedGiftCards",
+        "getReceivedGiftCardById",
         "getSentGiftCards",
         "createGiftCard",
         "redeemGiftCard",
@@ -481,7 +482,10 @@ export const apiSlice = createApi({
       }),
       providesTags: ["GiftCards"],
     }),
-
+    getReceivedGiftCardById: builder.query({
+      query: (id) => `received-gift-card/${id}`,
+      providesTags: ["GiftCards"],
+    }),
     getSentGiftCards: builder.query({
       query: () => ({
         url: "sent-gift-card",
@@ -494,16 +498,16 @@ export const apiSlice = createApi({
       query: (data) => ({
         url: "create-gift-card",
         method: "POST",
-        body: data, // سيتم تمرير receiverId, budget, recipientType, items هنا
+        body: data,
       }),
       invalidatesTags: ["GiftCards"],
     }),
 
     redeemGiftCard: builder.mutation({
-      query: ({ id, ...bodyData }) => ({
-        url: `redeem-gift-card/${id}`,
+      query: ({ id, ...body }) => ({
+        url: `/redeem-gift-card/${id}`,
         method: "POST",
-        body: bodyData, // تمرير items وأي بيانات أخرى مثل giftCode
+        body,
       }),
       invalidatesTags: ["GiftCards", "Orders"],
     }),
@@ -565,6 +569,7 @@ export const {
   useGetPeopleYouMayKnowQuery,
   useSearchUsersQuery,
   useGetReceivedGiftCardsQuery,
+  useGetReceivedGiftCardByIdQuery,
   useGetSentGiftCardsQuery,
   useCreateGiftCardMutation,
   useRedeemGiftCardMutation,

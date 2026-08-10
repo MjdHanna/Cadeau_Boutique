@@ -9,7 +9,7 @@ import { selectTranslate } from "../../redux/features/translateSlice";
 
 import {
   useGetFriendsQuery,
-  useGetProductsQuery,
+  useGetBrandsQuery,
   useCreateGiftCardMutation,
 } from "../../redux/features/apiSlice";
 import LoginRequired from "../../components/LoginRequired/LoginRequired";
@@ -28,69 +28,60 @@ const CreateGiftCard = () => {
   const [receiverId, setReceiverId] = useState("");
   const [budget, setBudget] = useState("");
   const [message, setMessage] = useState("");
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState(new Set());
 
   const { data: friendsData } = useGetFriendsQuery();
-  const { data: productsData } = useGetProductsQuery();
+  const { data: brandsData, isLoading: isLoadingBrands } = useGetBrandsQuery();
 
   const [createGiftCard, { isLoading }] = useCreateGiftCardMutation();
 
-  const products = useMemo(() => productsData?.data ?? [], [productsData]);
+  const brands = useMemo(() => brandsData?.data ?? [], [brandsData]);
 
-  const toggleProduct = useCallback((product) => {
-    setSelectedItems((prev) => {
-      const exists = prev.some((item) => item.productId === product.productId);
-      if (exists) {
-        return prev.filter((item) => item.productId !== product.productId);
+  const toggleBrand = useCallback((brandId) => {
+    setSelectedBrands((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(brandId)) {
+        newSet.delete(brandId);
+      } else {
+        newSet.add(brandId);
       }
-      return [...prev, { productId: product.productId, quantity: 1, product }];
+      return newSet;
     });
   }, []);
 
-  const updateQuantity = useCallback((id, quantity) => {
-    const validQuantity = Math.max(1, Number(quantity));
-    setSelectedItems((prev) =>
-      prev.map((item) =>
-        item.productId === id ? { ...item, quantity: validQuantity } : item,
-      ),
-    );
-  }, []);
-
-  const removeProduct = useCallback((id) => {
-    setSelectedItems((prev) => prev.filter((item) => item.productId !== id));
-  }, []);
-
-  const selectedIds = useMemo(
-    () => new Set(selectedItems.map((i) => i.productId)),
-    [selectedItems],
-  );
-
   const handleSubmit = useCallback(async () => {
-    if (!receiverId || !budget || selectedItems.length === 0) {
-      toast.warning(
-        t("Please fill all required fields and select at least one product"),
-      );
+    if (!receiverId || !budget || selectedBrands.size === 0) {
+      toast.warning(t("Please fill all fields and select at least one brand"));
       return;
     }
 
     try {
-      await createGiftCard({
+      const payload = {
         receiverId: Number(receiverId),
         budget: Number(budget),
-        recipientType: "friend", // تمت الإضافة حسب الـ API
+        recipientType: "friend",
         message,
-        items: selectedItems.map((item) => ({
-          productId: item.productId,
-          quantity: Number(item.quantity),
+        brands: Array.from(selectedBrands).map((id) => ({
+          brandId: Number(id),
         })),
-      }).unwrap();
+      };
+
+      await createGiftCard(payload).unwrap();
 
       toast.success(t("Gift card sent successfully 🎉"));
       navigate("/gift-cards/sent");
     } catch (error) {
       toast.error(error?.data?.message || t("Failed to create gift card"));
     }
-  }, [receiverId, budget, message, selectedItems, createGiftCard, navigate, t]);
+  }, [
+    receiverId,
+    budget,
+    message,
+    selectedBrands,
+    createGiftCard,
+    navigate,
+    t,
+  ]);
 
   if (!token) {
     return (
@@ -120,7 +111,7 @@ const CreateGiftCard = () => {
           {t("Create Gift Card")}
         </h1>
         <p className="text-gray-500 mt-2">
-          {t("Choose products and send a special gift card to your friend")}
+          {t("Choose your friend's favorite brands and set a budget")}
         </p>
       </motion.div>
 
@@ -128,7 +119,7 @@ const CreateGiftCard = () => {
         <select
           value={receiverId}
           onChange={(e) => setReceiverId(e.target.value)}
-          className="w-full rounded-2xl border border-gray-200 px-4 py-4 mb-5 focus:ring-2 focus:ring-primary outline-none transition-all"
+          className="w-full rounded-2xl border border-gray-200 px-4 py-4 mb-5 focus:ring-2 focus:ring-primary outline-none"
         >
           <option value="" disabled>
             {t("Select Friend")}
@@ -170,167 +161,109 @@ const CreateGiftCard = () => {
         </div>
       </div>
 
-      {/* منطقة المنتجات */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-black text-gray-800">{t("Products")}</h2>
-        <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
-          {products.length} {t("Items")}
+        <h2 className="text-2xl font-black text-gray-800">
+          {t("Select Brands")}
+        </h2>
+        <span className="bg-gray-100 text-gray-600 px-4 py-1.5 rounded-full text-sm font-bold">
+          {selectedBrands.size} {t("Selected")}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
-        {products.map((product) => {
-          const isSelected = selectedIds.has(product.productId);
-          return (
-            <div
-              key={product.productId}
-              className={`bg-white border-2 rounded-3xl overflow-hidden transition-all duration-300 ${
-                isSelected
-                  ? "border-primary shadow-md"
-                  : "border-gray-100 hover:border-gray-200"
-              }`}
-            >
-              <img
-                src={product.productImage}
-                alt="Product"
-                className="h-56 w-full object-cover"
-                loading="lazy"
-              />
-              <div className="p-5">
-                <h3 className="font-semibold line-clamp-2 text-gray-800 h-12">
-                  {lang === "ar"
-                    ? product.productNameArabic
-                    : product.productNameEnglish}
-                </h3>
-                <p className="text-2xl font-black text-primary mt-2">
-                  ${product.productPrice}
-                </p>
-                <button
-                  onClick={() => toggleProduct(product)}
-                  className={`w-full mt-4 py-3 rounded-xl font-bold transition-colors ${
-                    isSelected
-                      ? "bg-red-50 text-red-600 hover:bg-red-100"
-                      : "bg-primary text-white hover:bg-primary/90"
-                  }`}
-                >
-                  {isSelected ? t("Remove from Gift") : t("Add to Gift")}
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {isLoadingBrands ? (
+        <div className="flex justify-center py-10">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
+          {brands.map((brand) => {
+            // تم التعديل هنا ليكون brandId بدلاً من id
+            const isSelected = selectedBrands.has(brand.brandId);
 
-      {/* المنتجات المختارة */}
-      {selectedItems.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-50 rounded-3xl border border-gray-200 p-6 mb-10"
-        >
-          <h2 className="text-xl font-black mb-6">{t("Selected Products")}</h2>
-          <div className="space-y-4">
-            {selectedItems.map((item) => (
-              <div
-                key={item.productId}
-                className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-100"
+            return (
+              <motion.div
+                whileHover={{ y: -5 }}
+                key={brand.brandId}
+                onClick={() => toggleBrand(brand.brandId)}
+                className={`
+                  relative cursor-pointer bg-white rounded-3xl overflow-hidden transition-all duration-300 border-2
+                  ${
+                    isSelected
+                      ? "border-primary shadow-xl ring-4 ring-primary/10"
+                      : "border-gray-100 hover:border-gray-300 hover:shadow-lg"
+                  }
+                `}
               >
-                <div className="flex items-center gap-4 w-full sm:w-auto">
-                  <img
-                    src={item.product.productImage}
-                    className="w-16 h-16 rounded-lg object-cover"
-                    alt=""
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-800 line-clamp-1">
-                      {lang === "ar"
-                        ? item.product.productNameArabic
-                        : item.product.productNameEnglish}
-                    </h3>
-                    <p className="text-primary font-bold">
-                      ${item.product.productPrice}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                  <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.productId, item.quantity - 1)
-                      }
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateQuantity(item.productId, e.target.value)
-                      }
-                      className="w-12 text-center py-2 outline-none border-x border-gray-200 font-medium"
-                    />
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.productId, item.quantity + 1)
-                      }
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => removeProduct(item.productId)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-xl transition"
-                  >
+                {/* علامة التحديد (Checkmark) */}
+                {isSelected && (
+                  <div className="absolute top-3 right-3 z-20 bg-primary text-white rounded-full p-1.5 shadow-md">
                     <svg
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                       fill="none"
-                      stroke="currentColor"
                       viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="3"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        d="M5 13l4 4L19 7"
                       />
                     </svg>
-                  </button>
+                  </div>
+                )}
+
+                {/* صورة الغلاف */}
+                <div className="h-28 w-full bg-gray-100 relative">
+                  <img
+                    src={brand.brandCoverImg}
+                    alt="Cover"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  {/* تدرج لوني خفيف فوق الغلاف لجمالية أكثر */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+
+                {/* لوجو البراند (دائري فوق الغلاف) */}
+                <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10">
+                  <div className="w-20 h-20 bg-white rounded-full p-1 shadow-md">
+                    <img
+                      src={brand.brandLogo}
+                      alt="Logo"
+                      className="w-full h-full object-contain rounded-full bg-white"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+
+                {/* النصوص (الاسم والوصف) */}
+                <div className="pt-12 pb-5 px-4 text-center">
+                  <h3
+                    className={`font-black text-lg truncate ${isSelected ? "text-primary" : "text-gray-900"}`}
+                  >
+                    {isRTL ? brand.brandNameArabic : brand.brandNameEnglish}
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1 line-clamp-2 h-10 leading-tight">
+                    {isRTL
+                      ? brand.brandDescriptionArabic
+                      : brand.brandDescriptionEnglish}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       )}
 
       <button
         onClick={handleSubmit}
-        disabled={isLoading || selectedItems.length === 0}
-        className="w-full py-5 rounded-2xl bg-primary text-white font-black text-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        disabled={isLoading || selectedBrands.size === 0}
+        className="w-full py-5 rounded-3xl bg-primary text-white font-black text-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
-            <svg
-              className="animate-spin h-5 w-5 text-white"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-                fill="none"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
             {t("Processing...")}
           </span>
         ) : (

@@ -419,5 +419,16 @@
   "Available Coupons:": "القسائم المتاحة:",
   "Enter promo code": "أدخل الرمز الترويجي",
   "Coupon applied successfully!": "تم تطبيق القسيمة بنجاح!",
-  "Invalid coupon code": "رمز القسيمة غير صالح"
+  "Invalid coupon code": "رمز القسيمة غير صالح",
+  "Redeem Your Gift": "استبدل هديتك",
+  "Choose your favorite products from the gifted brands!": "اختر منتجاتك المفضلة من العلامات التجارية المميزة!",
+  "Gift from": "هدية من",
+  "Available Budget": "الميزانية المتاحة",
+  "Remaining Balance": "الرصيد المتبقي",
+  "No products found for this gift card.": "لم يتم العثور على منتجات لبطاقة الهدايا هذه.",
+  "The selected products exceed the gift card budget. Please choose cheaper options or reduce quantities.": "تتجاوز المنتجات المختارة ميزانية بطاقة الهدايا. يرجى اختيار بدائل أقل تكلفة أو تقليل الكميات.",
+  "Confirm & Redeem Gift": "تأكيد واستلام الهدية",
+  "Select This Item": "اختر هذا العنصر",
+  "Selected Total": "الإجمالي المُختار",
+  "Select Option": "اختر خياراً"
 }

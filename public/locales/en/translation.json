@@ -418,5 +418,16 @@
   "Available Coupons:": "Available Coupons:",
   "Enter promo code": "Enter promo code",
   "Coupon applied successfully!": "Coupon applied successfully!",
-  "Invalid coupon code": "Invalid coupon code"
+  "Invalid coupon code": "Invalid coupon code",
+  "Redeem Your Gift": "Redeem Your Gift",
+  "Choose your favorite products from the gifted brands!": "Choose your favorite products from the gifted brands!",
+  "Gift from": "Gift from",
+  "Available Budget": "Available Budget",
+  "Remaining Balance": "Remaining Balance",
+  "No products found for this gift card.": "No products found for this gift card.",
+  "The selected products exceed the gift card budget. Please choose cheaper options or reduce quantities.": "The selected products exceed the gift card budget. Please choose cheaper options or reduce quantities.",
+  "Confirm & Redeem Gift": "Confirm & Redeem Gift",
+  "Select This Item": "Select This Item",
+  "Selected Total": "Selected Total",
+  "Select Option": "Select Option"
 }
