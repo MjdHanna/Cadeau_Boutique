@@ -10,6 +10,7 @@ const GiftExperience = ({ giftData, setGiftData }) => {
 
   const covers = wrappersData?.data || [];
   const isRTL = i18n.language === "ar";
+
   return (
     <motion.div
       layout
@@ -21,8 +22,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
         border border-gray-100
       "
     >
-      {/* HEADER */}
-
       <div className="flex items-start justify-between gap-5">
         <div>
           <div className="flex items-center gap-3">
@@ -47,9 +46,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
             </div>
           </div>
         </div>
-
-        {/* TOGGLE */}
-
         <label className="relative inline-flex cursor-pointer">
           <input
             type="checkbox"
@@ -86,9 +82,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
           </div>
         </label>
       </div>
-
-      {/* OPTIONAL GIFT EXPERIENCE */}
-
       <AnimatePresence>
         {giftData.enabled && (
           <motion.div
@@ -108,8 +101,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
               duration: 0.25,
             }}
           >
-            {/* WRAPPING */}
-
             <div className="mt-12">
               <div className="flex items-center justify-between mb-5">
                 <div>
@@ -135,11 +126,21 @@ const GiftExperience = ({ giftData, setGiftData }) => {
                       }}
                       key={cover.id}
                       onClick={() =>
-                        setGiftData((prev) => ({
-                          ...prev,
-                          coverId: cover.id,
-                          coverPrice: Number(cover.price) || 0,
-                        }))
+                        setGiftData((prev) => {
+                          if (prev.coverId === cover.id) {
+                            return {
+                              ...prev,
+                              coverId: null,
+                              coverPrice: 0,
+                            };
+                          }
+
+                          return {
+                            ...prev,
+                            coverId: cover.id,
+                            coverPrice: Number(cover.price) || 0,
+                          };
+                        })
                       }
                       className={`
                   relative
@@ -194,8 +195,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
               </div>
             </div>
 
-            {/* MESSAGE */}
-
             <div className="mt-12">
               <div className="flex items-center justify-between mb-4">
                 <label className="font-black text-2xl">
@@ -235,8 +234,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* REQUIRED SECTION */}
 
       <div className="mt-12">
         <div className="flex items-center gap-3 mb-4">
@@ -283,8 +280,6 @@ const GiftExperience = ({ giftData, setGiftData }) => {
     "
         />
       </div>
-
-      {/* REQUIRED RECIPIENT */}
 
       <div className="mt-12">
         <div className="flex items-center gap-3 mb-2">

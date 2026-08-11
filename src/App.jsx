@@ -13,7 +13,9 @@ import { useGetUserQuery } from "./redux/features/apiSlice";
 import { setCredentials, selectToken } from "./redux/features/authSlice";
 import { selectTranslate } from "./redux/features/translateSlice";
 import i18n from "./i18n";
-
+// --- الاستيرادات الجديدة الخاصة بـ Firebase ---
+import { getToken } from "firebase/messaging";
+import { messaging } from "./config/firebase";
 const Home = lazy(() => import("./pages/Home/Home"));
 
 const Register = lazy(() => import("./pages/Register/Register"));
@@ -135,6 +137,44 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
+  // ========================================================
+  // --- إضافة كود إشعارات Firebase هنا ---
+  // ========================================================
+  useEffect(() => {
+    async function requestNotificationPermission() {
+      // نطلب الصلاحية فقط إذا كان المستخدم مسجلاً للدخول (يوجد توكن المصادقة)
+      if (token) {
+        try {
+          const permission = await Notification.requestPermission();
+
+          if (permission === "granted") {
+            const fcmToken = await getToken(messaging, {
+              vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY, // استبدل هذا بالمفتاح الخاص بك من لوحة تحكم فايربيز
+            });
+
+            console.log("FCM Device Token:", fcmToken);
+
+            // إرسال الـ FCM Token إلى الخادم (Laravel) لحفظه للمستخدم الحالي
+            await fetch("https://your-laravel-api.com/api/save-fcm-token", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // نرسل توكن المستخدم لكي يعرف Laravel لمن هذا الـ FCM Token
+              },
+              body: JSON.stringify({ fcm_token: fcmToken }),
+            });
+          } else {
+            console.log("المستخدم رفض استقبال الإشعارات");
+          }
+        } catch (error) {
+          console.error("حدث خطأ أثناء طلب صلاحية الإشعارات:", error);
+        }
+      }
+    }
+
+    requestNotificationPermission();
+  }, [token]); // ربطنا هذا الـ useEffect بـ token لكي يعمل فور تسجيل الدخول
+  // ========================================================
   return (
     <div>
       {isLoading && <Loader />}

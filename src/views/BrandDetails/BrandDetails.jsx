@@ -104,7 +104,7 @@ const BrandDetails = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pb-24">
+    <div className="max-w-7xl mx-auto px-4 pb-24 ">
       <div className="relative mt-22 h-[420px] sm:h-[480px] lg:h-[520px] rounded-3xl overflow-hidden shadow-2xl">
         <img
           src={brand?.brandCoverImg}
