@@ -434,5 +434,11 @@
   "When would you like to receive your gift?": "متى تود استلام هديتك؟",
   "Please fill the friend and budget fields": "يرجى تعبئة حقول الصديق والميزانية.",
   "Select Brands (Optional)": "اختر العلامات التجارية (اختياري)",
-  "Did you know? You can unlock special discount coupons after completing 5 orders with us!": "هل تعلم؟ يمكنك الحصول على قسائم خصم خاصة بعد إتمام 5 طلبات معنا!"
+  "Did you know? You can unlock special discount coupons after completing 5 orders with us!": "هل تعلم؟ يمكنك الحصول على قسائم خصم خاصة بعد إتمام 5 طلبات معنا!",
+  "Manual Delivery": "التسليم اليدوي",
+  "Send to Friend": "أرسل إلى صديق",
+  "Shipping Name": "اسم الشحن",
+  "Shipping Phone": "هاتف الشحن",
+  "Set a budget and optionally choose favorite brands": "حدد ميزانية، واختر العلامات التجارية المفضلة (اختياري).",
+  "Write a message (Optional)": "اكتب رسالة (اختياري)"
 }

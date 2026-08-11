@@ -109,7 +109,7 @@ const Register = () => {
               <Field
                 as="select"
                 name="gender"
-                className="w-full p-3 border rounded"
+                className="w-full p-3 border rounded-[18px] bg-transparent"
               >
                 <option value="">{t("Select gender")}</option>
                 <option value="male">{t("Male")}</option>

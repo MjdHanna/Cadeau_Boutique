@@ -23,7 +23,6 @@ const MuiTextField = ({
 
   const togglePassword = () => setShowPassword((p) => !p);
 
-  // ✅ SAFE FORM HANDLING
   const formikField = formik && name ? useField(name) : null;
 
   const field = formikField ? formikField[0] : {};

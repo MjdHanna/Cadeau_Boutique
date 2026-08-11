@@ -5,7 +5,7 @@ const AuthButton = ({ label, loading, className = "", children }) => {
     <button
       type="submit"
       disabled={loading}
-      className={`w-full bg-primary hover:bg-primary text-white font-bold p-3 rounded-lg mt-2 transition
+      className={`w-full bg-primary hover:bg-primary text-white font-bold p-3 rounded-[18px]  mt-2 transition
       ${loading ? "opacity-70 cursor-not-allowed" : ""} ${className}`}
     >
       {loading ? (

@@ -25,7 +25,15 @@ const CreateGiftCard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const [recipientType, setRecipientType] = useState("friend");
+
   const [receiverId, setReceiverId] = useState("");
+
+  const [shippingName, setShippingName] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingPhone, setShippingPhone] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+
   const [budget, setBudget] = useState("");
   const [message, setMessage] = useState("");
   const [selectedBrands, setSelectedBrands] = useState(new Set());
@@ -50,33 +58,57 @@ const CreateGiftCard = () => {
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!receiverId || !budget) {
-      toast.warning(t("Please fill the friend and budget fields"));
+    if (!budget) {
+      toast.warning(t("Please fill the budget field"));
       return;
     }
 
+    const payload = {
+      budget: Number(budget),
+      recipientType,
+      message,
+      brands: Array.from(selectedBrands).map((id) => ({
+        brandId: Number(id),
+      })),
+    };
+
+    if (recipientType === "friend") {
+      if (!receiverId) {
+        toast.warning(t("Please select a friend"));
+        return;
+      }
+      payload.receiverId = Number(receiverId);
+    } else if (recipientType === "manual") {
+      if (
+        !shippingName ||
+        !shippingAddress ||
+        !shippingPhone ||
+        !deliveryDate
+      ) {
+        toast.warning(t("Please fill all manual delivery fields"));
+        return;
+      }
+      payload.shippingName = shippingName;
+      payload.shippingAddress = shippingAddress;
+      payload.shippingPhone = shippingPhone;
+      payload.deliveryDate = deliveryDate;
+    }
+
     try {
-      const payload = {
-        receiverId: Number(receiverId),
-        budget: Number(budget),
-        recipientType: "friend",
-        message,
-
-        brands: Array.from(selectedBrands).map((id) => ({
-          brandId: Number(id),
-        })),
-      };
-
       await createGiftCard(payload).unwrap();
-
       toast.success(t("Gift card sent successfully 🎉"));
       navigate("/gift-cards/sent");
     } catch (error) {
       toast.error(error?.data?.message || t("Failed to create gift card"));
     }
   }, [
-    receiverId,
     budget,
+    recipientType,
+    receiverId,
+    shippingName,
+    shippingAddress,
+    shippingPhone,
+    deliveryDate,
     message,
     selectedBrands,
     createGiftCard,
@@ -117,20 +149,84 @@ const CreateGiftCard = () => {
       </motion.div>
 
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 mb-10">
-        <select
-          value={receiverId}
-          onChange={(e) => setReceiverId(e.target.value)}
-          className="w-full rounded-2xl border border-gray-200 px-4 py-4 mb-5 focus:ring-2 focus:ring-primary outline-none"
-        >
-          <option value="" disabled>
-            {t("Select Friend")}
-          </option>
-          {friendsData?.data?.map((friend) => (
-            <option key={friend.id} value={friend.id}>
-              {friend.userName}
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setRecipientType("friend")}
+            className={`flex-1 py-3 rounded-xl font-bold transition-all ${
+              recipientType === "friend"
+                ? "bg-primary text-white shadow-md"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            {t("Send to Friend")}
+          </button>
+          <button
+            onClick={() => setRecipientType("manual")}
+            className={`flex-1 py-3 rounded-xl font-bold transition-all ${
+              recipientType === "manual"
+                ? "bg-primary text-white shadow-md"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            {t("Manual Delivery")}
+          </button>
+        </div>
+        {recipientType === "friend" ? (
+          <motion.select
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            value={receiverId}
+            onChange={(e) => setReceiverId(e.target.value)}
+            className="w-full rounded-2xl border border-gray-200 px-4 py-4 mb-5 focus:ring-2 focus:ring-primary outline-none"
+          >
+            <option value="" disabled>
+              {t("Select Friend")}
             </option>
-          ))}
-        </select>
+            {friendsData?.data?.map((friend) => (
+              <option key={friend.id} value={friend.id}>
+                {friend.userName}
+              </option>
+            ))}
+          </motion.select>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5"
+          >
+            <Suspense
+              fallback={
+                <div className="h-14 bg-gray-100 animate-pulse rounded-xl"></div>
+              }
+            >
+              <MuiTextField
+                label={t("Shipping Name")}
+                value={shippingName}
+                onChange={(e) => setShippingName(e.target.value)}
+              />
+              <MuiTextField
+                label={t("Shipping Phone")}
+                value={shippingPhone}
+                onChange={(e) => setShippingPhone(e.target.value)}
+              />
+              <MuiTextField
+                label={t("Shipping Address")}
+                value={shippingAddress}
+                onChange={(e) => setShippingAddress(e.target.value)}
+              />
+             
+              <MuiTextField
+                type="date"
+                label={t("Delivery Date")}
+                value={deliveryDate}
+                onChange={(e) => setDeliveryDate(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Suspense>
+          </motion.div>
+        )}
 
         <Suspense
           fallback={
