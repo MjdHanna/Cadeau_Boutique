@@ -41,6 +41,7 @@ const ProductDetails = () => {
   const [userRating, setUserRating] = useState(0);
   const [review, setReview] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [addRating, { isLoading: ratingLoading }] =
@@ -68,6 +69,7 @@ const ProductDetails = () => {
       setReview(product.userReview);
     }
   }, [product]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setActiveImageIndex(0);
@@ -91,6 +93,29 @@ const ProductDetails = () => {
       variants,
     };
   }, [product, isRTL, variants]);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      setImageFile(null);
+      setImagePreview(null);
+      return;
+    }
+
+    let validFile = file;
+    if (!file.type || !file.type.startsWith("image/")) {
+      validFile = new File([file], file.name || "upload.jpg", {
+        type: file.type || "image/jpeg",
+      });
+    }
+
+    setImageFile(validFile);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(validFile);
+  };
 
   const handleSubmitRating = async () => {
     if (!token) {
@@ -116,6 +141,7 @@ const ProductDetails = () => {
       }).unwrap();
 
       setImageFile(null);
+      setImagePreview(null);
 
       toast.success(t("Thanks for your rating ❤️"));
     } catch (err) {
@@ -415,7 +441,7 @@ const ProductDetails = () => {
                   className="w-full rounded-2xl p-5 text-sm bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-gray-700 resize-none shadow-inner"
                 />
 
-                {!imageFile ? (
+                {!imagePreview ? (
                   <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 rounded-2xl cursor-pointer transition-all group">
                     <svg
                       className="w-8 h-8 text-gray-400 group-hover:text-primary mb-2 transition-colors"
@@ -435,22 +461,25 @@ const ProductDetails = () => {
                     </span>
                     <input
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => setImageFile(e.target.files[0] || null)}
+                      accept="image/jpeg, image/png, image/jpg, image/webp"
+                      onChange={handleImageChange}
                       className="hidden"
                     />
                   </label>
                 ) : (
                   <div className="relative w-full h-32 rounded-2xl overflow-hidden border-2 border-gray-100 group">
                     <img
-                      src={URL.createObjectURL(imageFile)}
+                      src={imagePreview}
                       alt="Preview"
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <button
                         type="button"
-                        onClick={() => setImageFile(null)}
+                        onClick={() => {
+                          setImageFile(null);
+                          setImagePreview(null);
+                        }}
                         className="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-red-600 transition"
                       >
                         {lang === "ar" ? "حذف الصورة" : "Remove"}
