@@ -91,6 +91,7 @@ const RedeemGiftCard = lazy(() => import("./pages/GiftCards/RedeemGiftCard"));
 
 const NotFoundPage = lazy(() => import("./views/Error/Error"));
 import SplashScreen from "./components/SplashScreen/SplashScreen";
+import AdDetails from "./components/AdDetails/AdDetails";
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const token = useSelector(selectToken);
@@ -215,6 +216,7 @@ function App() {
           <Route path="/brands/:id" element={<BrandDetails />} />
           <Route path="/occasions/:id" element={<OccasionDetails />} />
           <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/adds/:id" element={<AdDetails />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

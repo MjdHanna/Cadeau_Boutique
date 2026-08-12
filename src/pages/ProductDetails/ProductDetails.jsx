@@ -93,6 +93,7 @@ const ProductDetails = () => {
       variants,
     };
   }, [product, isRTL, variants]);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -168,7 +169,7 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/30" dir={isRTL ? "rtl" : "ltr"}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-15 md:py-25">
         <div className="bg-white rounded-[2.5rem] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-12 border border-gray-100/50">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             <div className="space-y-6">
@@ -211,6 +212,7 @@ const ProductDetails = () => {
                 </div>
               )}
             </div>
+
             <div className="flex flex-col justify-center">
               <div className="mb-8">
                 {product.brandNameEnglish && (
@@ -321,6 +323,7 @@ const ProductDetails = () => {
                   </div>
                 </div>
               )}
+
             {vendor && (
               <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-gray-100">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-8 border-b border-gray-100">
@@ -396,6 +399,92 @@ const ProductDetails = () => {
                 )}
               </div>
             )}
+
+            <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-gray-100">
+              <h3 className="text-2xl font-black text-gray-900 mb-8 flex items-center gap-3">
+                <span className="w-2 h-8 bg-yellow-400 rounded-full"></span>
+                {lang === "ar" ? "تقييمات العملاء" : "Customer Reviews"}
+                <span className="text-sm font-medium text-gray-400 bg-gray-50 px-3 py-1 rounded-full ms-auto">
+                  {product?.ratings?.length || 0}{" "}
+                  {lang === "ar" ? "تقييمات" : "Reviews"}
+                </span>
+              </h3>
+
+              {!product?.ratings || product.ratings.length === 0 ? (
+                <div className="text-center bg-gray-50/50 rounded-2xl py-10 text-gray-500 font-medium border border-gray-100">
+                  {lang === "ar"
+                    ? "لا توجد تقييمات لهذا المنتج حتى الآن 🌟"
+                    : "No reviews for this product yet 🌟"}
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  {product.ratings.map((rating) => (
+                    <div
+                      key={rating.ratingId}
+                      className="bg-gray-50/50 rounded-2xl p-5 md:p-6 border border-gray-100 hover:border-gray-200 transition-colors"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-primary font-black text-lg shrink-0">
+                            {rating.userName
+                              ? rating.userName.charAt(0).toUpperCase()
+                              : "U"}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900">
+                              {rating.userName}
+                            </h4>
+                            <span className="text-xs font-medium text-gray-400 mt-1 block">
+                              {rating.createdAt
+                                ? new Date(
+                                    rating.createdAt.replace(" ", "T"),
+                                  ).toLocaleDateString(
+                                    lang === "ar" ? "ar-EG" : "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    },
+                                  )
+                                : ""}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full shadow-sm border border-gray-100 shrink-0">
+                          <span className="font-black text-sm text-gray-900 pt-0.5">
+                            {rating.rating}
+                          </span>
+                          <svg
+                            className="w-4 h-4 text-yellow-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {rating.review && (
+                        <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                          {rating.review}
+                        </p>
+                      )}
+
+                      {rating.image && (
+                        <div className="mt-4">
+                          <img
+                            src={rating.image}
+                            alt="Review Attachment"
+                            className="w-24 h-24 object-cover rounded-xl border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="lg:col-span-1">
@@ -492,7 +581,7 @@ const ProductDetails = () => {
                   type="button"
                   onClick={handleSubmitRating}
                   disabled={ratingLoading}
-                  className="w-full py-4 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold text-sm shadow-xl shadow-gray-900/20 active:scale-[0.98] transition-all disabled:opacity-50"
+                  className="w-full py-4 rounded-2xl bg-primary hover:bg-fuchsia-800 text-white font-bold text-sm shadow-xl shadow-gray-900/20 active:scale-[0.98] transition-all disabled:opacity-50"
                 >
                   {ratingLoading
                     ? lang === "ar"

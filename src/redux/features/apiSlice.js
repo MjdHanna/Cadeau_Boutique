@@ -511,6 +511,16 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["GiftCards", "Orders"],
     }),
+
+    // End GiftCards
+
+    // Ads Endpoints
+    getAds: builder.query({
+      query: () => "adds",
+    }),
+    getAdById: builder.query({
+      query: (id) => `adds/${id}`,
+    }),
   }),
 });
 
@@ -573,4 +583,6 @@ export const {
   useGetSentGiftCardsQuery,
   useCreateGiftCardMutation,
   useRedeemGiftCardMutation,
+  useGetAdsQuery,
+  useGetAdByIdQuery,
 } = apiSlice;

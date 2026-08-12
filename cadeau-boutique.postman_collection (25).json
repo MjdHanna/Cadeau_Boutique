@@ -3659,7 +3659,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
+                  "value": "1|fQd1A1tDXlbVaVCDIVqyG14qLVGNzApT3Mg7FV851201bccf",
                   "type": "string"
                 }
               ]
@@ -3835,7 +3835,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
+                  "value": "1|fQd1A1tDXlbVaVCDIVqyG14qLVGNzApT3Mg7FV851201bccf",
                   "type": "string"
                 }
               ]
@@ -4686,7 +4686,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|avIAbqh3dsuBG7bBrd0HnkzKZpTa60gaqOqpgymN38a755b9",
+                  "value": "1|P7xSo8uZr3NmVsfFfAnfpduWlyGfwAwyaL0Etf88170f1514",
                   "type": "string"
                 }
               ]
@@ -4714,13 +4714,13 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/friends/15/request",
+              "raw": "{{localhost}}/friends/11/request",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "friends",
-                "15",
+                "11",
                 "request"
               ]
             }
@@ -5125,7 +5125,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|C66JmT9cljshK2yu1rVeIGFVGK1synSETxOaafVo1f0cb359",
+                  "value": "1|fQd1A1tDXlbVaVCDIVqyG14qLVGNzApT3Mg7FV851201bccf",
                   "type": "string"
                 }
               ]
@@ -5140,7 +5140,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"budget\": 7000,\r\n    \"recipientType\": \"friend\",//manual\r\n    \"receiverId\": 11,\r\n    \"brands\": [\r\n        {\"brandId\": 1},\r\n        {\"brandId\": 2},\r\n        {\"brandId\": 3}\r\n    ]\r\n    /* \"deliveryDate\": \"2026-08-09\",\r\n    \"shippingName\": \"LanaDelRay\",\r\n    \"shippingAddress\": \"West Coast\",\r\n    \"shippingPhone\": \"123456\",\r\n    \"message\": \"Wish you well\" */\r\n}",
+              "raw": "{\r\n    \"budget\": 7000,\r\n    \"recipientType\": \"manual\",//manual\r\n   /*  \"receiverId\": 11,\r\n    \"brands\": [\r\n        {\"brandId\": 1},\r\n        {\"brandId\": 2},\r\n        {\"brandId\": 3}\r\n    ] */\r\n    \"deliveryDate\": \"2026-08-12\",\r\n    \"shippingName\": \"LanaDelRay\",\r\n    \"shippingAddress\": \"West Coast\",\r\n    \"shippingPhone\": \"123456\",\r\n    \"message\": \"Wish you well\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5247,14 +5247,102 @@
       "name": "Drivers",
       "item": [
         {
-          "name": "getPendingOrder",
+          "name": "acceptOrder",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
+                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"gift\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/driver/accept-order/1",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "accept-order",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCurrentOrders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/driver/current-orders",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "current-orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getPendingOrders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
                   "type": "string"
                 }
               ]
@@ -5286,14 +5374,14 @@
           "response": []
         },
         {
-          "name": "acceptOrder",
+          "name": "cancelDriverOrder",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
+                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
                   "type": "string"
                 }
               ]
@@ -5311,33 +5399,37 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"gift\",\r\n    \"reason\": \"truck broke down\",\r\n    \"note\": \"The truck engine stopped working.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{localhost}}/driver/accept-order/1",
+              "raw": "{{localhost}}/driver/cancel-order/1",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "driver",
-                "accept-order",
+                "cancel-order",
                 "1"
               ]
             }
           },
           "response": []
-        },
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "item": [
         {
-          "name": "getCurrentOrders",
+          "name": "getAdds",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "2|ECq5WnmLwafwn2rUPW9R1WKwdaCMWphgQx6DrKiX4660bbd8",
-                  "type": "string"
-                }
-              ]
-            },
             "method": "GET",
             "header": [
               {
@@ -5352,13 +5444,13 @@
               }
             ],
             "url": {
-              "raw": "{{localhost}}/driver/current-orders",
+              "raw": "{{localhost}}/adds/3",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
-                "driver",
-                "current-orders"
+                "adds",
+                "3"
               ]
             }
           },

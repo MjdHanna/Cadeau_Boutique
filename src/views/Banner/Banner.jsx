@@ -1,35 +1,19 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import banner2 from "../../assets/images/Banner/p5.png";
-import banner3 from "../../assets/images/Banner/p6.png";
-import banner1 from "../../assets/images/Banner/p3.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { selectTranslate } from "../../redux/features/translateSlice";
+import { useGetAdsQuery } from "../../redux/features/apiSlice";
 
 const Banner = () => {
   const { t, i18n } = useTranslation();
   const lang = useSelector(selectTranslate);
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const images = [
-    {
-      url: banner2,
-      title: t("CelebrateEveryMoment"),
-      subtitle: t("FindBeautifulGiftsAndFlowers"),
-    },
-    {
-      url: banner1,
-      title: t("DelightWithChocolate"),
-      subtitle: t("HandcraftedChocolatesForEveryOccasion"),
-    },
-    {
-      url: banner3,
-      title: t("GiftsForLovedOnes"),
-      subtitle: t("MakeSpecialDaysUnforgettable"),
-    },
-  ];
+  const { data: adsResponse, isLoading, isError } = useGetAdsQuery();
+  const ads = adsResponse?.data || [];
 
   useEffect(() => {
     i18n.changeLanguage(lang);
@@ -37,75 +21,107 @@ const Banner = () => {
   }, [lang, i18n]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+    if (ads.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % ads.length);
+      }, 6000); // جعلتها 6 ثواني ليكون التغيير أهدأ
+      return () => clearInterval(timer);
+    }
+  }, [ads.length]);
 
-    return () => clearInterval(timer);
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="h-[calc(100vh-65px)] flex items-center justify-center bg-gray-50">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (isError || ads.length === 0) return null;
+
+  const currentAd = ads[currentImageIndex];
 
   return (
-    <div className="relative h-[calc(100vh-65px)] overflow-hidden">
+    <div className="relative h-[calc(100vh-65px)] w-full overflow-hidden bg-black group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentImageIndex}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <img
-            src={images[currentImageIndex].url}
-            alt="Banner"
-            className="w-full h-screen md:h-full object-cover object-top md:object-center"
+            src={currentAd.addImage}
+            alt={currentAd.addTitle}
+            className="w-full h-full object-cover object-center opacity-80"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+          {/* طبقة تدرج لوني احترافية لضمان وضوح النص */}
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent" />
+          <div className="absolute inset-0 bg-black/20" />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="w-full">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentImageIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                  {images[currentImageIndex].title}
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-200 mb-10">
-                  {images[currentImageIndex].subtitle}
-                </p>
-              </motion.div>
-            </AnimatePresence>
+      {/* المحتوى (النصوص والزر) */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="max-w-3xl"
+          >
+            {/* عنوان الإعلان */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+              {currentAd.addTitle}
+            </h1>
 
-            <div className="mt-16 flex gap-3">
-              {images.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentImageIndex === index
-                      ? "bg-primary"
-                      : "bg-secondary hover:bg-white"
-                  }`}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
+            {/* زر الانتقال للمنتج */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate(`/adds/${currentAd.addId}`)}
+              className="mt-4 px-8 py-4 bg-primary text-white text-lg font-bold rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:bg-opacity-90 transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
+            >
+              <span>
+                {lang === "ar" ? "تسوق العرض الآن" : "Shop Offer Now"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 ${lang === "ar" ? "rotate-180" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
                 />
-              ))}
-            </div>
-          </div>
-        </div>
+              </svg>
+            </motion.button>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black to-transparent z-[1]" />
-      <div className="absolute top-20 right-20 w-64 h-64 bg-yellow-500/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+      {/* أزرار التنقل السفلية (Dots) */}
+      <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-center gap-3">
+        {ads.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentImageIndex(index)}
+            className={`transition-all duration-500 rounded-full ${
+              currentImageIndex === index
+                ? "w-10 h-3 bg-primary"
+                : "w-3 h-3 bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
