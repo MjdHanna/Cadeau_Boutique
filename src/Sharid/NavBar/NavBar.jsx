@@ -42,6 +42,7 @@ const Navbar = () => {
   const lang = useSelector(selectTranslate);
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
+  const isAuthenticated = Boolean(token);
   // const [showNotifications, setShowNotifications] = useState(false);
   const { data: cartData } = useGetCartQuery(undefined, {
     skip: !token,
@@ -216,7 +217,7 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {user ? (
+              {isAuthenticated ? (
                 <>
                   <Link
                     to="/profile"
@@ -226,7 +227,8 @@ const Navbar = () => {
                       src={
                         profileImg
                           ? `${getImageUrl(profileImg)}?t=${Date.now()}`
-                          : `https://ui-avatars.com/api/?name=${user?.name || "User"}`
+                          : // إذا لم يتم جلب اليوزر بعد، سيعرض حرف U مؤقتاً
+                            `https://ui-avatars.com/api/?name=${user?.name || "User"}`
                       }
                       onError={(e) => {
                         e.currentTarget.src = `https://ui-avatars.com/api/?name=${user?.name || "User"}`;
