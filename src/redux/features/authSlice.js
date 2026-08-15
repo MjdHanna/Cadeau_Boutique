@@ -1,11 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const tokenFromStorage = localStorage.getItem("token");
-const userFromStorage = localStorage.getItem("user");
+let userFromStorage = null;
+
+// حماية قوية ضد خطأ "undefined is not valid JSON"
+try {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
+    userFromStorage = JSON.parse(storedUser);
+  } else {
+    localStorage.removeItem("user");
+  }
+} catch (error) {
+  console.error("Error parsing user from localStorage:", error);
+  localStorage.removeItem("user");
+}
 
 const initialState = {
   token: tokenFromStorage || null,
-  user: userFromStorage ? JSON.parse(userFromStorage) : null,
+  user: userFromStorage,
 };
 
 const authSlice = createSlice({
@@ -16,23 +29,18 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
 
-      // تحقق من وجود اليوزر قبل حفظه لتجنب الأعطال
       if (action.payload.user) {
         state.user = action.payload.user;
         localStorage.setItem("user", JSON.stringify(action.payload.user));
       }
     },
-
     setUser: (state, action) => {
       state.user = action.payload;
-
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
-
     logout: (state) => {
       state.token = null;
       state.user = null;
-
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },

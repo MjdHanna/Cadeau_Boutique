@@ -10,7 +10,11 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import { Toaster } from "react-hot-toast";
 import { useGetUserQuery } from "./redux/features/apiSlice";
-import { setCredentials, selectToken } from "./redux/features/authSlice";
+import {
+  setCredentials,
+  setUser,
+  selectToken,
+} from "./redux/features/authSlice";
 import { selectTranslate } from "./redux/features/translateSlice";
 import i18n from "./i18n";
 // --- الاستيرادات الجديدة الخاصة بـ Firebase ---
@@ -108,24 +112,16 @@ function App() {
     const urlToken = urlParams.get("token");
 
     if (urlToken) {
-      // نمرر التوكن فقط (قمنا بتعديل authSlice ليتعامل مع هذا)
       dispatch(setCredentials({ token: urlToken }));
       window.history.replaceState(null, "", window.location.pathname);
       navigate("/");
     }
   }, [dispatch, navigate]);
 
-  // 2. جلب بيانات المستخدم تلقائياً بمجرد وجود التوكن
-  const { data: userResponse, isSuccess } = useGetUserQuery(undefined, {
-    skip: !token,
-  });
-
-  // 3. حفظ بيانات المستخدم في Redux بمجرد وصولها من الـ API
+  // 2. تحديث بيانات المستخدم في Redux عند نجاح جلبها
   useEffect(() => {
     if (isSuccess && userResponse) {
-      // بناءً على بنية البيانات الخاصة بك، استخرج بيانات المستخدم
       const userData = userResponse?.data || userResponse;
-
       const formattedUser = {
         id: userData.userId || userData.id,
         name: userData.userName || userData.name,
@@ -133,9 +129,10 @@ function App() {
         vendorId: userData.vendorId,
       };
 
-      dispatch(setUser(formattedUser));
+      dispatch(setUser(formattedUser)); // هنا نستخدم setUser التي كانت تسبب الخطأ
     }
   }, [isSuccess, userResponse, dispatch]);
+
   useEffect(() => {
     i18n.changeLanguage(language);
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
