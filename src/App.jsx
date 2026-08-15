@@ -17,7 +17,6 @@ import {
 } from "./redux/features/authSlice";
 import { selectTranslate } from "./redux/features/translateSlice";
 import i18n from "./i18n";
-// --- الاستيرادات الجديدة الخاصة بـ Firebase ---
 import { getToken } from "firebase/messaging";
 import { messaging } from "./config/firebase";
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -39,7 +38,6 @@ const VerifyResetCode = lazy(
 
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
 
-// const GoogleCallback = lazy(() => import("./pages/auth/GoogleCallback"));
 
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 
@@ -118,7 +116,7 @@ function App() {
     }
   }, [dispatch, navigate]);
 
-  // 2. تحديث بيانات المستخدم في Redux عند نجاح جلبها
+  
   useEffect(() => {
     if (isSuccess && userResponse) {
       const userData = userResponse?.data || userResponse;
@@ -129,7 +127,7 @@ function App() {
         vendorId: userData.vendorId,
       };
 
-      dispatch(setUser(formattedUser)); // هنا نستخدم setUser التي كانت تسبب الخطأ
+      dispatch(setUser(formattedUser)); 
     }
   }, [isSuccess, userResponse, dispatch]);
 
@@ -214,7 +212,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-reset-code" element={<VerifyResetCode />} />
-          {/* <Route path="/auth/google/callback" element={<GoogleCallback />} /> */}
+        
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/friends/:id/wishlist" element={<FriendWishlist />} />

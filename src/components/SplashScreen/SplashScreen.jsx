@@ -19,7 +19,6 @@ const SplashScreen = ({ isVisible }) => {
           }}
           className="fixed inset-0 z-[99999] overflow-hidden flex items-center justify-center bg-white px-4"
         >
-          {/* الخلفية المضيئة الأولى - متجاوبة */}
           <motion.div
             className="absolute w-72 h-72 sm:w-[500px] sm:h-[500px] rounded-full bg-primary/20 blur-[80px] sm:blur-[120px]"
             animate={{
@@ -32,7 +31,6 @@ const SplashScreen = ({ isVisible }) => {
             }}
           />
 
-          {/* الخلفية المضيئة الثانية - متجاوبة */}
           <motion.div
             className="absolute w-56 h-56 sm:w-[350px] sm:h-[350px] rounded-full bg-pink-400/20 blur-[60px] sm:blur-[100px]"
             animate={{
@@ -73,23 +71,27 @@ const SplashScreen = ({ isVisible }) => {
                 }}
               />
             </motion.div>
+
+          
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="mt-3 text-xs sm:text-base tracking-wider text-gray-500 font-medium"
+              className="mt-3 text-xs sm:text-base tracking-wider text-gray-500 font-medium italic"
             >
               {t("Share Happiness With Every Gift")}
             </motion.p>
 
+          
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="mt-1.5 text-xs sm:text-base tracking-wider text-gray-500 font-medium"
+              className="mt-1.5 text-xs sm:text-base tracking-wider text-gray-500 font-medium italic"
             >
               {t("Where the wish begins... and the smile is complete.")}
             </motion.p>
+
             <div className="mt-6 sm:mt-8 h-[4px] w-48 sm:w-[220px] bg-gray-200 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-primary rounded-full"

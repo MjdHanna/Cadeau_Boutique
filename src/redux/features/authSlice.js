@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const tokenFromStorage = localStorage.getItem("token");
 let userFromStorage = null;
-
-// حماية قوية ضد خطأ "undefined is not valid JSON"
 try {
   const storedUser = localStorage.getItem("user");
   if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
