@@ -99,7 +99,7 @@ import AdDetails from "./components/AdDetails/AdDetails";
 function App() {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const token = useSelector(selectToken);
-  const { data: user } = useGetUserQuery(undefined, {
+  const { data: userResponse, isSuccess } = useGetUserQuery(undefined, {
     skip: !token,
   });
   const language = useSelector(selectTranslate);
