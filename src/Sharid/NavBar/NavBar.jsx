@@ -227,8 +227,7 @@ const Navbar = () => {
                       src={
                         profileImg
                           ? `${getImageUrl(profileImg)}?t=${Date.now()}`
-                          : // إذا لم يتم جلب اليوزر بعد، سيعرض حرف U مؤقتاً
-                            `https://ui-avatars.com/api/?name=${user?.name || "User"}`
+                          : `https://ui-avatars.com/api/?name=${user?.name || "User"}`
                       }
                       onError={(e) => {
                         e.currentTarget.src = `https://ui-avatars.com/api/?name=${user?.name || "User"}`;
@@ -368,7 +367,7 @@ const Navbar = () => {
 
               <div className="border-t border-gray-300  w-full my-4" />
 
-              {user ? (
+              {isAuthenticated ? (
                 <>
                   <Link
                     onClick={() => setIsOpen(false)}
