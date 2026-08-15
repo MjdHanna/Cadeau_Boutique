@@ -14,10 +14,13 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (state, action) => {
       state.token = action.payload.token;
-      state.user = action.payload.user;
-
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+
+      // تحقق من وجود اليوزر قبل حفظه لتجنب الأعطال
+      if (action.payload.user) {
+        state.user = action.payload.user;
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+      }
     },
 
     setUser: (state, action) => {

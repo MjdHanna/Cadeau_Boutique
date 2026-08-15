@@ -1,49 +1,59 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../../redux/features/authSlice";
 import { toast } from "react-hot-toast";
+// استيراد الـ hook الجاهز من apiSlice الذي قمت بتعريفه مسبقاً
+import { apiSlice } from "../../redux/features/apiSlice";
 
 const GoogleCallback = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // استخدام Lazy Query لكي نقوم بتشغيل الطلب يدوياً عند تحميل المكون
+  const [triggerGoogleMe] = apiSlice.endpoints.googleMe.useLazyQuery();
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(
-          "https://cadeau-boutique-production.up.railway.app/api/auth/google/me",
-          {
-            credentials: "include", // ⭐ مهم جدًا
-          }
-        );
+        // سيقوم هذا الطلب بالذهاب إلى cdb-back.bw-businessworld.net/api/auth/google/me
+        // وسيرسل الـ cookies تلقائياً بفضل إعدادات credentials
+        const response = await triggerGoogleMe().unwrap();
 
-        if (!res.ok) throw new Error("Unauthorized");
+        // تأكد من هيكل البيانات القادمة من الباك إند
+        const token = response?.data?.accessToken;
 
-        const data = await res.json();
+        if (!token) {
+          throw new Error("Token missing");
+        }
 
         dispatch(
           setCredentials({
-            token: data.data.accessToken,
+            token: token,
             user: {
-              id: data.data.userId,
-              name: data.data.userName,
-              role: data.data.userAbility,
-              vendorId: data.data.vendorId,
+              id: response.data.userId,
+              name: response.data.userName,
+              role: response.data.userAbility,
+              vendorId: response.data.vendorId,
             },
-          })
+          }),
         );
 
-        toast.success("Login successful with Google");
+        toast.success("Login successful with Google", {
+          position: "top-center",
+          duration: 2500,
+        });
+
         navigate("/", { replace: true });
       } catch (err) {
-        toast.error("Google login failed");
-        navigate("/login");
+        console.error("Google login error:", err);
+        toast.error("Google login failed", { position: "top-center" });
+        navigate("/login", { replace: true });
       }
     };
 
     fetchUser();
-  }, []);
+  }, [dispatch, navigate, triggerGoogleMe]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">

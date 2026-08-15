@@ -288,11 +288,7 @@ const Profile = () => {
                             `https://ui-avatars.com/api/?name=${user?.name || "User"}`
                       }
                       alt="preview"
-                      className="
-        w-24 h-24 rounded-full
-        object-cover border-4 border-white
-        shadow-lg
-      "
+                      className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
                     />
 
                     <div className="flex flex-col gap-2">
@@ -303,7 +299,6 @@ const Profile = () => {
                         hidden
                         onChange={(e) => {
                           const file = e.currentTarget.files[0];
-
                           if (file) {
                             setFieldValue("profileImg", file);
                           }
@@ -312,46 +307,47 @@ const Profile = () => {
 
                       <label
                         htmlFor="profile-upload"
-                        className="
-          px-4 py-2 rounded-lg
-          bg-primary text-white
-          cursor-pointer
-          text-sm text-center
-          hover:opacity-90
-          transition
-        "
+                        className="px-4 py-2 rounded-lg bg-primary text-white cursor-pointer text-sm text-center hover:opacity-90 transition"
                       >
                         {t("Upload Image")}
                       </label>
 
-                      {user?.profile_img && (
+                      {values.profileImg ? (
                         <button
                           type="button"
-                          onClick={async () => {
-                            try {
-                              await deleteProfileImg().unwrap();
+                          onClick={() => {
+                            setFieldValue("profileImg", null);
 
-                              toast.success(t("Profile image removed"));
-                            } catch (error) {
-                              toast.error(
-                                error?.data?.message ||
-                                  t("Failed to remove image"),
-                              );
-                            }
+                            document.getElementById("profile-upload").value =
+                              "";
                           }}
-                          disabled={isDeletingImage}
-                          className="
-            px-4 py-2 rounded-lg
-            bg-red-500 text-white
-            text-sm
-            hover:bg-red-600
-            transition
-          "
+                          className="px-4 py-2 rounded-lg bg-gray-500 text-white text-sm hover:bg-black transition"
                         >
-                          {isDeletingImage
-                            ? t("Removing...")
-                            : t("Remove Image")}
+                          {t("Cancel Selection")}{" "}
                         </button>
+                      ) : (
+                        user?.profile_img && (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              try {
+                                await deleteProfileImg().unwrap();
+                                toast.success(t("Profile image removed"));
+                              } catch (error) {
+                                toast.error(
+                                  error?.data?.message ||
+                                    t("Failed to remove image"),
+                                );
+                              }
+                            }}
+                            disabled={isDeletingImage}
+                            className="px-4 py-2 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600 transition"
+                          >
+                            {isDeletingImage
+                              ? t("Removing...")
+                              : t("Remove Image")}
+                          </button>
+                        )
                       )}
                     </div>
                   </div>

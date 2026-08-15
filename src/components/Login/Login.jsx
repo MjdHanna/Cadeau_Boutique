@@ -98,7 +98,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     window.location.href =
-      "https://cdb-back.bw-businessworld.net/api/auth/google/redirect";
+      "https://cdb-back.bw-businessworld.net/auth/google/redirect";
   };
 
   return (

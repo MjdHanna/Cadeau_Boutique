@@ -35,7 +35,7 @@ const VerifyResetCode = lazy(
 
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
 
-const GoogleCallback = lazy(() => import("./pages/auth/GoogleCallback"));
+// const GoogleCallback = lazy(() => import("./pages/auth/GoogleCallback"));
 
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 
@@ -105,15 +105,37 @@ function App() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
+    const urlToken = urlParams.get("token");
 
-    if (token) {
-      dispatch(setCredentials({ token }));
+    if (urlToken) {
+      // نمرر التوكن فقط (قمنا بتعديل authSlice ليتعامل مع هذا)
+      dispatch(setCredentials({ token: urlToken }));
       window.history.replaceState(null, "", window.location.pathname);
       navigate("/");
     }
   }, [dispatch, navigate]);
 
+  // 2. جلب بيانات المستخدم تلقائياً بمجرد وجود التوكن
+  const { data: userResponse, isSuccess } = useGetUserQuery(undefined, {
+    skip: !token,
+  });
+
+  // 3. حفظ بيانات المستخدم في Redux بمجرد وصولها من الـ API
+  useEffect(() => {
+    if (isSuccess && userResponse) {
+      // بناءً على بنية البيانات الخاصة بك، استخرج بيانات المستخدم
+      const userData = userResponse?.data || userResponse;
+
+      const formattedUser = {
+        id: userData.userId || userData.id,
+        name: userData.userName || userData.name,
+        role: userData.userAbility || userData.role,
+        vendorId: userData.vendorId,
+      };
+
+      dispatch(setUser(formattedUser));
+    }
+  }, [isSuccess, userResponse, dispatch]);
   useEffect(() => {
     i18n.changeLanguage(language);
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
@@ -195,7 +217,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-reset-code" element={<VerifyResetCode />} />
-          <Route path="/auth/google/callback" element={<GoogleCallback />} />
+          {/* <Route path="/auth/google/callback" element={<GoogleCallback />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/friends/:id/wishlist" element={<FriendWishlist />} />
