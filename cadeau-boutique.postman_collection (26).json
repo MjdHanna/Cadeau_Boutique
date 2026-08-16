@@ -436,6 +436,44 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "fcmToken",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/save-fcm-token",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "save-fcm-token"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -3549,7 +3587,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|v0gcs7FFedfSLA0gkVbrvJdUUniXL8kSjPmm3Zx6d9347fba",
+                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
                   "type": "string"
                 }
               ]
@@ -3659,7 +3697,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|fQd1A1tDXlbVaVCDIVqyG14qLVGNzApT3Mg7FV851201bccf",
+                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
                   "type": "string"
                 }
               ]
@@ -3674,7 +3712,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 6,\r\n    \"variantId\": 10,\r\n    \"quantity\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3835,7 +3873,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|fQd1A1tDXlbVaVCDIVqyG14qLVGNzApT3Mg7FV851201bccf",
+                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
                   "type": "string"
                 }
               ]
@@ -5254,7 +5292,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
                   "type": "string"
                 }
               ]
@@ -5274,7 +5312,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"type\": \"gift\"\r\n}",
+              "raw": "{\r\n    \"type\": \"order\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5282,14 +5320,14 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/driver/accept-order/1",
+              "raw": "{{localhost}}/driver/accept-order/5",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "driver",
                 "accept-order",
-                "1"
+                "5"
               ]
             }
           },
@@ -5303,7 +5341,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
                   "type": "string"
                 }
               ]
@@ -5342,7 +5380,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
                   "type": "string"
                 }
               ]
@@ -5417,6 +5455,55 @@
                 "driver",
                 "cancel-order",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateStatus",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"delivered\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/driver/update-order/5",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "driver",
+                "update-order",
+                "5"
               ]
             }
           },

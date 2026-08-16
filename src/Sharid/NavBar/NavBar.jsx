@@ -24,6 +24,7 @@ import {
 import {
   useGetWishlistQuery,
   useLogoutMutation,
+  // useGetNotificationsQuery,
 } from "../../redux/features/apiSlice";
 import { showLoader, hideLoader } from "../../redux/features/loaderSlice";
 import { useGetCartQuery } from "../../redux/features/apiSlice";
@@ -51,6 +52,10 @@ const Navbar = () => {
   const cartCount = Array.isArray(cartData?.data?.cartItems)
     ? cartData.data.cartItems.length
     : 0;
+
+  // const { data: notificationsData } = useGetNotificationsQuery(undefined, {
+  //   skip: !token,
+  // });
 
   const [logoutApi, { isLoading }] = useLogoutMutation();
 
@@ -96,7 +101,8 @@ const Navbar = () => {
     i18n.changeLanguage(lang);
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang, i18n]);
-  const notificationsCount = 5;
+  // const notificationsCount =
+  //   notificationsData?.data?.filter((n) => !n.is_read)?.length || 0;
   const handleLogout = async () => {
     try {
       if (token) {
@@ -194,9 +200,8 @@ const Navbar = () => {
                   />
                 </div>
 
-                {notificationsCount > 0 && (
-                  <span
-                    className="
+                <span
+                  className="
         absolute
         -top-1
         -right-1
@@ -211,10 +216,9 @@ const Navbar = () => {
         flex items-center justify-center
         animate-bounce
       "
-                  >
-                    {notificationsCount}
-                  </span>
-                )}
+                >
+                  {/* {notificationsCount} */}
+                </span>
               </Link>
 
               {isAuthenticated ? (
@@ -303,11 +307,9 @@ const Navbar = () => {
             <Link to="/notifications" className="relative">
               <HiOutlineBell size={24} className="text-primary" />
 
-              {notificationsCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[18px] h-[18px] rounded-full flex items-center justify-center">
-                  {notificationsCount}
-                </span>
-              )}
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[18px] h-[18px] rounded-full flex items-center justify-center">
+                {/* {notificationsCount} */}
+              </span>
             </Link>
 
             <button

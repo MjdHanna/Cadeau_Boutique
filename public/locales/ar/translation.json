@@ -441,5 +441,7 @@
   "Shipping Phone": "هاتف الشحن",
   "Set a budget and optionally choose favorite brands": "حدد ميزانية، واختر العلامات التجارية المفضلة (اختياري).",
   "Write a message (Optional)": "اكتب رسالة (اختياري)",
-  "Cancel Selection": "إلغاء التحديد"
+  "Cancel Selection": "إلغاء التحديد",
+  "No Notifications Yet": "لا توجد إشعارات بعد",
+  "When you get notifications, they'll show up here.": "عندما تتلقى إشعارات، ستظهر هنا."
 }

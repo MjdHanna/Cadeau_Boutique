@@ -7,7 +7,9 @@ import Loader from "./views/Loader/Loader";
 import Navbar from "./Sharid/NavBar/NavBar";
 import Footer from "./Sharid/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
-
+import { onMessage } from "firebase/messaging";
+import { useSaveFcmTokenMutation } from "./redux/features/apiSlice";
+import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { useGetUserQuery } from "./redux/features/apiSlice";
 import {
@@ -37,7 +39,6 @@ const VerifyResetCode = lazy(
 );
 
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
-
 
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 
@@ -116,7 +117,6 @@ function App() {
     }
   }, [dispatch, navigate]);
 
-  
   useEffect(() => {
     if (isSuccess && userResponse) {
       const userData = userResponse?.data || userResponse;
@@ -127,7 +127,7 @@ function App() {
         vendorId: userData.vendorId,
       };
 
-      dispatch(setUser(formattedUser)); 
+      dispatch(setUser(formattedUser));
     }
   }, [isSuccess, userResponse, dispatch]);
 
@@ -158,40 +158,82 @@ function App() {
   // ========================================================
   // --- إضافة كود إشعارات Firebase هنا ---
   // ========================================================
+  const [saveFcmToken] = useSaveFcmTokenMutation();
+
   useEffect(() => {
-    async function requestNotificationPermission() {
-      // نطلب الصلاحية فقط إذا كان المستخدم مسجلاً للدخول (يوجد توكن المصادقة)
+    let unsubscribe = null;
+
+    async function setupNotifications() {
+      // نتأكد أن المستخدم مسجل دخوله ولديه توكن المصادقة
       if (token) {
         try {
           const permission = await Notification.requestPermission();
 
           if (permission === "granted") {
+            // جلب التوكن الخاص بفايربيز
             const fcmToken = await getToken(messaging, {
-              vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY, // استبدل هذا بالمفتاح الخاص بك من لوحة تحكم فايربيز
+              vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
             });
 
-            console.log("FCM Device Token:", fcmToken);
+            if (fcmToken) {
+              console.log("FCM Device Token Ready to send:", fcmToken);
+              // إرسال التوكن للباك إند باستخدام RTK Query
+              // نمرر الـ fcmToken فقط لأن الـ apiSlice سيضعه داخل body: { fcmToken }
+              await saveFcmToken(fcmToken).unwrap();
+              console.log("FCM Token saved successfully in backend!");
+            }
 
-            // إرسال الـ FCM Token إلى الخادم (Laravel) لحفظه للمستخدم الحالي
-            await fetch("https://your-laravel-api.com/api/save-fcm-token", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // نرسل توكن المستخدم لكي يعرف Laravel لمن هذا الـ FCM Token
-              },
-              body: JSON.stringify({ fcm_token: fcmToken }),
+            // إعداد استقبال الإشعارات أثناء فتح التطبيق (Foreground)
+            unsubscribe = onMessage(messaging, (payload) => {
+              console.log("إشعار جديد وصل:", payload);
+              toast.custom(
+                (t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-white shadow-lg rounded-2xl pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex-1 w-0 p-4">
+                      <div className="flex items-start">
+                        <div className="ml-3 flex-1">
+                          <p className="text-sm font-bold text-gray-900">
+                            {payload.notification?.title}
+                          </p>
+                          <p className="mt-1 text-sm text-gray-500">
+                            {payload.notification?.body}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex border-l border-gray-200">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-2xl p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-primary-focus focus:outline-none"
+                      >
+                        إغلاق
+                      </button>
+                    </div>
+                  </div>
+                ),
+                { duration: 5000 },
+              );
             });
-          } else {
-            console.log("المستخدم رفض استقبال الإشعارات");
           }
         } catch (error) {
-          console.error("حدث خطأ أثناء طلب صلاحية الإشعارات:", error);
+          console.error("Notification Setup Error:", error);
         }
       }
     }
 
-    requestNotificationPermission();
-  }, [token]); // ربطنا هذا الـ useEffect بـ token لكي يعمل فور تسجيل الدخول
+    setupNotifications();
+
+    // تنظيف الاستماع للإشعارات عند إغلاق التطبيق أو تسجيل الخروج
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [token]); // ربطناه بـ token لكي يعمل بمجرد نجاح تسجيل الدخول (سواء من صفحة Login أو عند فتح الموقع بتوكن مخزن)
   // ========================================================
   return (
     <div>
@@ -212,7 +254,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-reset-code" element={<VerifyResetCode />} />
-        
+
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/friends/:id/wishlist" element={<FriendWishlist />} />

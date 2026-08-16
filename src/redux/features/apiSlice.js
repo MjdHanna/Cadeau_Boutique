@@ -48,6 +48,9 @@ export const apiSlice = createApi({
         "createGiftCard",
         "redeemGiftCard",
         "getCoupons",
+        "saveFcmToken",
+        "getNotifications",
+        "markNotificationAsRead",
       ];
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -66,6 +69,7 @@ export const apiSlice = createApi({
     "Friends",
     "Brands",
     "GiftCards",
+    "Notifications",
   ],
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -521,6 +525,32 @@ export const apiSlice = createApi({
     getAdById: builder.query({
       query: (id) => `adds/${id}`,
     }),
+    //End Adds
+
+    // Notifications Endpoints
+    saveFcmToken: builder.mutation({
+      query: (fcmToken) => ({
+        url: "save-fcm-token",
+        method: "POST",
+        body: { fcmToken },
+      }),
+    }),
+
+    getNotifications: builder.query({
+      query: () => ({
+        url: "notifications",
+        method: "GET",
+      }),
+      providesTags: ["Notifications"],
+    }),
+
+    markNotificationAsRead: builder.mutation({
+      query: (id) => ({
+        url: `notifications/${id}/read`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Notifications"],
+    }),
   }),
 });
 
@@ -585,4 +615,7 @@ export const {
   useRedeemGiftCardMutation,
   useGetAdsQuery,
   useGetAdByIdQuery,
+  useSaveFcmTokenMutation,
+  useGetNotificationsQuery,
+  useMarkNotificationAsReadMutation,
 } = apiSlice;
