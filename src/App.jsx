@@ -156,85 +156,140 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
   // ========================================================
-  // --- إضافة كود إشعارات Firebase هنا ---
+  // --- إعداد إشعارات Firebase والتعامل مع Google Login ---
   // ========================================================
   const [saveFcmToken] = useSaveFcmTokenMutation();
 
+  // دالة مساعدة لتوليد وإرسال الـ FCM Token
+  const setupFCM = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        const fcmToken = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+        });
+
+        if (fcmToken) {
+          console.log("FCM Device Token Ready:", fcmToken);
+          await saveFcmToken(fcmToken).unwrap();
+          console.log("FCM Token saved successfully in backend!");
+        }
+      }
+    } catch (error) {
+      console.error("FCM Setup Error:", error);
+    }
+  };
+
+  // 1. معالجة التوكن القادم من Google Redirect
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get("token");
+
+    if (urlToken) {
+      dispatch(setCredentials({ token: urlToken }));
+      window.history.replaceState(null, "", window.location.pathname);
+
+      // استدعاء توليد وحفظ التوكن مباشرة بعد التقاط توكن جوجل
+      setupFCM();
+
+      navigate("/");
+    }
+  }, [dispatch, navigate]);
+
+  // 2. الاستماع للإشعارات في الـ Foreground والتحقق من التوكن العام
   useEffect(() => {
     let unsubscribe = null;
 
-    async function setupNotifications() {
-      // نتأكد أن المستخدم مسجل دخوله ولديه توكن المصادقة
-      if (token) {
-        try {
-          const permission = await Notification.requestPermission();
+    if (token) {
+      // تشغيل الـ FCM للمستخدم المسجل دخوله
+      setupFCM();
 
-          if (permission === "granted") {
-            // جلب التوكن الخاص بفايربيز
-            const fcmToken = await getToken(messaging, {
-              vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-            });
-
-            if (fcmToken) {
-              console.log("FCM Device Token Ready to send:", fcmToken);
-              // إرسال التوكن للباك إند باستخدام RTK Query
-              // نمرر الـ fcmToken فقط لأن الـ apiSlice سيضعه داخل body: { fcmToken }
-              await saveFcmToken(fcmToken).unwrap();
-              console.log("FCM Token saved successfully in backend!");
-            }
-
-            // إعداد استقبال الإشعارات أثناء فتح التطبيق (Foreground)
-            unsubscribe = onMessage(messaging, (payload) => {
-              console.log("إشعار جديد وصل:", payload);
-              toast.custom(
-                (t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-white shadow-lg rounded-2xl pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      // استقبال الإشعارات أثناء فتح التطبيق
+      unsubscribe = onMessage(messaging, (payload) => {
+        console.log("إشعار جديد وصل:", payload);
+        toast.custom(
+          (t) => (
+            <div
+              dir={language === "ar" ? "rtl" : "ltr"}
+              className={`${
+                t.visible
+                  ? "animate-enter opacity-100 scale-100"
+                  : "animate-leave opacity-0 scale-95"
+              } max-w-md w-full backdrop-blur-md bg-white/90 dark:bg-[#1f1a24]/90 border border-[#7e2553]/15 shadow-[0_20px_40px_-15px_rgba(126,37,83,0.18)] rounded-2xl pointer-events-auto p-4 transition-all duration-300 ease-out`}
+            >
+              <div className="flex items-start gap-3.5">
+                {/* أيقونة مميزة بألوان الهوية وخلفية دائرية ناعمة */}
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-[#7e2553] to-[#a3326d] flex items-center justify-center shadow-md shadow-[#7e2553]/20">
+                  <svg
+                    className="w-5 h-5 text-white animate-pulse"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <div className="flex-1 w-0 p-4">
-                      <div className="flex items-start">
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-bold text-gray-900">
-                            {payload.notification?.title}
-                          </p>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {payload.notification?.body}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex border-l border-gray-200">
-                      <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-2xl p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-primary-focus focus:outline-none"
-                      >
-                        إغلاق
-                      </button>
-                    </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </div>
+
+                {/* النصوص وتفاصيل الإشعار */}
+                <div className="flex-1 min-w-0 pt-0.5">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                      {payload.notification?.title ||
+                        translate("New Notification")}
+                    </h4>
+                    <span className="text-[11px] font-medium text-[#7e2553] dark:text-[#d67ba8] bg-[#7e2553]/10 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      {translate("Just now")}
+                    </span>
                   </div>
-                ),
-                { duration: 5000 },
-              );
-            });
-          }
-        } catch (error) {
-          console.error("Notification Setup Error:", error);
-        }
-      }
+                  <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">
+                    {payload.notification?.body}
+                  </p>
+                </div>
+
+                {/* زر الإغلاق الدائري الناعم */}
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  aria-label={translate("Close")}
+                  className="flex-shrink-0 text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-full p-1.5 transition-colors focus:outline-none"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* شريط تقدم متحرك يعطي لمسة جمالية راقية */}
+              <div className="mt-3.5 w-full bg-gray-100 dark:bg-white/10 h-1 rounded-full overflow-hidden">
+                <div className="bg-gradient-to-r from-[#7e2553] to-[#c99700] h-full rounded-full w-full animate-[shrink_5s_linear]" />
+              </div>
+            </div>
+          ),
+          { duration: 5000 },
+        );
+      });
     }
 
-    setupNotifications();
-
-    // تنظيف الاستماع للإشعارات عند إغلاق التطبيق أو تسجيل الخروج
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-  }, [token]); // ربطناه بـ token لكي يعمل بمجرد نجاح تسجيل الدخول (سواء من صفحة Login أو عند فتح الموقع بتوكن مخزن)
-  // ========================================================
+  }, [token]);
   return (
     <div>
       {isLoading && <Loader />}
