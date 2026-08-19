@@ -63,6 +63,7 @@ const Profile = () => {
     }),
     [user],
   );
+
   const profileValidationSchema = useMemo(
     () =>
       Yup.object({
@@ -89,6 +90,7 @@ const Profile = () => {
       toast.error(error?.data?.message || t("Update failed"));
     }
   };
+
   const deleteInitialValues = { email: "", password: "" };
 
   const deleteValidationSchema = Yup.object({
@@ -115,13 +117,13 @@ const Profile = () => {
       setOpenDialog(false);
     }
   };
+
   const getImageUrl = (path) => {
     if (!path) return null;
-
     if (path.startsWith("http")) return path;
-
     return `https://cdb-back.bw-businessworld.net/${path}`;
   };
+
   if (!token) {
     return (
       <Suspense fallback={<div className="text-center py-28">Loading...</div>}>
@@ -165,7 +167,7 @@ const Profile = () => {
                 <span className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
               </div>
 
-              <div className="space-y-2 text-sm w-full">
+              <div className="space-y-3 text-sm w-full">
                 <p>
                   <b>{t("Name")}:</b> {user.name}
                 </p>
@@ -173,6 +175,11 @@ const Profile = () => {
                 <p>
                   <b>{t("Email")}:</b> {user.email}
                 </p>
+                <div className="p-3 my-2  font-semibold text-base flex justify-center items-center gap-2">
+                  <span>{t("Account Balance")}:</span>
+                  <span>{user.account_balance || 0}</span>
+                  <span>💰</span>
+                </div>
 
                 <p>
                   <b>{t("Phone")}:</b> {user.phone_number}

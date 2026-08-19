@@ -202,6 +202,7 @@ const AdDetails = () => {
           <div className="mt-auto pt-4 w-full">
             <AddToCartButton
               productId={adData.productId}
+              addId={id}
               variantId={selectedVariant}
               onSuccess={() => {
                 if (giftFriend) {

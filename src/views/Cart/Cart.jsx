@@ -1,4 +1,4 @@
-import React, { useMemo, useState, lazy, Suspense } from "react";
+import React, { useMemo, useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import EmptyCartImage from "../../assets/images/Cart/Frame.png";
@@ -9,6 +9,9 @@ import { selectToken } from "../../redux/features/authSlice";
 import {
   useGetCartQuery,
   useGetCouponsQuery,
+  useGetUserQuery,
+  useCalculateOrderPriceMutation,
+  useCheckoutMutation,
 } from "../../redux/features/apiSlice";
 import Loader from "../Loader/Loader";
 import { toast } from "react-hot-toast";
@@ -21,11 +24,17 @@ const Cart = () => {
   const { t, i18n } = useTranslation();
   const token = useSelector(selectToken);
   const isRTL = i18n.language === "ar";
-
   const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
   const { data: couponsData } = useGetCouponsQuery(undefined, { skip: !token });
+  const { data: userData } = useGetUserQuery(undefined, { skip: !token });
+  const [calculatePrice, { isLoading: isCalculatingPrice }] =
+    useCalculateOrderPriceMutation();
+  const [checkout, { isLoading: isCheckingOut }] = useCheckoutMutation();
 
   const availableCoupons = couponsData?.data || [];
+  const userBalance = userData?.account_balance || 0;
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [finalServerPrice, setFinalServerPrice] = useState(0);
 
   const cartItems = useMemo(() => {
     return (
@@ -54,13 +63,10 @@ const Cart = () => {
     message: "",
     recipientType: "self",
     friendId: null,
-    recipient: {
-      name: "",
-      phone: "",
-      address: "",
-    },
+    recipient: { name: "", phone: "", address: "" },
     deliveryDate: "",
   });
+
   const { itemsSubtotal, wrapPrice, discountAmount, finalTotal } =
     useMemo(() => {
       const subtotal = cartItems.reduce(
@@ -113,15 +119,86 @@ const Cart = () => {
     toast.success(t("Coupon removed"));
   };
 
-  const handleOrderSuccess = () => {
-    toast.success(t("Order placed successfully"), {
-      duration: 3000,
-      position: "top-center",
-    });
+  
+  const handleInitiateCheckout = async () => {
+    try {
+      
+      const payload = {};
 
-    setTimeout(() => {
-      navigate("/orders");
-    }, 1500);
+     
+      if (appliedCoupon?.code) {
+        payload.couponCode = appliedCoupon.code;
+      }
+
+     
+      if (giftData.enabled && giftData.coverId) {
+        payload.giftWrapperId = String(giftData.coverId);
+      }
+
+      
+
+      const response = await calculatePrice(payload).unwrap();
+
+      const serverPrice = Number(response?.data?.total) || finalTotal;
+      setFinalServerPrice(serverPrice);
+      setIsPaymentModalOpen(true);
+    } catch (error) {
+     
+      toast.error(t("Failed to calculate order price."));
+    }
+  };
+ 
+  const handleConfirmPayment = async () => {
+    try {
+     
+      const todayDate = new Date().toISOString().split("T")[0];
+
+     
+      const checkoutPayload = {
+        recipientType: giftData.recipientType || "self",
+        deliveryDate: giftData.deliveryDate ? giftData.deliveryDate : todayDate,
+        paymentMethod: "account_balance",
+      };
+      if (appliedCoupon?.code) {
+        checkoutPayload.couponCode = appliedCoupon.code;
+      }
+
+      if (giftData.enabled) {
+        if (giftData.coverId) {
+          checkoutPayload.giftWrapperId = String(giftData.coverId);
+        }
+        if (giftData.message) {
+          checkoutPayload.giftMessage = giftData.message;
+        }
+      }
+      if (giftData.recipientType === "friend" && giftData.friendId) {
+        checkoutPayload.friendId = giftData.friendId;
+      } else if (giftData.recipientType === "manual") {
+        if (giftData.recipient?.name)
+          checkoutPayload.shippingName = giftData.recipient.name;
+        if (giftData.recipient?.phone)
+          checkoutPayload.shippingPhone = giftData.recipient.phone;
+        if (giftData.recipient?.address)
+          checkoutPayload.shippingAddress = giftData.recipient.address;
+      }
+
+      console.log("FINAL CHECKOUT PAYLOAD SENT:", checkoutPayload);
+
+      await checkout(checkoutPayload).unwrap();
+
+      setIsPaymentModalOpen(false);
+      toast.success(t("Order placed and paid successfully!"), {
+        duration: 3000,
+        position: "top-center",
+      });
+      setTimeout(() => {
+        navigate("/orders");
+      }, 1500);
+    } catch (error) {
+      console.error("Checkout Error:", error);
+      alert("خطأ الدفع من السيرفر:\n" + JSON.stringify(error?.data, null, 2));
+      toast.error(error?.data?.message || t("Payment failed."));
+    }
   };
 
   if (isCartLoading) {
@@ -145,7 +222,10 @@ const Cart = () => {
   }
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-[#f5f7fb]">
+    <div
+      dir={isRTL ? "rtl" : "ltr"}
+      className="min-h-screen bg-[#f5f7fb] relative"
+    >
       <div className="max-w-7xl mx-auto px-4 py-26">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {cartItems.length === 0 ? (
@@ -159,11 +239,9 @@ const Cart = () => {
                 alt="Empty Cart"
                 className="w-[260px] md:w-[340px] object-contain"
               />
-
               <h2 className="mt-8 text-3xl font-black text-gray-800">
                 {t("Your Cart Is Empty")}
               </h2>
-
               <p className="mt-3 text-gray-500 text-lg">
                 {t("Add items to start shopping")}
               </p>
@@ -289,6 +367,7 @@ const Cart = () => {
                     )}
                   </AnimatePresence>
                 </div>
+              
 
                 <GiftExperience giftData={giftData} setGiftData={setGiftData} />
               </div>
@@ -301,12 +380,132 @@ const Cart = () => {
                 appliedCoupon={appliedCoupon}
                 items={cartItems}
                 giftData={giftData}
-                onOrderSuccess={handleOrderSuccess}
+                onOrderSuccess={handleInitiateCheckout}
+                isProcessing={isCalculatingPrice}
               />
             </>
           )}
         </div>
       </div>
+      <AnimatePresence>
+        {isPaymentModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, type: "spring" }}
+              className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
+              dir={isRTL ? "rtl" : "ltr"}
+            >
+              <div className="p-6 text-center bg-gray-50 border-b border-gray-100 relative">
+                <button
+                  onClick={() => setIsPaymentModalOpen(false)}
+                  className="absolute top-6 right-6 text-gray-400 hover:text-gray-700 transition"
+                >
+                  ✕
+                </button>
+                <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto text-3xl mb-4 shadow-inner">
+                  💳
+                </div>
+                <h3 className="text-2xl font-black text-gray-900">
+                  {t("Complete Payment")}
+                </h3>
+                <p className="text-gray-500 text-sm mt-1">
+                  {t("Review your balance before placing the order")}
+                </p>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className="flex justify-between items-center bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">💰</span>
+                    <span className="font-semibold text-gray-700">
+                      {t("Your Balance")}
+                    </span>
+                  </div>
+                  <span className="font-bold text-lg text-blue-700">
+                    ${userBalance.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🛒</span>
+                    <span className="font-semibold text-gray-700">
+                      {t("Order Total")}
+                    </span>
+                  </div>
+                  <span className="font-bold text-lg text-gray-900">
+                    ${finalServerPrice.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="border-t border-dashed border-gray-200 my-2" />
+
+                {userBalance >= finalServerPrice ? (
+                  <div className="flex justify-between items-center p-4 rounded-2xl bg-green-50 border border-green-100">
+                    <span className="font-bold text-green-800">
+                      {t("Balance After Payment")}
+                    </span>
+                    <span className="font-black text-xl text-green-600">
+                      ${(userBalance - finalServerPrice).toFixed(2)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="p-4 rounded-2xl bg-red-50 border border-red-100 text-center space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-red-800">
+                        {t("Missing Amount")}
+                      </span>
+                      <span className="font-black text-xl text-red-600">
+                        ${(finalServerPrice - userBalance).toFixed(2)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-red-500 font-medium bg-red-100/50 p-2 rounded-lg">
+                      ⚠️{" "}
+                      {t(
+                        "Insufficient balance. Please recharge your wallet to complete this order.",
+                      )}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 bg-gray-50 border-t border-gray-100 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsPaymentModalOpen(false)}
+                  disabled={isCheckingOut}
+                  className="flex-1 px-4 py-3.5 rounded-xl font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  {t("Cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmPayment}
+                  disabled={isCheckingOut || userBalance < finalServerPrice}
+                  className={`flex-[2] px-4 py-3.5 rounded-xl font-bold text-white transition-all flex justify-center items-center gap-2 ${
+                    userBalance >= finalServerPrice
+                      ? "bg-primary hover:opacity-90 shadow-lg shadow-primary/30"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                >
+                  {isCheckingOut ? (
+                    <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <span>
+                      {userBalance >= finalServerPrice
+                        ? t("Pay & Place Order")
+                        : t("Insufficient Balance")}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

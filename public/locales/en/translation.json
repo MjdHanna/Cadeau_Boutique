@@ -442,5 +442,18 @@
   "Write a message (Optional)": "Write a message (Optional)",
   "Cancel Selection": "Cancel Selection",
   "No Notifications Yet": "No Notifications Yet",
-  "When you get notifications, they'll show up here.": "When you get notifications, they'll show up here."
+  "When you get notifications, they'll show up here.": "When you get notifications, they'll show up here.",
+  "New Notification": "New Notification",
+  "Just now": "Just now",
+  "Mark as read": "Mark as read",
+  "Account Balance": "Account Balance",
+  "Complete Payment": "Complete Payment",
+  "Review your balance before placing the order": "Review your balance before placing the order",
+  "Your Balance": "Your Balance",
+  "Order Total": "Order Total",
+  "Balance After Payment": "Balance After Payment",
+  "Missing Amount": "Missing Amount",
+  "Insufficient balance. Please recharge your wallet to complete this order.": "Insufficient balance. Please recharge your wallet to complete this order.",
+  "Pay & Place Order": "Pay & Place Order",
+  "Insufficient Balance": "Insufficient Balance"
 }

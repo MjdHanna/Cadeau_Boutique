@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123321\"\r\n}"
+              "raw": "{\r\n    \"email\": \"admin123@example.com\",\r\n    \"password\": \"Admin2002\"\r\n}"
             },
             "url": {
               "raw": "{{localhost}}/login",
@@ -299,7 +299,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{auth_secret_0vyy}}",
+                  "value": "1|Ow51TBvkZODxjc9l1ncvSYgwjOu72hwEbDITrhhCa737380e",
                   "type": "string"
                 }
               ]
@@ -335,7 +335,7 @@
                 },
                 {
                   "key": "birthDate",
-                  "value": "2003-12-18",
+                  "value": "2003-8-24",
                   "type": "text",
                   "uuid": "3ee1fa7f-1b4b-4dd2-a911-ac8133641a82"
                 },
@@ -349,7 +349,8 @@
                   "key": "profileImg",
                   "type": "file",
                   "uuid": "4c613de3-1096-412b-b865-ad9a2a90f81c",
-                  "src": "/C:/Users/karam/Downloads/deer.png"
+                  "src": "/C:/Users/karam/Downloads/deer.png",
+                  "disabled": true
                 },
                 {
                   "key": "address",
@@ -418,7 +419,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "",
+                  "value": "1|J2EEUkXZyf0jntpRIlRHsAyfGZR8pSsjyOmrQVW2ec256b79",
                   "type": "string"
                 }
               ]
@@ -662,14 +663,6 @@
                 "my-follows"
               ]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "New Request",
-          "request": {
-            "method": "GET",
-            "header": []
           },
           "response": []
         }
@@ -1711,7 +1704,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "5|2hl9GeyKpFL65eWORNea8VkBMxhmUaO5k6xAsQt6f6a1dfdf",
+                      "value": "2|n85XQ4kBePCXn6rZRmisTkyimS1qtH5ivx5uwd99ad27d1ce",
                       "type": "string"
                     }
                   ]
@@ -1726,6 +1719,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "",
+                    "value": "",
                     "type": "text"
                   }
                 ],
@@ -1750,19 +1748,22 @@
                       "key": "password",
                       "value": "test112454545454",
                       "type": "text",
-                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140"
+                      "uuid": "6b4a6eb4-6b62-4824-926c-8ae2f18a4140",
+                      "disabled": true
                     },
                     {
                       "key": "gender",
                       "value": "female",
                       "type": "text",
-                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af"
+                      "uuid": "ba7a559a-b10b-45e5-ac5d-662bb6e4f3af",
+                      "disabled": true
                     },
                     {
                       "key": "image",
                       "type": "file",
                       "uuid": "8fdf50f4-403e-41b4-9806-c9d8ee75657e",
-                      "value": null
+                      "value": null,
+                      "disabled": true
                     },
                     {
                       "key": "phoneNumber",
@@ -1775,19 +1776,26 @@
                       "key": "birthDate",
                       "value": "2000-01-01",
                       "type": "text",
-                      "uuid": "d478316d-7aa1-4859-855d-94ccae0890fa"
+                      "uuid": "d478316d-7aa1-4859-855d-94ccae0890fa",
+                      "disabled": true
+                    },
+                    {
+                      "key": "accountBalance",
+                      "value": "2000",
+                      "type": "text",
+                      "uuid": "42d2ddc6-b559-40e4-920e-72488b83d818"
                     }
                   ]
                 },
                 "url": {
-                  "raw": "{{localhost}}/admin/edit-user/7",
+                  "raw": "{{localhost}}/admin/edit-user/15",
                   "host": [
                     "{{localhost}}"
                   ],
                   "path": [
                     "admin",
                     "edit-user",
-                    "7"
+                    "15"
                   ]
                 }
               },
@@ -2097,7 +2105,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "3|PAzMi8213MNTsorpjLE9f9lnbMWjn4egpVbjp13m8033c534",
+                      "value": "2|n85XQ4kBePCXn6rZRmisTkyimS1qtH5ivx5uwd99ad27d1ce",
                       "type": "string"
                     }
                   ]
@@ -2148,14 +2156,14 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{localhost}}/admin/edit-order/5",
+                  "raw": "{{localhost}}/admin/edit-order/7",
                   "host": [
                     "{{localhost}}"
                   ],
                   "path": [
                     "admin",
                     "edit-order",
-                    "5"
+                    "7"
                   ]
                 }
               },
@@ -3104,6 +3112,137 @@
               "response": []
             }
           ]
+        },
+        {
+          "name": "Adss",
+          "item": [
+            {
+              "name": "getAdds-admin",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|iPr13DDeZUNHImB7P3yMwIxeMgEj9rLsxdbur5mDb7d4eb93",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{localhost}}/admin/admin-adds",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "admin-adds"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "addAddsAdmin",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|iPr13DDeZUNHImB7P3yMwIxeMgEj9rLsxdbur5mDb7d4eb93",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "b00d5fd9-3fca-487d-bf89-7b625d889303",
+                      "src": "/C:/Users/karam/Downloads/deer.png"
+                    },
+                    {
+                      "key": "titleEn",
+                      "value": "test",
+                      "type": "text",
+                      "uuid": "d8c29ad5-c46b-4e41-9124-bc0d2cafca02"
+                    },
+                    {
+                      "key": "titleAr",
+                      "value": "اختبار",
+                      "type": "text",
+                      "uuid": "c1831148-72fa-42de-ab9b-583916d79b1e"
+                    },
+                    {
+                      "key": "productId",
+                      "value": "6",
+                      "type": "text",
+                      "uuid": "52f48c7e-76d7-4f41-8575-6d4abb7cfa8f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{localhost}}/admin/admin-adds",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "admin-adds"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteAdds",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|iPr13DDeZUNHImB7P3yMwIxeMgEj9rLsxdbur5mDb7d4eb93",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{localhost}}/admin/admin-adds/5",
+                  "host": [
+                    "{{localhost}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "admin-adds",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     },
@@ -3587,7 +3726,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
+                  "value": "1|J2EEUkXZyf0jntpRIlRHsAyfGZR8pSsjyOmrQVW2ec256b79",
                   "type": "string"
                 }
               ]
@@ -3659,7 +3798,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "3|qlclzQmbe8gNMliPOaGylxGcCUoYaizQAMRSf1DA1dd03083",
+                  "value": "1|mPwFO2MMiEYR6aj7wHjAG4RUn0VjuIkbkpOyxWhwf4eab850",
                   "type": "string"
                 }
               ]
@@ -3697,7 +3836,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
+                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
                   "type": "string"
                 }
               ]
@@ -3712,7 +3851,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 6,\r\n    \"variantId\": 10,\r\n    \"quantity\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1,\r\n    \"addId\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3740,7 +3879,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|5HCGk6PzsUZsJVstwM0qGYeadr9gDYXUHF7yryHYb0d99cc8",
+                  "value": "1|J2EEUkXZyf0jntpRIlRHsAyfGZR8pSsjyOmrQVW2ec256b79",
                   "type": "string"
                 }
               ]
@@ -3760,7 +3899,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\":1,\r\n    \"variantId\":1,\r\n    \"quantity\": 1\r\n}",
+              "raw": "{\r\n    \"productId\":3,\r\n    \"variantId\":5,\r\n    \"quantity\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3840,7 +3979,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|HGddy4HDRnGmZz17kZW5CaivGNKZO6HuCf5crfLN04930bd0",
+                  "value": "1|J2EEUkXZyf0jntpRIlRHsAyfGZR8pSsjyOmrQVW2ec256b79",
                   "type": "string"
                 }
               ]
@@ -3873,7 +4012,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|9BOYmuXdhEqevNxGDbMzKu0EbggczVoK2MY8z75e89aa2f32",
+                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
                   "type": "string"
                 }
               ]
@@ -3888,7 +4027,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"recipientType\": \"self\",\r\n  \"deliveryDate\": \"2026-06-01\",\r\n  \"giftWrapperId\": \"3\",\r\n  \"giftMessage\": \"This is for me 😄\"\r\n}",
+              "raw": "{\r\n    \"recipientType\": \"self\",\r\n    \"deliveryDate\": \"2026-06-01\",\r\n    \"giftWrapperId\": \"3\",\r\n    \"giftMessage\": \"This is for me 😄\",\r\n    \"paymentMethod\": \"account_balance\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3954,7 +4093,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|WTVjM6bho3NqExV46ZED5Ywo145wNsD8uM5kBTb59f184de3",
+                  "value": "1|Ow51TBvkZODxjc9l1ncvSYgwjOu72hwEbDITrhhCa737380e",
                   "type": "string"
                 }
               ]
@@ -3973,14 +4112,99 @@
               }
             ],
             "url": {
-              "raw": "{{localhost}}/orders/2/cancel",
+              "raw": "{{localhost}}/orders/1/cancel",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "orders",
-                "2",
+                "1",
                 "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "calculatePrice",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n /*    \"couponCode\": \"\",\r\n    \"giftWrapperId\": 2 */\r\n}"
+            },
+            "url": {
+              "raw": "{{localhost}}/calculate-order-price",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "calculate-order-price"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "confirmDelivery",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"orderNumber\": \"ORD-20260818-HS64\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/orders/confirm-delivery",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "orders",
+                "confirm-delivery"
               ]
             }
           },
@@ -4724,7 +4948,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|P7xSo8uZr3NmVsfFfAnfpduWlyGfwAwyaL0Etf88170f1514",
+                  "value": "1|uUxmaLgw2o3yhAYNvmQ3BIuosqhGYb74PnB46RWUda26f0b6",
                   "type": "string"
                 }
               ]
@@ -4752,13 +4976,13 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/friends/11/request",
+              "raw": "{{localhost}}/friends/15/request",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "friends",
-                "11",
+                "15",
                 "request"
               ]
             }
@@ -4773,7 +4997,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|C66JmT9cljshK2yu1rVeIGFVGK1synSETxOaafVo1f0cb359",
+                  "value": "2|EjITk0RcJNYyqjBR9ro1TGzUJgLOug7PdNk1w30T6cfdd0b6",
                   "type": "string"
                 }
               ]
@@ -5531,13 +5755,85 @@
               }
             ],
             "url": {
-              "raw": "{{localhost}}/adds/3",
+              "raw": "{{localhost}}/adds",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
-                "adds",
-                "3"
+                "adds"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notification",
+      "item": [
+        {
+          "name": "getNotifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|VJ9CuUbo2LAXN123ugLABO4Wbr33hlLAc0HjIo0y7099f88b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/notifications",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "readNotifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|VJ9CuUbo2LAXN123ugLABO4Wbr33hlLAc0HjIo0y7099f88b",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{localhost}}/notifications/1/mark-as-read",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "notifications",
+                "1",
+                "mark-as-read"
               ]
             }
           },

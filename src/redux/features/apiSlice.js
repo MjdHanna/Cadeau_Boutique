@@ -51,6 +51,7 @@ export const apiSlice = createApi({
         "saveFcmToken",
         "getNotifications",
         "markNotificationAsRead",
+        "calculateOrderPrice",
       ];
       if (token && protectedEndpoints.includes(endpoint)) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -402,7 +403,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Cart", "Orders"],
+      invalidatesTags: ["Cart", "Orders", "Auth"],
     }),
 
     // Friends
@@ -546,10 +547,19 @@ export const apiSlice = createApi({
 
     markNotificationAsRead: builder.mutation({
       query: (id) => ({
-        url: `notifications/${id}/read`,
+        url: `notifications/${id}/mark-as-read`,
         method: "POST",
       }),
       invalidatesTags: ["Notifications"],
+    }),
+    // Calculate_Price
+    calculateOrderPrice: builder.mutation({
+      query: (data) => ({
+        url: "calculate-order-price",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Calculate"],
     }),
   }),
 });
@@ -618,4 +628,5 @@ export const {
   useSaveFcmTokenMutation,
   useGetNotificationsQuery,
   useMarkNotificationAsReadMutation,
+  useCalculateOrderPriceMutation,
 } = apiSlice;

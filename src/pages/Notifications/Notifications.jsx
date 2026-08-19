@@ -4,10 +4,10 @@ import { HiOutlineBell, HiOutlineCheck } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/features/authSlice";
-// import {
-//   useGetNotificationsQuery,
-//   useMarkNotificationAsReadMutation,
-// } from "../../redux/features/apiSlice";
+import {
+  useGetNotificationsQuery,
+  useMarkNotificationAsReadMutation,
+} from "../../redux/features/apiSlice";
 
 const LoginRequired = lazy(
   () => import("../../components/LoginRequired/LoginRequired"),
@@ -18,15 +18,19 @@ const Notifications = () => {
   const token = useSelector(selectToken);
   const isRtl = i18n.language === "ar";
 
-  // const { data: notificationsResponse, isLoading } = useGetNotificationsQuery(
-  //   undefined,
-  //   { skip: !token },
-  // );
-  // const [markAsRead] = useMarkNotificationAsReadMutation();
+  const { data: notificationsResponse, isLoading } = useGetNotificationsQuery(
+    undefined,
+    { skip: !token },
+  );
+  const [markAsRead, { isLoading: isMarkingRead }] =
+    useMarkNotificationAsReadMutation();
 
-  const notifications = [];
-  const isLoading = false;
-  const handleMarkAsRead = async (id) => {
+  const notifications = Array.isArray(notificationsResponse)
+    ? notificationsResponse
+    : notificationsResponse?.data || notificationsResponse?.notifications || [];
+
+  const handleMarkAsRead = async (e, id) => {
+    e.stopPropagation();
     try {
       await markAsRead(id).unwrap();
     } catch (error) {
@@ -53,13 +57,12 @@ const Notifications = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-24 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
-        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10 flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-gray-100"
+          className="mb-8 flex items-center justify-between bg-white p-6 rounded-3xl shadow-sm border border-gray-100"
         >
-          <div className="flex items-center gap-4 mb-4 sm:mb-0">
+          <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
               <HiOutlineBell className="text-primary w-7 h-7" />
             </div>
@@ -72,20 +75,11 @@ const Notifications = () => {
               </p>
             </div>
           </div>
-
-          {notifications.length > 0 && (
-            <button className="text-sm font-medium text-primary bg-primary/5 hover:bg-primary/10 px-5 py-2.5 rounded-full transition-colors flex items-center gap-2">
-              <HiOutlineCheck size={18} />
-              {t("Mark all as read")}
-            </button>
-          )}
         </motion.div>
 
-        {/* Notifications List */}
         <div className="space-y-4">
           <AnimatePresence>
             {isLoading ? (
-              // Loading Skeleton
               [...Array(4)].map((_, i) => (
                 <div
                   key={i}
@@ -99,60 +93,112 @@ const Notifications = () => {
                 </div>
               ))
             ) : notifications.length > 0 ? (
-              notifications.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: index * 0.05 }}
-                  onClick={() => !item.is_read && handleMarkAsRead(item.id)}
-                  className={`
-                    group cursor-pointer relative overflow-hidden
-                    bg-white rounded-2xl p-5 sm:p-6
-                    transition-all duration-300
-                    hover:shadow-lg hover:-translate-y-0.5
-                    ${!item.is_read ? "border-l-4 border-l-primary shadow-sm" : "border border-gray-100 opacity-75"}
-                  `}
-                >
-                  {/* Background pattern for unread */}
-                  {!item.is_read && (
-                    <div
-                      className={`absolute top-0 ${isRtl ? "left-0" : "right-0"} w-24 h-24 bg-primary/5 rounded-full blur-2xl -mt-10 ${isRtl ? "-ml-10" : "-mr-10"}`}
-                    ></div>
-                  )}
+              notifications.map((item, index) => {
+                const isRead = Boolean(item.read_at || item.is_read);
 
-                  <div className="flex items-start gap-4 relative z-10">
-                    <div
-                      className={`
-                      w-12 h-12 rounded-full shrink-0 flex items-center justify-center transition-colors
-                      ${!item.is_read ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-500 group-hover:text-primary group-hover:bg-primary/5"}
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      backgroundColor: isRead ? "#f9fafb" : "#ffffff",
+                    }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{
+                      delay: index * 0.05,
+                      backgroundColor: { duration: 0.4, ease: "easeInOut" },
+                    }}
+                    className={`
+                      group relative overflow-hidden rounded-2xl p-5 sm:p-6
+                      transition-all duration-300
+                      ${
+                        !isRead
+                          ? "border-l-4 border-l-primary shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                          : "border border-gray-100 opacity-80"
+                      }
                     `}
-                    >
-                      <HiOutlineBell size={24} />
-                    </div>
+                  >
+                    {!isRead && (
+                      <div
+                        className={`absolute top-0 ${
+                          isRtl ? "left-0 -ml-10" : "right-0 -mr-10"
+                        } w-24 h-24 bg-primary/5 rounded-full blur-2xl -mt-10 pointer-events-none`}
+                      ></div>
+                    )}
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex justify-between items-start gap-2 mb-1">
-                        <h3
-                          className={`font-semibold truncate ${!item.is_read ? "text-gray-900" : "text-gray-600"}`}
-                        >
-                          {item.title}
-                        </h3>
-                        <span className="text-xs font-medium text-gray-400 whitespace-nowrap bg-gray-50 px-2 py-1 rounded-md">
-                          {item.created_at || "الآن"}
-                        </span>
+                    <div className="flex items-start gap-4 relative z-10">
+                      <div
+                        className={`
+                          w-12 h-12 rounded-full shrink-0 flex items-center justify-center transition-colors duration-300
+                          ${
+                            !isRead
+                              ? "bg-primary/10 text-primary"
+                              : "bg-gray-100 text-gray-400"
+                          }
+                        `}
+                      >
+                        <HiOutlineBell size={24} />
                       </div>
-                      <p className="text-sm text-gray-500 leading-relaxed">
-                        {item.message || item.body}
-                      </p>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start gap-2 mb-1">
+                          <h3
+                            className={`font-semibold transition-colors duration-300 truncate ${
+                              !isRead
+                                ? "text-gray-900 font-bold"
+                                : "text-gray-500 font-medium"
+                            }`}
+                          >
+                            {item.title || item.data?.title}
+                          </h3>
+                          <span className="text-xs font-medium text-gray-400 whitespace-nowrap bg-gray-50 px-2 py-1 rounded-md">
+                            {item.created_at || "الآن"}
+                          </span>
+                        </div>
+
+                        <p
+                          className={`text-sm leading-relaxed transition-colors duration-300 ${
+                            !isRead
+                              ? "text-gray-600"
+                              : "text-gray-400 line-clamp-2"
+                          }`}
+                        >
+                          {item.message ||
+                            item.body ||
+                            item.data?.body ||
+                            item.data?.message}
+                        </p>
+
+                        <div className="mt-3 flex justify-end items-center">
+                          {!isRead ? (
+                            <motion.button
+                              whileHover={{ scale: 1.04 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={(e) => handleMarkAsRead(e, item.id)}
+                              className="text-xs font-medium text-primary bg-primary/10 hover:bg-primary hover:text-white px-3.5 py-1.5 rounded-full transition-all duration-200 flex items-center gap-1.5 shadow-sm"
+                            >
+                              <HiOutlineCheck size={15} />
+                              <span>{t("Mark as read")}</span>
+                            </motion.button>
+                          ) : (
+                            <span className="text-xs font-medium text-gray-400 flex items-center gap-1 bg-gray-100/70 px-2.5 py-1 rounded-full">
+                              <HiOutlineCheck
+                                className="text-green-500"
+                                size={14}
+                              />
+                              <span>{t("Read")}</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))
+                  </motion.div>
+                );
+              })
             ) : (
-              // Empty State
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

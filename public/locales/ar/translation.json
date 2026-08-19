@@ -443,5 +443,18 @@
   "Write a message (Optional)": "اكتب رسالة (اختياري)",
   "Cancel Selection": "إلغاء التحديد",
   "No Notifications Yet": "لا توجد إشعارات بعد",
-  "When you get notifications, they'll show up here.": "عندما تتلقى إشعارات، ستظهر هنا."
+  "When you get notifications, they'll show up here.": "عندما تتلقى إشعارات، ستظهر هنا.",
+  "New Notification": "إشعار جديد",
+  "Just now": "الآن",
+  "Mark as read": "وضع علامة مقروء",
+  "Account Balance": "رصيد الحساب",
+  "Complete Payment": "إتمام الدفع",
+  "Review your balance before placing the order": "راجع رصيدك قبل تقديم الطلب.",
+  "Your Balance": "رصيدك",
+  "Order Total": "إجمالي الطلب",
+  "Balance After Payment": "الرصيد بعد الدفع",
+  "Missing Amount": "المبلغ المفقود",
+  "Insufficient balance. Please recharge your wallet to complete this order.": "الرصيد غير كافٍ. يرجى شحن محفظتك لإتمام هذا الطلب.",
+  "Pay & Place Order": "الدفع وإتمام الطلب",
+  "Insufficient Balance": "رصيد غير كافٍ"
 }

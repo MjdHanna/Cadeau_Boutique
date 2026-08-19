@@ -1,110 +1,24 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useCheckoutMutation } from "../../redux/features/apiSlice";
-import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
-const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
+const OrderSummary = ({
+  total,
+  items,
+  giftData,
+  onOrderSuccess,
+  isProcessing,
+}) => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate(); 
-
   const isRTL = i18n.language === "ar";
 
-  const [checkout, { isLoading }] = useCheckoutMutation();
-
-  const handleCheckout = async () => {
-    try {
-      let payload = {
-        recipientType: giftData.recipientType || "self",
-        deliveryDate: giftData.deliveryDate || null,
-        giftWrapperId:
-          giftData.enabled && giftData.coverId
-            ? String(giftData.coverId)
-            : null,
-        giftMessage: giftData.message || null,
-        couponCode: giftData.couponCode || null,
-      };
-
-      if (giftData.recipientType === "friend") {
-        payload.friendId = giftData.friendId;
-      } else if (giftData.recipientType === "manual") {
-        payload.shippingName = giftData.recipient?.name || "";
-        payload.shippingPhone = giftData.recipient?.phone || "";
-        payload.shippingAddress = giftData.recipient?.address || "";
-      } else {
-        if (giftData.recipient?.address) {
-          payload.shippingName = giftData.recipient?.name || "";
-          payload.shippingPhone = giftData.recipient?.phone || "";
-          payload.shippingAddress = giftData.recipient?.address || "";
-        }
-      }
-
-      console.log("CHECKOUT PAYLOAD => ", payload);
-
-      await checkout(payload).unwrap();
-      onOrderSuccess?.();
-    } catch (error) {
-      console.log(error);
-      const errorMessage = error?.data?.message || "";
-      if (
-        errorMessage.toLowerCase().includes("shipping data is incomplete") ||
-        error?.status === 422
-      ) {
-        toast(
-          (tObj) => (
-            <div className="flex flex-col gap-2 text-center items-center">
-              <span className="text-sm font-medium">
-                {t(
-                  "The address details in your account are incomplete. Please add the address to complete the order.",
-                )}
-              </span>
-              <button
-                onClick={() => {
-                  toast.dismiss(tObj.id); 
-                  navigate("/profile");
-                }}
-                className="mt-1 bg-primary text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-md"
-              >
-                {t("Go to profile")}
-              </button>
-            </div>
-          ),
-          {
-            position: "top-center",
-            duration: 6000,
-            icon: "⚠️",
-            style: {
-              borderRadius: "16px",
-              background: "#333",
-              color: "#fff",
-              padding: "16px",
-            },
-          },
-        );
-      } else {
-        toast.error(errorMessage || t("Something went wrong"), {
-          position: "top-center",
-        });
-      }
-    }
-  };
+  // تم حذف عملية الـ checkout من هنا لأنها تتم في الـ Cart.jsx
 
   return (
     <motion.div
       initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="
-        bg-white
-        rounded-[32px]
-        p-6
-        shadow-sm
-        border
-        border-gray-100
-        h-fit
-        sticky
-        top-5
-      "
+      className="bg-white rounded-[32px] p-6 shadow-sm border border-gray-100 h-fit sticky top-5"
     >
       <h2 className="text-2xl font-black">{t("Order Summary")}</h2>
 
@@ -115,7 +29,6 @@ const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
             className="flex items-center justify-between"
           >
             <span className="text-gray-700">{item.productName}</span>
-
             <span className="font-bold">${item.totalPrice}</span>
           </div>
         ))}
@@ -123,38 +36,27 @@ const OrderSummary = ({ total, items, giftData, onOrderSuccess }) => {
         {giftData.enabled && (
           <div className="flex justify-between text-primary font-bold">
             <span>{t("Gift Wrap")}</span>
-
             <span>+${giftData.coverPrice}</span>
           </div>
         )}
 
         <div className="border-t pt-5 flex items-center justify-between">
           <span className="font-black text-xl">{t("Total")}</span>
-
           <span className="font-black text-2xl text-primary">${total}</span>
         </div>
 
         <motion.button
           whileTap={{ scale: 0.98 }}
           whileHover={{ scale: 1.01 }}
-          onClick={handleCheckout}
-          disabled={isLoading}
-          className={`
-            w-full
-            mt-5
-            py-4
-            rounded-2xl
-            font-bold
-            text-white
-            transition-all
-            ${
-              isLoading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-primary hover:shadow-lg"
-            }
-          `}
+          onClick={onOrderSuccess} // هنا نكتفي بمناداة الدالة لحساب السعر وفتح النافذة
+          disabled={isProcessing}
+          className={`w-full mt-5 py-4 rounded-2xl font-bold text-white transition-all ${
+            isProcessing
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-primary hover:shadow-lg"
+          }`}
         >
-          {isLoading ? t("Processing...") : t("Complete Order")}
+          {isProcessing ? t("Processing...") : t("Complete Order")}
         </motion.button>
       </div>
     </motion.div>
