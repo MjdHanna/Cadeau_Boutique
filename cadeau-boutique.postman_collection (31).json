@@ -60,7 +60,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"admin123@example.com\",\r\n    \"password\": \"Admin2002\"\r\n}"
+              "raw": "{\r\n    \"email\": \"driver@example.com\",\r\n    \"password\": \"driver123321\"\r\n}"
             },
             "url": {
               "raw": "{{localhost}}/login",
@@ -3836,7 +3836,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
+                  "value": "1|NRwN4tKH1TPzlMHPf5lIiH57hbnYOKgUqWEJe3kY5693d0d8",
                   "type": "string"
                 }
               ]
@@ -3851,7 +3851,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1,\r\n    \"addId\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 1,\r\n    \"variantId\": 1,\r\n    \"quantity\": 1\r\n    //\"addId\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3979,7 +3979,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|J2EEUkXZyf0jntpRIlRHsAyfGZR8pSsjyOmrQVW2ec256b79",
+                  "value": "4|z0Q0RmdW3KB0ht3wJbWtWqoZ5zVq7yWvCIeI2tTr2a0077be",
                   "type": "string"
                 }
               ]
@@ -4012,7 +4012,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|70tCgGcOwm81B9De0ytSsiS6WghnUNziHHYqO43U71fa8110",
+                  "value": "1|NRwN4tKH1TPzlMHPf5lIiH57hbnYOKgUqWEJe3kY5693d0d8",
                   "type": "string"
                 }
               ]
@@ -4205,6 +4205,48 @@
               "path": [
                 "orders",
                 "confirm-delivery"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "payment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "3|P0TuBIRGTbzqnrKZbe0lKzD9m8qRfEOuSasjQSJ673ff0631",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"orderId\": 4\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}/order-payment",
+              "host": [
+                "{{localhost}}"
+              ],
+              "path": [
+                "order-payment"
               ]
             }
           },
@@ -5516,7 +5558,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
+                  "value": "2|nYX2XTcWGY1u9YsZcc7CTMYJbMoTtSxk0y8j8fHb0b797b30",
                   "type": "string"
                 }
               ]
@@ -5544,14 +5586,14 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/driver/accept-order/5",
+              "raw": "{{localhost}}/driver/accept-order/2",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "driver",
                 "accept-order",
-                "5"
+                "2"
               ]
             }
           },
@@ -5565,7 +5607,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
+                  "value": "2|nYX2XTcWGY1u9YsZcc7CTMYJbMoTtSxk0y8j8fHb0b797b30",
                   "type": "string"
                 }
               ]
@@ -5604,7 +5646,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|G39PmlaCrP2KMUrVoqMTAzMRhj6n6ury2AxJnuJY57cccd5b",
+                  "value": "2|nYX2XTcWGY1u9YsZcc7CTMYJbMoTtSxk0y8j8fHb0b797b30",
                   "type": "string"
                 }
               ]
@@ -5643,7 +5685,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "2|GSwVtbzyuVtp17mbAs17vQXHx79m9qRNGZsUJmcP9efa0cf3",
+                  "value": "2|nYX2XTcWGY1u9YsZcc7CTMYJbMoTtSxk0y8j8fHb0b797b30",
                   "type": "string"
                 }
               ]
@@ -5663,7 +5705,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"type\": \"gift\",\r\n    \"reason\": \"truck broke down\",\r\n    \"note\": \"The truck engine stopped working.\"\r\n}",
+              "raw": "{\r\n    \"type\": \"order\",\r\n    \"reason\": \"truck broke down\",\r\n    \"note\": \"The truck engine stopped working.\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5671,14 +5713,14 @@
               }
             },
             "url": {
-              "raw": "{{localhost}}/driver/cancel-order/1",
+              "raw": "{{localhost}}/driver/cancel-order/2",
               "host": [
                 "{{localhost}}"
               ],
               "path": [
                 "driver",
                 "cancel-order",
-                "1"
+                "2"
               ]
             }
           },
@@ -5887,10 +5929,64 @@
       "response": []
     },
     {
-      "name": "New Request",
+      "name": "addFriend",
       "request": {
-        "method": "GET",
-        "header": []
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "3|L0sh1WH9IOuiDzd8KuxI4YkP6Ezjk7T2xmH13Q0w80ad91f6",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "https://cdb-back.bw-businessworld.net/api/login",
+          "protocol": "https",
+          "host": [
+            "cdb-back",
+            "bw-businessworld",
+            "net"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "accept",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "3|L0sh1WH9IOuiDzd8KuxI4YkP6Ezjk7T2xmH13Q0w80ad91f6",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "https://cdb-back.bw-businessworld.net/api/login",
+          "protocol": "https",
+          "host": [
+            "cdb-back",
+            "bw-businessworld",
+            "net"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        }
       },
       "response": []
     }

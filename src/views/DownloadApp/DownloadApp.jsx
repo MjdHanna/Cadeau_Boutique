@@ -11,7 +11,8 @@ const DownloadApp = () => {
   const { t } = useTranslation();
 
   const isRTL = lang === "ar";
-  const downloadUrl = "https://play.google.com";
+  const downloadUrl =
+    "https://drive.google.com/file/d/1RW_mc2Ks840oqn7nv_lOpcUdnG6vXDAL/view?usp=drivesdk";
 
   const containerVariants = {
     hidden: { opacity: 0 },

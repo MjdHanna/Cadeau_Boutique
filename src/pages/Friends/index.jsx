@@ -144,16 +144,23 @@ const Friends = () => {
   const suggestedUsers = useMemo(() => {
     if (!Array.isArray(suggestionsRes?.data)) return [];
 
-    return suggestionsRes.data.map((item) => ({
-      id: item.id,
-      name: item.userName || item.name,
-      email: item.userEmail || item.email,
-      image: item.userImg || item.profileImg,
-      mutualFriendsCount:
-        item.mutualFriendsCount || item.mutual_friends_count || 0,
-      requestSent: item.requestSent || false,
-    }));
-  }, [suggestionsRes]);
+    // 1. استخراج معرفات (IDs) الأصدقاء الحاليين لاستبعادهم من الاقتراحات
+    const currentFriendIds = Array.isArray(friendsRes?.data)
+      ? friendsRes.data.map((f) => f.id)
+      : [];
+
+    return suggestionsRes.data
+      .filter((item) => !currentFriendIds.includes(item.id))
+      .map((item) => ({
+        id: item.id,
+        name: item.userName || item.name,
+        email: item.userEmail || item.email,
+        image: item.userImg || item.profileImg,
+        mutualFriendsCount:
+          item.mutualFriendsCount || item.mutual_friends_count || 0,
+        requestSent: item.requestSent || false,
+      }));
+  }, [suggestionsRes, friendsRes]);
 
   const requests = useMemo(() => {
     if (!Array.isArray(requestsRes?.data)) return [];

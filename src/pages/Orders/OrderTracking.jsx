@@ -29,6 +29,7 @@ const fadeIn = {
 const statusColors = {
   delivered: "bg-green-100 text-green-700",
   processing: "bg-blue-100 text-blue-700",
+  assigned: "bg-teal-100 text-teal-700", // تمت إضافة الحالة الجديدة هنا
   shipped: "bg-purple-100 text-purple-700",
   cancelled: "bg-red-100 text-red-700",
   canceled: "bg-red-100 text-red-700",
@@ -88,9 +89,9 @@ const OrderTracking = () => {
     if (orderId === undefined || orderId === null) {
       alert("Error");
     }
-
     setOrderToCancel(orderId);
   };
+
   const handleConfirmCancel = async () => {
     if (!orderToCancel) return;
     try {
@@ -211,7 +212,13 @@ const OrderTracking = () => {
               giftMessage: order.giftMessage || "",
               giftWrapper: order.giftWrapper || null,
               total: Number(order.total) || 0,
-              subtotal: Number(order.subtotal || 0),
+
+              // التحديثات الجديدة في حقول التسعير
+              subtotal: Number(order.subTotal || order.subtotal || 0),
+              couponCode: order.couponCode || null,
+              giftWrappingCost: Number(order.giftWrappingCost || 0),
+              deliveryCost: Number(order.deliveryCost || 0),
+
               date: order.date || null,
               items: Array.isArray(order.orderItems)
                 ? order.orderItems.map((item) => ({
@@ -282,13 +289,15 @@ const OrderTracking = () => {
                 {isOpen && (
                   <div className="p-6 border-t border-gray-200 space-y-6">
                     <div className="space-y-2 text-sm text-gray-700">
-                      <p>
-                        <span className="font-medium">
-                          {t("Recipient's ID")}:
-                        </span>{" "}
-                        {recipientLabels[mappedOrder.recipientType] ||
-                          mappedOrder.recipientType}
-                      </p>
+                      {mappedOrder.recipientType && (
+                        <p>
+                          <span className="font-medium">
+                            {t("Recipient's ID")}:
+                          </span>{" "}
+                          {recipientLabels[mappedOrder.recipientType] ||
+                            mappedOrder.recipientType}
+                        </p>
+                      )}
 
                       <p>
                         <span className="font-medium">{t("Name")}:</span>{" "}
@@ -404,11 +413,37 @@ const OrderTracking = () => {
                       )}
                     </div>
 
+                    {/* التحديث هنا: إضافة تفاصيل الفاتورة مثل التغليف، التوصيل وكود الخصم */}
                     <div className="border-t pt-5 space-y-3">
                       {mappedOrder.subtotal > 0 && (
-                        <div className="flex justify-between text-gray-600">
+                        <div className="flex justify-between text-gray-600 text-sm">
                           <span>{t("Subtotal")}</span>
                           <span>${mappedOrder.subtotal.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                      {mappedOrder.deliveryCost > 0 && (
+                        <div className="flex justify-between text-gray-600 text-sm">
+                          <span>{t("Delivery Cost")}</span>
+                          <span>${mappedOrder.deliveryCost.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                      {mappedOrder.giftWrappingCost > 0 && (
+                        <div className="flex justify-between text-gray-600 text-sm">
+                          <span>{t("Gift Wrapping")}</span>
+                          <span>
+                            ${mappedOrder.giftWrappingCost.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
+
+                      {mappedOrder.couponCode && (
+                        <div className="flex justify-between text-green-600 text-sm font-medium">
+                          <span>
+                            {t("Coupon Code")} ({mappedOrder.couponCode})
+                          </span>
+                          <span>{t("Applied")}</span>
                         </div>
                       )}
 
