@@ -143,8 +143,6 @@ const Friends = () => {
 
   const suggestedUsers = useMemo(() => {
     if (!Array.isArray(suggestionsRes?.data)) return [];
-
-    // 1. استخراج معرفات (IDs) الأصدقاء الحاليين لاستبعادهم من الاقتراحات
     const currentFriendIds = Array.isArray(friendsRes?.data)
       ? friendsRes.data.map((f) => f.id)
       : [];
